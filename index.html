@@ -16,17 +16,149 @@
 	<link rel="stylesheet" href="css/style.css" />
 	<script src="js/index.var.js"></script>
 
+
+	<style>
+		html,
+		body {
+			width: 100vw;
+			height: 100vh;
+			display: grid;
+			grid-template-columns: 3fr 2fr 3fr;
+			grid-template-rows: 3fr 2fr 3fr;
+			margin: 0 0;
+			font-family: sans-serif;
+			color: #555;
+			overflow-x: hidden;
+		}
+		
+		div.container {
+			display: none;
+		}
+		
+		div.container.focused {
+			display: grid;
+			grid-column: 2 / span 1;
+			grid-row: 2 / span 1;
+		}
+		
+		div.container.focused form {
+			display: grid;
+			grid-template-columns: max-content 1fr;
+			align-items: center;
+			grid-column-gap: 8px;
+		}
+		
+		div.containter.focused form#authentication_form {
+			grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+		}
+		
+		div.containter.focused form#details_form {
+			grid-template-rows: 1fr 1fr 1fr 1fr;
+		}
+		
+		div.button#complete {
+			height: 100%;
+			grid-row: 4 / span 1;
+			grid-column: 2 / span 1;
+		}
+		
+		div.button_container {
+			height: 100%;
+			grid-row: 4 / span 1;
+			grid-column: 1 / span 2;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-gap: 8px;
+		}
+		
+		div.button {
+			color: white;
+			flex-grow: 1;
+			display: grid;
+			align-content: center;
+			justify-content: center;
+			border-radius: 6px;
+			transition-property: all;
+			transition-duration: 0.5s;
+			box-shadow: 0px 5px 5px rgba(100, 100, 100, 0.15);
+			transition-timing-function: ease;
+		}
+		
+		div.button#signin,
+		div.button#complete {
+			background-color: darkseagreen;
+		}
+		
+		div.button#signup {
+			background-color: white;
+			border: 2px solid darkseagreen;
+			box-sizing: border-box;
+			color: darkseagreen;
+		}
+		
+		div.button:hover {
+			cursor: pointer;
+			box-shadow: 0px 1px 3px rgba(30, 30, 30, 0.15);
+			transition-property: all;
+			transition-duration: 0.5s;
+			transition-timing-function: ease;
+		}
+		
+		span.title {
+			color: #698869;
+			grid-column: 1 / span 2;
+			grid-row: 1 / span 1;
+		}
+		
+		span#google_sso {
+			grid-row: 5 / span 1;
+			grid-column: 1 / span 2;
+		}
+		
+		span#google_sso:hover {
+			cursor: pointer;
+			text-decoration: underline;
+		}
+
+	</style>
+
 </head>
 
 <body>
 
-	<div id="firebaseui-auth-container" class="focused"></div>
+	<!--	<div id="firebaseui-auth-container" class="focused"></div>-->
+
+	<div class="authentication container focused">
+		<form id="authentication_form">
+			<span class="title">#ecosquadgoals</span>
+			<span class="label">Email</span>
+			<input type="email" id="email">
+			<span class="label">Password</span>
+			<input type="password" id="password">
+			<div class="button_container">
+
+				<div class="button" id="signup">Sign up</div>
+				<div class="button" id="signin">Sign in</div>
+			</div>
+			<span id="google_sso">Or, sign in using Google</span>
+		</form>
+	</div>
+
+	<div class="details container">
+		<form id="details_form">
+			<span class="title">Please complete your registration</span>
+			<span class="label">Affiliation</span>
+			<input type="text" id="affiliation">
+			<span class="label">Participant ID</span>
+			<input type="text" id="pid">
+			<div class="button" id="complete">Complete</div>
+		</form>
+	</div>
 
 
 	<script>
 		let app, auth
-		let currentUser
-		let uiConfig
+		let currentUser = {}
 
 		function setupFirebase() {
 			return new Promise((resolve) => {
@@ -40,166 +172,198 @@
 				};
 				app = firebase.initializeApp(firebaseConfig);
 
-				uiConfig = {
-					signInSuccessUrl: 'index.html',
-					signInOptions: [
-						// Leave the lines as is for the providers you want to offer your users.
-						firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-						firebase.auth.EmailAuthProvider.PROVIDER_ID,
-					],
-					callbacks: {
-						signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-							// Process result. This will not trigger on merge conflicts.
-							// On success redirect to signInSuccessUrl.
-							console.log("log in success")
-							return true;
-						},
-
-						signInFailure: function(errorl) {
-							// Process result. This will not trigger on merge conflicts.
-							// On success redirect to signInSuccessUrl.
-							console.log("log in failed")
-						}
-					}
-				}
 				resolve()
 			})
 		}
-
-
-		function authenticate() {
-			return new Promise((resolve) => {
-				auth = firebase.auth()
-
-				auth.onAuthStateChanged(function(user) {
-					if (user) {
-						// User is signed in.
-						var displayName = user.displayName;
-						var email = user.email;
-						var emailVerified = user.emailVerified;
-						var photoURL = user.photoURL;
-						var uid = user.uid;
-						var phoneNumber = user.phoneNumber;
-						var providerData = user.providerData;
-						user.getIdToken().then(function(accessToken) {
-							document.getElementById('sign_in').textContent = 'Sign out';
-
-							currentUser = {
-								displayName: displayName,
-								email: email,
-								emailVerified: emailVerified,
-								phoneNumber: phoneNumber,
-								photoURL: photoURL,
-								uid: uid,
-								accessToken: accessToken,
-								providerData: providerData
-							}
-							hideAuthModal()
-							resolve()
-						});
-
-					} else {
-						//						document.getElementById('sign_in').textContent = 'Sign in';
-						// Initialize the FirebaseUI Widget using Firebase.
-						var ui = new firebaseui.auth.AuthUI(auth);
-						// The start method will wait until the DOM is loaded.
-						ui.start('#firebaseui-auth-container', uiConfig);
-					}
-				}, function(error) {
-					console.log(error);
-				});
-			})
-		}
-
 
 		window.addEventListener('load', function() {
 			initApp()
 		});
 
+		function toggleDetailsForm(show) {
+			if (show) {
+				$("div.container.authentication").removeClass("focused")
+				$("div.container.details").addClass("focused")
+			} else {
+				$("div.container.authentication").addClass("focused")
+				$("div.container.details").removeClass("focused")
+			}
+		}
+
 		initApp = function() {
 			Promise.resolve()
 				.then(setupFirebase)
-				//				.then(authenticate)
 				.then(() => {
 					console.log("setup done")
 
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user) {
-							// User is signed in.
-							var displayName = user.displayName;
-							var email = user.email;
-							var emailVerified = user.emailVerified;
-							var photoURL = user.photoURL;
-							var uid = user.uid;
-							var phoneNumber = user.phoneNumber;
-							var providerData = user.providerData;
-							user.getIdToken().then(function(accessToken) {
-								//								document.getElementById('sign_in').textContent = 'Sign out';
-
-								currentUser = {
-										displayName: displayName,
-										email: email,
-										emailVerified: emailVerified,
-										phoneNumber: phoneNumber,
-										photoURL: photoURL,
-										uid: uid,
-										accessToken: accessToken,
-										providerData: providerData
-									}
-									//								hideAuthModal()
-									//								resolve()
-							});
-
-						} else {
-							//							document.getElementById('sign_in').textContent = 'Sign in';
-							//							// Initialize the FirebaseUI Widget using Firebase.
-							//							var ui = new firebaseui.auth.AuthUI(auth);
-							//							// The start method will wait until the DOM is loaded.
-							//							ui.start('#firebaseui-auth-container', uiConfig);
-							var provider = new firebase.auth.GoogleAuthProvider();
-							firebase.auth()
-								.signInWithPopup(provider)
-								.then((result) => {
-									/** @type {firebase.auth.OAuthCredential} */
-									var credential = result.credential;
-
-									// This gives you a Google Access Token. You can use it to access the Google API.
-									var token = credential.accessToken;
-									// The signed-in user info.
-									var user = result.user;
-									// ...
-								}).catch((error) => {
-									// Handle Errors here.
-									var errorCode = error.code;
-									var errorMessage = error.message;
-									// The email of the user's account used.
-									var email = error.email;
-									// The firebase.auth.AuthCredential type that was used.
-									var credential = error.credential;
-									// ...
-								});
+							currentUser["email"] = user.email
+							current["uuid"] = user.uid
+							if (hasCompleteDetails()) {
+								window.location.href = "main.html"
+							} else {
+								toggleDetailsForm(true)
+							}
 						}
 					}, function(error) {
 						console.log(error);
 					});
-
-
-
 				})
 		};
+
+
+		function hasCompleteDetails() {
+			console.log('hasCompleteDetails')
+			firebase.firestore()
+				.collection("users")
+				.doc(user.uid)
+				.get()
+				.then((doc) => {
+					if (doc.data().affiliation && doc.data().pid) {
+						console.log("user has complete details, redirect to maain.html")
+						return true
+					} else {
+						return false
+					}
+				})
+				// user does not exist
+			return false
+		}
+
+		function signUpViaGoogle() {
+			console.log('signUpViaGoogle')
+			var provider = new firebase.auth.GoogleAuthProvider();
+			firebase.auth()
+				.signInWithPopup(provider)
+				.then((result) => {
+
+					// check if user already exists in firestore (not just auth)
+					// if not, let them fill up form
+					// is yes, go to main.html
+
+					/** @type {firebase.auth.OAuthCredential} */
+					var credential = result.credential;
+
+					// This gives you a Google Access Token. You can use it to access the Google API.
+					var token = credential.accessToken;
+					// The signed-in user info.
+					var user = result.user;
+
+					console.log('credential')
+					console.log(credential)
+
+					console.log('token')
+					console.log(token)
+
+					console.log('user')
+					console.log(user)
+
+					if (user) {
+						if (hasCompleteDetails()) {
+							currentUser["email"] = user.email
+							current["uuid"] = user.uid
+							window.location.href = "main.html"
+						} else {
+
+							toggleDetailsForm(true)
+						}
+					}
+
+
+					// ...
+				}).catch((error) => {
+					// Handle Errors here.
+					var errorCode = error.code;
+					var errorMessage = error.message;
+					// The email of the user's account used.
+					var email = error.email;
+					// The firebase.auth.AuthCredential type that was used.
+					var credential = error.credential;
+					// ...
+
+					console.log("Google sign up error: " + errorMessage)
+				});
+		}
 
 	</script>
 
 	<script>
 		$(document).ready(function() {
-			$("div#sign_in").click(() => {
-				if (currentUser) {
-					auth.signOut().then(() => {
-						location.reload()
-					}).catch((error) => {
-						console.log("Error in signing out")
+			$("span#gooogle_sso").click(() => {
+					signUpViaGoogle()
+				})
+				//
+				//			$("div#sign_in").click(() => {
+				//				if (currentUser) {
+				//					auth.signOut().then(() => {
+				//						location.reload()
+				//					}).catch((error) => {
+				//						console.log("Error in signing out")
+				//					})
+				//				}
+				//			})
+
+			$("div.button#signin").click(() => {
+				//				let email = $("input#email").val()
+				let password = $("input#password").val()
+				firebase.auth()
+					.signInWithEmailAndPassword(email, password)
+					.then((user) => {
+						console.log("signinwithemailpassword success")
+						if (hasCompleteDetails()) {
+							currentUser["email"] = user.email
+							current["uuid"] = user.uid
+							window.location.href = "main.html"
+						} else {
+							toggleDetailsForm(true)
+						}
 					})
-				}
+					.catch((error) => {
+						console.log("signinwithemailpassword error")
+						console.log(error)
+					})
+			})
+
+
+			$("div.button#signin").click(() => {
+				let email = $("input#email").val()
+				let password = $("input#password").val()
+				firebase.auth()
+					.createUserWithEmailAndPassword(email, password)
+					.then((user) => {
+						console.log("createUserWithEmailAndPassword success")
+						currentUser["email"] = user.email
+						currentUser["uuid"] = user.uid
+						toggleDetailsForm(true)
+					})
+					.catch((error) => {
+						console.log("createUserWithEmailAndPassword error")
+						console.log(error)
+					})
+			})
+
+			$("div.button#complete").click(() => {
+				let affiliation = $("input#affiliation").val()
+				let pid = $("input#")
+				let email = currentUser["email"]
+				firebase.firestore().collection("users").update
+				firestore.collection("users")
+					.doc(currentUser["uuid"])
+					.update({
+						email, affiliation, pid,
+					}, {
+						merge: true
+					}).then((doc) => {
+						console.log("added user with details " + doc.data())
+						window.location.href = "main.html"
+					}).catch((error) => {
+						console.log("error " + error)
+					})
+			})
+
+			$("form").submit((e) => {
+				e.preventDefault()
 			})
 		})
 
