@@ -348,8 +348,8 @@
 				let affiliation = $("input#affiliation").val()
 				let pid = $("input#pid").val()
 				let email = currentUser["email"]
-				firebase.firestore().collection("users").update
-				firestore.collection("users")
+
+				firebase.firestore().collection("users")
 					.doc(currentUser["uuid"])
 					.update({
 						email, affiliation, pid,
