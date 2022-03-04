@@ -201,7 +201,7 @@
 						if (user) {
 							currentUser["email"] = user.email
 							currentUser["uuid"] = user.uid
-							if (hasCompleteDetails()) {
+							if (hasCompleteDetails(user.uid)) {
 								window.location.href = "main.html"
 							} else {
 								toggleDetailsForm(true)
@@ -214,11 +214,11 @@
 		};
 
 
-		function hasCompleteDetails() {
+		function hasCompleteDetails(id) {
 			console.log('hasCompleteDetails')
 			firebase.firestore()
 				.collection("users")
-				.doc(user.uid)
+				.doc(id)
 				.get()
 				.then((doc) => {
 					if (doc.data().affiliation && doc.data().pid) {
@@ -261,7 +261,7 @@
 					console.log(user)
 
 					if (user) {
-						if (hasCompleteDetails()) {
+						if (hasCompleteDetails(user.uid)) {
 							currentUser["email"] = user.email
 							currentUser["uuid"] = user.uid
 							window.location.href = "main.html"
@@ -312,7 +312,7 @@
 					.signInWithEmailAndPassword(email, password)
 					.then((user) => {
 						console.log("signinwithemailpassword success")
-						if (hasCompleteDetails()) {
+						if (hasCompleteDetails(user.uid)) {
 							currentUser["email"] = user.email
 							currentUser["uuid"] = user.uid
 							window.location.href = "main.html"
@@ -327,7 +327,7 @@
 			})
 
 
-			$("div.button#signin").click(() => {
+			$("div.button#signup").click(() => {
 				let email = $("input#email").val()
 				let password = $("input#password").val()
 				firebase.auth()
