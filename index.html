@@ -350,13 +350,13 @@
 				let email = currentUser["email"]
 
 				firebase.firestore().collection("users")
-					.child(currentUser["uuid"])
+					.doc(currentUser["uuid"])
 					.set({
 						email, affiliation, pid,
 					}, {
 						merge: true
-					}).then((doc) => {
-						console.log("added user with details " + doc.data())
+					}).then(() => {
+						console.log("added user with details ")
 						window.location.href = "main.html"
 					}).catch((error) => {
 						console.log("error " + error)
