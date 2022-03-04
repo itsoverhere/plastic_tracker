@@ -199,18 +199,19 @@
 
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user) {
-							console.log("onauthchanged")
-								//							if (hasCompleteDetails(user.uid)) {
-								//								window.location.href = "main.html"
-								//							} else {
-								//								currentUser["email"] = user.email
-								//								currentUser["uuid"] = user.uid
-								//								toggleDetailsForm(true)
-								//							}
+							//							if (hasCompleteDetails(user.uid)) {
+							//								window.location.href = "main.html"
+							//							} else {
+							//								currentUser["email"] = user.email
+							//								currentUser["uuid"] = user.uid
+							//								toggleDetailsForm(true)
+							//							}
 
 							hasCompleteDetails(user.uid).then(() => {
+								console.log("onauthchanged")
 								window.location.href = "main.html"
 							}, () => {
+								console.log("onauthchanged toggle")
 								currentUser["email"] = user.email
 								currentUser["uuid"] = user.uid
 								toggleDetailsForm(true)
@@ -232,14 +233,15 @@
 					.get()
 					.then((doc) => {
 						if (doc.data() && doc.data().affiliation && doc.data().pid) {
-							console.log("user has complete details, redirect to maain.html")
+							console.log("user has complete details, redirect to main.html")
 							resolve()
 						} else {
 							reject()
 						}
+					}).catch((error) => {
+						console.log("hasCompleteDetails error : " + error)
+						reject()
 					})
-					// user does not exist
-				reject()
 			})
 		}
 
@@ -272,17 +274,18 @@
 					console.log(user)
 
 					if (user) {
-						console.log("signupviagoogle")
-							//						if (hasCompleteDetails(user.uid)) {
-							//							window.location.href = "main.html"
-							//						} else {
-							//							currentUser["email"] = user.email
-							//							currentUser["uuid"] = user.uid
-							//							toggleDetailsForm(true)
-							//						}
+						//						if (hasCompleteDetails(user.uid)) {
+						//							window.location.href = "main.html"
+						//						} else {
+						//							currentUser["email"] = user.email
+						//							currentUser["uuid"] = user.uid
+						//							toggleDetailsForm(true)
+						//						}
 						hasCompleteDetails(user.uid).then(() => {
+							console.log("signupviagoogle")
 							window.location.href = "main.html"
 						}, () => {
+							console.log("signupviagoogle toggle")
 							currentUser["email"] = user.email
 							currentUser["uuid"] = user.uid
 							toggleDetailsForm(true)
@@ -329,17 +332,19 @@
 				firebase.auth()
 					.signInWithEmailAndPassword(email, password)
 					.then((user) => {
-						console.log("signinwithemailpassword success")
-							//						if (hasCompleteDetails(user.uid)) {
-							//							window.location.href = "main.html"
-							//						} else {
-							//							currentUser["email"] = user.email
-							//							currentUser["uuid"] = user.uid
-							//							toggleDetailsForm(true)
-							//						}
+						//						if (hasCompleteDetails(user.uid)) {
+						//							window.location.href = "main.html"
+						//						} else {
+						//							currentUser["email"] = user.email
+						//							currentUser["uuid"] = user.uid
+						//							toggleDetailsForm(true)
+						//						}
 						hasCompleteDetails(user.uid).then(() => {
+							console.log("signinwithemailpassword success")
 							window.location.href = "main.html"
 						}, () => {
+							console.log("signinwithemailpassword toggle")
+
 							currentUser["email"] = user.email
 							currentUser["uuid"] = user.uid
 							toggleDetailsForm(true)
