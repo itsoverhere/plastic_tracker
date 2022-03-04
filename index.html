@@ -199,11 +199,12 @@
 
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user) {
-							currentUser["email"] = user.email
-							currentUser["uuid"] = user.uid
+							console.log("onauthchanged")
 							if (hasCompleteDetails(user.uid)) {
 								window.location.href = "main.html"
 							} else {
+								currentUser["email"] = user.email
+								currentUser["uuid"] = user.uid
 								toggleDetailsForm(true)
 							}
 						}
@@ -262,11 +263,10 @@
 
 					if (user) {
 						if (hasCompleteDetails(user.uid)) {
-							currentUser["email"] = user.email
-							currentUser["uuid"] = user.uid
 							window.location.href = "main.html"
 						} else {
-
+							currentUser["email"] = user.email
+							currentUser["uuid"] = user.uid
 							toggleDetailsForm(true)
 						}
 					}
@@ -313,10 +313,10 @@
 					.then((user) => {
 						console.log("signinwithemailpassword success")
 						if (hasCompleteDetails(user.uid)) {
-							currentUser["email"] = user.email
-							currentUser["uuid"] = user.uid
 							window.location.href = "main.html"
 						} else {
+							currentUser["email"] = user.email
+							currentUser["uuid"] = user.uid
 							toggleDetailsForm(true)
 						}
 					})
