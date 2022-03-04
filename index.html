@@ -351,7 +351,7 @@
 
 				firebase.firestore().collection("users")
 					.doc(currentUser["uuid"])
-					.update({
+					.set({
 						email, affiliation, pid,
 					}, {
 						merge: true
