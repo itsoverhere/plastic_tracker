@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+	<!--	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js">
+</script>-->
+
+	<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth-compat.js"></script>
+
+	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/ui/6.0.0/firebase-ui-auth.js"></script>
+	<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.0/firebase-ui-auth.css" />
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+	<script src="https://unpkg.com/js-year-calendar@latest/dist/js-year-calendar.min.js"></script>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
+
+	<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
+	<link rel="stylesheet" href="css/style.css" />
+	<script src="js/index.var.js"></script>
+
+	<style>
+		html,
+		body {
+			height: 100vh;
+			width: 100vw;
+			margin: 0 0;
+			font-family: sans-serif;
+			color: #555;
+			overflow-x: hidden;
+		}
+		
+		footer {
+			background-color: #698869;
+			grid-row: 3 / span 1;
+			grid-column: 1 / span 3;
+		}
+		
+		header {
+			background-color: darkseagreen;
+			color: white;
+			align-items: center;
+			display: flex;
+			justify-content: space-between;
+			padding: 16px;
+			box-sizing: border-box;
+		}
+		
+		div.modal {
+			display: none;
+		}
+		
+		header {
+			grid-column: 1 / span 4;
+			grid-row: 1 / span 1;
+			display: flex;
+			flex-flow: row;
+			justify-content: space-between;
+		}
+		
+		main {
+			/*			background-color: whitesmoke;*/
+			padding: 16px;
+			box-sizing: border-box;
+		}
+		
+		.description {
+			font-family: sans-serif;
+			font-size: 0.8em;
+			color: darkgray;
+		}
+		
+		div#greeting {
+			grid-column: 1 / span 1;
+			grid-row: 1 / span 1;
+		}
+		
+		@media (min-width: 800px) {
+			body {
+				display: grid;
+				grid-template-columns: 2fr 3fr 2fr;
+				grid-template-rows: auto 1fr 24px;
+			}
+			main {
+				grid-column: 2 / span 1;
+				grid-row: 2 / span 1;
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-rows: auto auto 6fr;
+				grid-gap: 24px;
+			}
+			div#dashboard {
+				grid-column: 1 / span 1;
+				grid-row: 2 / span 1;
+				display: grid;
+				grid-template-columns: 3fr 2fr;
+				grid-template-rows: minmax(200px, 400px);
+				grid-gap: 16px;
+			}
+			div.plastic_chart.container {
+				grid-column: 1 / span 1;
+				grid-row: 1 / span 1;
+				display: grid;
+				grid-template-rows: auto minmax(200px, 400px);
+			}
+			canvas#plastic_usage_chart {
+				grid-row: 2 / span 1;
+			}
+			div.riversnap_calendar.container {
+				grid-column: 2 / span 1;
+				display: grid;
+				grid-template-rows: auto auto 1fr;
+				grid-gap: 4px;
+				/*				justify-self: end;*/
+			}
+			div#riversnap_calendar {
+				align-self: center;
+			}
+			div.plastic_categories.container {
+				grid-column: 1 / span 1;
+				grid-row: 3 / span 1;
+				display: grid;
+				grid-template-rows: auto auto 1fr;
+				grid-gap: 4px;
+			}
+			div.plastic_categories.container>div.plastic_categories.grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				grid-template-rows: repeat(3, 1fr);
+				grid-gap: 8px;
+				box-sizing: border-box;
+			}
+		}
+		
+		@media (min-width: 600px) and (max-width: 800px) {
+			html,
+			body {
+				display: grid;
+				grid-template-columns: 1fr 4fr 1fr;
+				grid-template-rows: auto 1fr 24px;
+			}
+			main {
+				grid-column: 2 / span 1;
+				grid-row: 2 / span 1;
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-rows: auto 70vh 1fr;
+				grid-gap: 24px;
+			}
+			div#dashboard {
+				grid-column: 1 / span 1;
+				grid-row: 2 / span 1;
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-rows: minmax(200px, 400px);
+				1fr;
+				grid-gap: 16px;
+				max-height: 100%;
+			}
+			div.plastic_chart.container {
+				grid-column: 1 / span 1;
+				grid-row: 1 / span 1;
+				display: grid;
+				grid-template-rows: auto minmax(200px, 400px);
+			}
+			canvas#plastic_usage_chart {
+				grid-row: 2 / span 1;
+			}
+			div.riversnap_calendar.container {
+				grid-column: 1 / span 1;
+				grid-row: 2 / span 1;
+				display: grid;
+				grid-template-rows: auto auto 1fr;
+				grid-gap: 4px;
+				/*				justify-self: end;*/
+			}
+			div#riversnap_calendar {
+				justify-self: center;
+			}
+			div.plastic_categories.container {
+				grid-column: 1 / span 1;
+				grid-row: 3 / span 1;
+				display: grid;
+				grid-template-rows: auto auto 1fr;
+				grid-gap: 4px;
+			}
+			div.plastic_categories.container>div.plastic_categories.grid {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				grid-template-rows: repeat(5, 1fr);
+				grid-gap: 8px;
+			}
+			/*
+			div.plastic_categories.container>div.title_container {
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-rows: auto auto;
+			}	div.plastic_categories.container>div.title_container {
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-rows: auto auto;
+			}
+*/
+		}
+		/*
+		
+		
+		@media (max-width: 550px) {
+			html,
+			body {
+				height: 100vh;
+				width: 100vw;
+				margin: 0 0;
+				display: grid;
+				grid-template-columns: 1fr 4fr 1fr;
+				grid-template-rows: 1fr 12fr;
+				font-family: sans-serif;
+				color: #555;
+				overflow-x: hidden;
+			}
+			div.modal {
+				display: none;
+			}
+			header {
+				grid-column: 1 / span 4;
+				grid-row: 1 / span 1;
+				background-color: darkseagreen;
+				color: white;
+				align-items: center;
+				display: flex;
+				justify-content: space-between;
+				padding: 16px;
+				box-sizing: border-box;
+			}
+			main {
+				grid-column: 2 / span 1;
+				grid-row: 2 / span 1;
+				padding: 16px;
+				box-sizing: border-box;
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-rows: auto auto 6fr;
+				grid-gap: 24px;
+			}
+			div#greeting {
+				grid-column: 1 / span 1;
+				grid-row: 1 / span 1;
+			}
+			div#dashboard {
+				grid-column: 1 / span 1;
+				grid-row: 2 / span 1;
+				display: grid;
+				grid-template-columns: 1fr auto;
+				grid-template-rows: 1fr;
+				grid-gap: 16px;
+			}
+			div.plastic_chart.container {
+				grid-column: 1 / span 1;
+				grid-row: 1 / span 1;
+				display: grid;
+				grid-template-rows: auto 1fr;
+			}
+			canvas#plastic_usage_chart {
+				grid-row: 2 / span 1;
+			}
+			div.riversnap_calendar.container {
+				grid-column: 2 / span 1;
+				justify-self: end;
+			}
+			div#riversnap_calendar {
+				align-self: center;
+			}
+			div.plastic_categories.container {
+				grid-column: 1 / span 1;
+				grid-row: 3 / span 1;
+				display: grid;
+				grid-template-rows: 20px 1fr;
+			}
+			div.plastic_categories.container>div:not(.title) {
+				display: flex;
+				flex-direction: column;
+				flex-wrap: wrap;
+			}
+		}
+		*/
+		
+		div.plastic_category {
+			/*			max-width: 100%;*/
+			max-height: 100vh;
+			display: grid;
+			grid-template-rows: 1fr auto auto;
+			overflow-x: hidden;
+			padding: 24px;
+			box-sizing: ci-box;
+			align-content: center;
+			justify-items: center;
+			border-radius: 6px;
+			/*
+			flex-grow: 1;
+			flex-shrink: 1;
+						flex-basis: 0;
+*/
+			box-shadow: 0px 1px 3px rgba(30, 30, 30, 0.15);
+			transition-property: all;
+			transition-duration: 0.5s;
+			transition-timing-function: ease;
+			row-gap: 8px;
+		}
+		
+		div.plastic_category .title {
+			grid-row: 2 / span 1;
+			text-align: center;
+		}
+		
+		div.plastic_category .logo {
+			display: inline-block;
+			/*
+			max-width: 100%;
+			max-height: 100%;
+*/
+			box-sizing: border-box;
+			grid-row: 1 / span 1;
+		}
+		
+		div.plastic_category .description {
+			grid-row: 3 / span 1;
+			text-align: center;
+			color: #888;
+		}
+		
+		div.plastic_category:hover {
+			transition-property: all;
+			transition-duration: 0.5s;
+			transition-timing-function: ease;
+			box-shadow: 0px 5px 5px rgba(100, 100, 100, 0.15);
+			cursor: pointer;
+		}
+		
+		div.plastic_category#outer {
+			background-color: #ACDED7;
+		}
+		
+		div.plastic_category#bubble {
+			background-color: #B7DBF3;
+		}
+		
+		div.plastic_category#styro {
+			background-color: #E9EAEC;
+		}
+		
+		div.plastic_category#food {
+			background-color: #F8C1BA
+		}
+		
+		div.plastic_category#hard {
+			background-color: #DDC5E7;
+		}
+		
+		div.plastic_category#microwavable {
+			background-color: #F7D2AF;
+		}
+		
+		div.plastic_category#foil {
+			background-color: #FAEBA7;
+		}
+		
+		div.plastic_category#bottle {
+			background-color: #B3E4C7
+		}
+		
+		div.plastic_category#misc {
+			background-color: #B8BFC5;
+		}
+		
+		.litepicker .container__days div.day-item.is-highlighted {
+			background-color: #ACDED7;
+		}
+		
+		div.modal_container,
+		div.spinner_container,
+		{
+			display: hidden;
+		}
+		
+		div.modal_container.focused,
+		div.spinner_container.focused {
+			display: grid;
+			position: absolute;
+			background-color: rgba(0, 0, 0, 0.3);
+			height: 100vh;
+			width: 100vw;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		div.spinner_container img {
+			display: none;
+		}
+		
+		div.spinner_container img.focused {
+			display: block;
+		}
+		
+		div.modal.focused {
+			display: grid;
+			background-color: white;
+			box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.15);
+			border-radius: 8px;
+			grid-gap: 16px;
+			padding: 24px;
+		}
+		
+		div.modal#add_plastic.focused {
+			grid-template-rows: auto 1fr;
+			/*			grid-template-columns: 1fr 1fr;*/
+			grid-template-columns: 25vw 25vw;
+		}
+		
+		div.modal#add_plastic.focused>div.title {
+			grid-row: 1 / span 1;
+			grid-column: 1 / span 2;
+		}
+		
+		div.modal#add_plastic.focused>div.plastic_category {
+			grid-row: 2 / span 1;
+			grid-column: 1 / span 1;
+		}
+		
+		div.modal#add_plastic.focused>form.entry {
+			grid-row: 2 / span 1;
+			grid-column: 2 / span 1;
+			display: grid;
+			grid-template-rows: 1fr 1fr 1fr 1fr;
+			row-gap: 12px;
+		}
+		
+		div.modal#add_plastic.focused>form.entry>div.container {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			column-gap: 8px;
+			align-items: center;
+		}
+		
+		div.modal#add_plastic.focused>form.entry>div.container>div.label {
+			grid-column: 1 / span 1;
+		}
+		
+		div.modal#add_plastic.focused>form.entry>div.container>input {
+			min-width: 0;
+			grid-column: 2 / span 1;
+		}
+		
+		div.modal#add_riversnap.focused {
+			grid-template-rows: auto 50vh;
+			grid-template-columns: 50vw;
+		}
+		
+		div.modal#add_riversnap.focused>div.title {
+			grid-row: 1 / span 1;
+			grid-column: 1 / span 1;
+		}
+		
+		div.modal#add_riversnap.focused>form#riversnap_form {
+			grid-row: 2 / span 1;
+			grid-column: 1 / span 1;
+			display: grid;
+			grid-template-rows: 1fr auto;
+			grid-gap: 8px;
+		}
+		
+		div.modal#add_riversnap.focused div.description {
+			color: #555;
+		}
+		
+		form#riversnap_form div#dropzone {
+			grid-row: 1 / span 1;
+			grid-column: 1 / span 1;
+			border-radius: 8px;
+			border: 1px solid #ccc;
+			display: grid;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		form#riversnap_form div#dropzone [type="file"] {
+			cursor: pointer;
+			position: absolute;
+			opacity: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+		}
+		
+		input[type=submit] {
+			background-color: #9fcc9f;
+			color: white;
+			border: 0px;
+			border-radius: 8px;
+			padding: 8px;
+			box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+		}
+		
+		input[type=submit]:hover {
+			cursor: pointer;
+			background-color: darkseagreen;
+			transition: all 0.5s ease;
+		}
+		
+		div.label {
+			font-size: 0.8em;
+		}
+		
+		div#firebaseui-auth-container.focused {
+			z-index: 1000;
+			display: grid;
+			position: absolute;
+			background-color: rgba(0, 0, 0, 0.3);
+			height: 100vh;
+			width: 100vw;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		div#firebaseui-auth-container {
+			display: none;
+		}
+
+	</style>
+
+
+</head>
+
+<body>
+
+	<header>
+		<div id="brand">
+			#ecosquadgoals
+		</div>
+		<div id="sign_in">
+		</div>
+	</header>
+
+	<main>
+		<div id="greeting">
+			Hello, Adam!
+		</div>
+		<div id="dashboard">
+			<div class="plastic_chart container">
+				<div class="title">My plastic consumption</div>
+				<canvas id="plastic_usage_chart"></canvas>
+			</div>
+			<div class="riversnap_calendar container">
+				<div class="title">My riversnaps</div>
+				<div class=description>Click on the date you want to add a photo to. You have already added a photo to the highlighted days.</div>
+				<div id="riversnap_calendar"></div>
+			</div>
+		</div>
+
+		<div class="plastic_categories container">
+			<div class="title">I want to add...</div>
+			<div class=description>Click on the type of the plastic you want to add </div>
+			<div class="plastic_categories grid">
+			</div>
+		</div>
+	</main>
+	<footer></footer>
+
+	<div class="modal_container">
+		<div class="modal" id="add_plastic">
+			<div class="title">Add plastic usage</div>
+			<div class="plastic_category">
+				<img class="logo">
+				<div class="description"></div>
+			</div>
+			<div class="plastic_category info"></div>
+			<form id="plastic_contribution_form" class="entry">
+				<div class="container">
+					<div class="label">Quantity</div>
+					<input id="quantity" type="number" min=0 required>
+				</div>
+				<div class="container">
+					<div class="label">Weight in grams</div>
+					<input id="weight" type="number" min=0 required>
+				</div>
+				<div class="container">
+					<div class="label">Week</div>
+					<input id="week" type="number" min=0 required>
+				</div>
+
+				<input type="hidden" id="plastic_category">
+
+				<input type="submit" id="plastic_submit" value="Add usage">
+
+			</form>
+		</div>
+
+		<div class="modal" id="add_riversnap">
+			<div class="title">Add a riversnap</div>
+			<form id="riversnap_form">
+				<div id="dropzone">Drop your riversnap here
+					<input type="file" id="riversnap_input" accept="image/png, application/pdf" />
+				</div>
+				<input type="hidden" id="riversnap_date">
+				<input type="submit" id="riversnap_submit" value="Add riversnap">
+			</form>
+		</div>
+
+
+
+	</div>
+
+	<div class="spinner_container">
+		<img src="assets/spinner.gif">
+	</div>
+	<div id="firebaseui-auth-container" class="focused"></div>
+
+
+	<script>
+		let app, firestore, storage, auth
+		let plastics = {}
+		let currentUser
+		let uiConfig
+		let myDropzone, picker
+		let currentRiversnap
+
+		function setupFirebase() {
+			return new Promise((resolve) => {
+				const firebaseConfig = {
+					apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
+					authDomain: "plastic-tracker-2cbb7.firebaseapp.com",
+					projectId: "plastic-tracker-2cbb7",
+					storageBucket: "plastic-tracker-2cbb7.appspot.com",
+					appId: "1:645843325306:web:5f4b90dc9388fe16f4c6c3",
+					measurementId: "G-2FF14XFMB6"
+				};
+				app = firebase.initializeApp(firebaseConfig);
+
+				uiConfig = {
+					signInSuccessUrl: false,
+					signInOptions: [
+						// Leave the lines as is for the providers you want to offer your users.
+						firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+						firebase.auth.EmailAuthProvider.PROVIDER_ID,
+					],
+					callbacks: {
+						signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+							// Process result. This will not trigger on merge conflicts.
+							// On success redirect to signInSuccessUrl.
+							console.log("log in success")
+							return true;
+						},
+
+						signInFailure: function(errorl) {
+							// Process result. This will not trigger on merge conflicts.
+							// On success redirect to signInSuccessUrl.
+							console.log("log in failed")
+						}
+					}
+				}
+				resolve()
+			})
+		}
+
+
+		function authenticate() {
+			return new Promise((resolve) => {
+				auth = firebase.auth()
+				firestore = firebase.firestore()
+				storage = app.storage()
+
+				auth.onAuthStateChanged(function(user) {
+					if (user) {
+						// User is signed in.
+						var displayName = user.displayName;
+						var email = user.email;
+						var emailVerified = user.emailVerified;
+						var photoURL = user.photoURL;
+						var uid = user.uid;
+						var phoneNumber = user.phoneNumber;
+						var providerData = user.providerData;
+						user.getIdToken().then(function(accessToken) {
+							document.getElementById('sign_in').textContent = 'Sign out';
+
+							currentUser = {
+								displayName: displayName,
+								email: email,
+								emailVerified: emailVerified,
+								phoneNumber: phoneNumber,
+								photoURL: photoURL,
+								uid: uid,
+								accessToken: accessToken,
+								providerData: providerData
+							}
+							hideAuthModal()
+							resolve()
+						});
+
+					} else {
+						document.getElementById('sign_in').textContent = 'Sign in';
+						// Initialize the FirebaseUI Widget using Firebase.
+						var ui = new firebaseui.auth.AuthUI(auth);
+						// The start method will wait until the DOM is loaded.
+						ui.start('#firebaseui-auth-container', uiConfig);
+					}
+				}, function(error) {
+					console.log(error);
+				});
+			})
+		}
+
+		function listPlastics() {
+			return new Promise((resolve) => {
+				firestore.collection("plastics")
+					.get()
+					.then((querySnapshot) => {
+						querySnapshot.forEach((doc) => {
+							plastic = doc.data()
+							let plastic_category = document.createElement("div")
+							let title = document.createElement("span")
+							let logo = document.createElement("img")
+							let description = document.createElement("span")
+							$(plastic_category).addClass("plastic_category")
+							$(title).addClass("title")
+							$(logo).addClass("logo")
+							$(description).addClass("description")
+
+							$(title).text(plastic.name)
+							$(logo).attr("src", plastic.icon_path.small)
+							$(description).text(plastic.description)
+							$(plastic_category).attr("id", doc.id)
+
+							$(plastic_category).append(title)
+							$(plastic_category).append(logo)
+							$(plastic_category).append(description)
+							$(plastic_category).css("background-color", "#" + plastic.color)
+							$("div.plastic_categories.grid").append(plastic_category)
+
+							plastics[doc.id] = plastic
+						})
+						resolve()
+					}).catch((error) => {
+						console.log("Error: " + error)
+					})
+			})
+		}
+
+
+		initApp = function() {
+			showSpinner()
+			Promise.resolve()
+				.then(setupFirebase)
+				.then(authenticate)
+				.then(listPlastics)
+				.then(() => {
+					populatePlasticChart()
+					populateCalendar()
+					hideSpinner()
+				})
+		};
+
+		function populateCalendar() {
+			console.log("populateCalendar")
+
+			if (!myDropzone) {
+				myDropzone = new Dropzone("div#dropzone", {
+					url: "/",
+					addRemoveLinks: true,
+					method: 'put',
+					chunking: true,
+					forceChunking: true,
+					autoQueue: false,
+					autoProcessQueue: false
+				});
+
+
+				myDropzone.on("addedfile", function(file) {
+					if (this.files[1] != null) {
+						this.removeFile(this.files[0]);
+					}
+				});
+
+				myDropzone.on("removedfile", function(file) {
+					var storageRef = firebase.storage().ref("/");
+					storageRef.child(file.fullPath).delete().then(
+						function() {
+							console.log(file.fullPath + " deleted succefuly")
+						}).catch(function(error) {
+						console.log("Something is wrong")
+						console.log(error)
+					});
+				})
+			}
+
+			firestore.collection("riversnaps")
+				.where("user_uuid", "==", currentUser.uid)
+				.get()
+				.then((query) => {
+					let dates = []
+					query.forEach((doc) => {
+						let d = new Date(doc.data().date)
+						dates.push(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate())
+					})
+					console.log(dates)
+
+					if (picker) {
+						picker.destroy()
+					}
+					picker = new Litepicker({
+						element: document.getElementById('riversnap_calendar'),
+						inlineMode: true,
+						highlightedDays: dates,
+						highlightedDaysFormat: "YYYY-MM-DD",
+						setup: (picker) => {
+							picker.on('before:click', (target) => {
+								console.log(target)
+								if ($(target).hasClass('is-locked')) {
+									console.log("date is locked ")
+								} else if ($(target).hasClass('is-highlighted')) {
+									console.log("date is highlighted")
+								} else if ($(target).hasClass('day-item')) {
+									console.log("date is available")
+									if (picker.getDate()) {
+										initiateRiversnapModal(picker.getDate().dateInstance)
+										showModal($("div.modal#add_riversnap"))
+									}
+								}
+							});
+
+						},
+						maxDate: new Date()
+					});
+				})
+		}
+
+		function storage_upload(uuid, filedata, cb) {
+
+			// Getting Handle of the progressbar element of current file // 
+			//			var progressBar = filehandle.previewElement.children[2]
+
+			// Firestore storage task 
+			var task
+
+			// Getting Storeage referance for file 
+			var storageRef = firebase.storage().ref().child(uuid);
+
+			// Because I am uploading file in base64 data_url // 
+			console.log(filedata)
+			task = storageRef.putString(filedata, 'data_url');
+
+			// Making progress bar of current file preview element visible  
+			//			progressBar.opacity = 1
+
+			task
+				.on(firebase.storage.TaskEvent.STATE_CHANGED,
+
+					// Trakcing progress of upload
+					function progress(snapshot) {
+						var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+						// Updating progressbar width - to make it look like filling
+						//						progressBar.children[0].style.width = progress + '%'
+
+					},
+
+					// Firebase storeage upload error handling 
+					function(error) {
+						// Hanlde your way
+						// A full list of error codes is available at
+						// https://firebase.google.com/docs/storage/web/handle-errors
+					},
+
+					// Finishing process and returing data
+					// Returning file-meta and  url
+					// and hiding progress bar  
+					function() {
+
+						// Upload completed successfully, now we can get the meta data of file
+						task.snapshot.ref.getMetadata().then(function(meta) {
+							// Getting download url of file
+							task.snapshot.ref.getDownloadURL().then(function(downloadUrl) {
+
+								// storing meta data and download url in object and returning 
+								// it to callign function ... 
+								var response = {
+										object_info: {
+											publicURL: downloadUrl,
+											metainfo: meta
+										},
+										//									type_of_object: type
+									}
+									//								filehandle.fullPath = meta.fullPath
+								return cb(response)
+							})
+						})
+
+						// Hiding progress bar for current file 
+						//						progressBar.style.opacity = 0
+					}
+				)
+
+		}
+
+		function populatePlasticChart() {
+			if (currentUser) {
+				firestore.collection("users").doc(currentUser.uid)
+					.get().then((doc) => {
+
+						let plastic_data = doc.data().plastics
+
+						let labels = Object.keys(plastic_data)
+						let data_qty = {}
+						let data_weight = {}
+						Object.keys(plastics).forEach((key) => {
+							data_qty[key] = new Array(labels.length).fill(0)
+							data_weight[key] = new Array(labels.length).fill(0)
+						})
+
+						Object.entries(plastics).forEach((plastic) => {
+							for (let i = 0; i < labels.length; i++) {
+								if (plastic[0] in plastic_data[labels[i]]) {
+									data_qty[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["quantity"]
+									data_weight[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["weight"]
+								} else {
+									data_qty[plastic[0]][i] = 0
+									data_weight[plastic[0]][i] = 0
+								}
+							}
+
+						})
+
+						let dataset_qty = [],
+							dataset_weight = []
+						Object.entries(plastics).forEach((plastic) => {
+							dataset_qty.push({
+								"label": plastic[1].name,
+								"data": data_qty[plastic[0]],
+								"backgroundColor": "#" + plastic[1].color
+							})
+							dataset_weight.push({
+								"label": plastic[1].name,
+								"data": data_qty[plastic[0]],
+								"backgroundColor": "#" + plastic[1].color
+							})
+						})
+
+						labels = labels.map((el) => {
+							return "Week " + el
+						})
+
+						const data = {
+							labels: labels,
+							datasets: dataset_qty
+						}
+
+						if (!chart) {
+							const config = {
+								type: 'bar',
+								data: data,
+								options: {
+									responsive: true,
+									interaction: {
+										intersect: true,
+									},
+									scales: {
+										x: {
+											stacked: true,
+										},
+										y: {
+											stacked: true
+										}
+									},
+									maintainAspectRatio: false,
+									responsive: true
+								}
+							};
+
+							chart = new Chart(ctx, config);
+						} else {
+							chart.data.labels.pop();
+							chart.data.datasets.forEach((dataset) => {
+								dataset.data.pop();
+							});
+							chart.data = data
+							chart.update();
+						}
+					})
+			} else {
+				console.log("no current user")
+			}
+		}
+
+		window.addEventListener('load', function() {
+			initApp()
+		});
+
+	</script>
+
+	<script>
+		const ctx = document.getElementById('plastic_usage_chart').getContext('2d');
+		let chart
+
+
+		function populatePlasticCategoryModal(id, plastic) {
+			$("div#add_plastic div.title").text("Add " + plastic.name.toLowerCase())
+			$("div#add_plastic div.plastic_category:not('.info')").css("background-color", "#" + plastic.color)
+			$("div#add_plastic img.logo").attr("src", plastic.icon_path.small)
+			$("div#add_plastic div.description").text(plastic.description)
+			$("input#plastic_category").val(id)
+		}
+
+		function initiateRiversnapModal(date) {
+			console.log(date)
+			myDropzone.removeAllFiles(true)
+			$("input#riversnap_date").val(date)
+		}
+
+		function showModal(target) {
+			hideModals()
+			$("div.modal_container").addClass("focused")
+			target.addClass("focused")
+		}
+
+		function hideAuthModal() {
+			$('div#firebaseui-auth-container').removeClass("focused")
+		}
+
+		function hideModals() {
+			$("div.modal_container").removeClass("focused")
+			$("div.modal#add_plastic").removeClass("focused")
+			$("div.modal#add_riversnap").removeClass("focused")
+		}
+
+		function showSpinner() {
+			$("div.spinner_container").addClass("focused")
+			$("div.spinner_container img").addClass("focused")
+		}
+
+		function hideSpinner() {
+			$("div.spinner_container").removeClass("focused")
+			$("div.spinner_container img").removeClass("focused")
+		}
+
+		function clearModalInputs(target) {
+			target.trigger("reset")
+		}
+
+		let notifier = new AWN()
+
+		$(document).ready(function() {
+
+			$("body").on("click", ".plastic_category", function() {
+				firestore.collection("plastics").doc($(this).attr("id")).get().then((doc) => {
+					populatePlasticCategoryModal(doc.id, doc.data())
+					showModal($("div.modal#add_plastic"))
+				})
+			});
+
+			$("body").on("click", "div.modal_container", function() {
+				hideModals()
+			});
+
+			$("div.modal").on("click", function(e) {
+				e.stopPropagation()
+			});
+
+			$("form#plastic_contribution_form").on('change', 'input[type=number]', (e) => {
+				let i = $(e.target).val()
+				if (i < 0 || isNaN(i)) {
+					$(e.target).val(0)
+					notifier.warning("Please enter a valid number")
+				}
+			})
+
+			$("form#plastic_contribution_form").submit(function(e) {
+				e.preventDefault()
+				showSpinner()
+				if (currentUser) {
+					let quantity = $("input#quantity").val()
+					let weight = $("input#weight").val()
+					let week = $("input#week").val()
+					let plastic_uuid = $("input#plastic_category").val()
+					let user_uuid = currentUser.uid
+					let timestamp = new Date()
+
+					// write security rules 
+					let path =
+
+						firestore.collection("users")
+						.doc(user_uuid)
+						.update({
+							[`plastics.${week}.${plastic_uuid}`]: {
+								timestamp, quantity, weight
+							}
+						}, {
+							merge: true
+						}).then((doc) => {
+							notifier.success("Successfully added your plastic contribution!")
+							hideModals()
+							hideSpinner()
+							clearModalInputs($("form#plastic_contribution_form"))
+							populatePlasticChart()
+						}).catch((error) => {
+							notifier.alert("Something went wrong, please try again.")
+							hideModals()
+						})
+				} else {
+					// sign in first
+				}
+
+			})
+
+			$("form#riversnap_form").submit(function(e) {
+				e.preventDefault()
+				console.log("pressed submit riversnap_form")
+				if (currentUser && myDropzone.files.length == 1) {
+					showSpinner()
+						// continue
+					let date = $("input#riversnap_date").val()
+					let user_uuid = currentUser.uid
+					firestore.collection("riversnaps").add({
+						user_uuid,
+						date,
+						timestamp: firebase.firestore.FieldValue.serverTimestamp()
+					}).then((doc) => {
+						console.log("successfully added riversnap to firestore")
+						console.log(doc.id)
+
+						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
+							console.log(response)
+							hideModals()
+							hideSpinner()
+							populateCalendar()
+							notifier.success("Successfully added your new riversnap!")
+						})
+
+					}).catch((error) => {
+						console.log("Error adding document: " + error)
+					})
+				} else {
+					// sign in first
+				}
+			})
+
+
+			$("div#sign_in").click(() => {
+				if (currentUser) {
+					auth.signOut().then(() => {
+						location.reload()
+					}).catch((error) => {
+						console.log("Error in signing out")
+					})
+				}
+			})
+		})
+
+	</script>
+</body>
+
+</html>
