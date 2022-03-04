@@ -346,7 +346,7 @@
 
 			$("div.button#complete").click(() => {
 				let affiliation = $("input#affiliation").val()
-				let pid = $("input#")
+				let pid = $("input#pid").val()
 				let email = currentUser["email"]
 				firebase.firestore().collection("users").update
 				firestore.collection("users")
