@@ -221,7 +221,7 @@
 				.doc(id)
 				.get()
 				.then((doc) => {
-					if (doc.data().affiliation && doc.data().pid) {
+					if (doc.data() && doc.data().affiliation && doc.data().pid) {
 						console.log("user has complete details, redirect to maain.html")
 						return true
 					} else {
