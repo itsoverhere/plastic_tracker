@@ -350,7 +350,7 @@
 				let email = currentUser["email"]
 
 				firebase.firestore().collection("users")
-					.doc(currentUser["uuid"])
+					.child(currentUser["uuid"])
 					.set({
 						email, affiliation, pid,
 					}, {
