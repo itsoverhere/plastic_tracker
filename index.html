@@ -42,6 +42,11 @@
 			grid-row: 2 / span 1;
 		}
 		
+		div.container.authentication {
+			display: grid;
+			grid-template-rows: 1fr max-content;
+		}
+		
 		div.container.focused form {
 			display: grid;
 			grid-template-columns: max-content 1fr;
@@ -50,7 +55,7 @@
 		}
 		
 		div.containter.focused form#authentication_form {
-			grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+			grid-template-rows: 1fr 1fr 1fr 1fr;
 		}
 		
 		div.containter.focused form#details_form {
@@ -141,8 +146,8 @@
 				<div class="button" id="signup">Sign up</div>
 				<div class="button" id="signin">Sign in</div>
 			</div>
-			<span id="google_sso">Or, sign in using Google</span>
 		</form>
+		<span id="google_sso">Or, sign in using Google</span>
 	</div>
 
 	<div class="details container">
