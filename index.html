@@ -219,7 +219,7 @@
 						}
 					}, function(error) {
 						console.log("onauthchanged: " + error);
-						notifier.error(error.message)
+						notifier.alert(error.message)
 					});
 				})
 		};
@@ -241,7 +241,7 @@
 						}
 					}).catch((error) => {
 						console.log("hasCompleteDetails error : " + error)
-						notifier.error(error.message)
+						notifier.alert(error.message)
 						reject()
 					})
 			})
@@ -347,7 +347,7 @@
 					.catch((error) => {
 						console.log("signinwithemailpassword error")
 						console.log(error)
-						notifier.error(error.message)
+						notifier.alert(error.message)
 					})
 			})
 
@@ -366,7 +366,7 @@
 					.catch((error) => {
 						console.log("createUserWithEmailAndPassword error")
 						console.log(error)
-						notifier.error(error.message)
+						notifier.alert(error.message)
 					})
 			})
 
@@ -385,7 +385,7 @@
 						console.log("added user with details ")
 						window.location.href = "main.html"
 					}).catch((error) => {
-						notifier.error(error.message)
+						notifier.alert(error.message)
 						console.log("error " + error)
 					})
 			})
