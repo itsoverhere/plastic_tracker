@@ -522,21 +522,6 @@
 		div.label {
 			font-size: 0.8em;
 		}
-		
-		div#firebaseui-auth-container.focused {
-			z-index: 1000;
-			display: grid;
-			position: absolute;
-			background-color: rgba(0, 0, 0, 0.3);
-			height: 100vh;
-			width: 100vw;
-			align-items: center;
-			justify-content: center;
-		}
-		
-		div#firebaseui-auth-container {
-			display: none;
-		}
 
 	</style>
 
@@ -703,7 +688,6 @@
 								accessToken: accessToken,
 								providerData: providerData
 							}
-							hideAuthModal()
 							resolve()
 						});
 
