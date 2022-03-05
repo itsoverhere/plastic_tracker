@@ -198,14 +198,11 @@
 			Promise.resolve()
 				.then(setupFirebase)
 				.then(() => {
-					console.log("setup done")
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user) {
 							hasCompleteDetails(user.uid).then(() => {
-								console.log("onauthchanged")
 								window.location.href = "main.html"
 							}, () => {
-								console.log("onauthchanged toggle")
 								currentUser["email"] = user.email
 								currentUser["uuid"] = user.uid
 								toggleDetailsForm(true)
@@ -213,7 +210,6 @@
 							})
 						}
 					}, function(error) {
-						console.log("onauthchanged: " + error);
 						notifier.alert(error.message)
 					});
 					hideSpinner()
@@ -248,20 +244,17 @@
 
 		function hasCompleteDetails(id) {
 			return new Promise((resolve, reject) => {
-				console.log('hasCompleteDetails')
 				firebase.firestore()
 					.collection("users")
 					.doc(id)
 					.get()
 					.then((doc) => {
 						if (doc.data() && doc.data().affiliation && doc.data().pid) {
-							console.log("user has complete details, redirect to main.html")
 							resolve()
 						} else {
 							reject()
 						}
 					}).catch((error) => {
-						console.log("hasCompleteDetails error : " + error)
 						notifier.alert(error.message)
 						reject()
 					})
@@ -269,68 +262,26 @@
 		}
 
 		function signUpViaGoogle() {
-			console.log('signUpViaGoogle')
 			showSpinner()
 			var provider = new firebase.auth.GoogleAuthProvider();
 			firebase.auth()
 				.signInWithPopup(provider)
 				.then((result) => {
-
-					// check if user already exists in firestore (not just auth)
-					// if not, let them fill up form
-					// is yes, go to main.html
-
-					/** @type {firebase.auth.OAuthCredential} */
-					var credential = result.credential;
-
-					// This gives you a Google Access Token. You can use it to access the Google API.
-					var token = credential.accessToken;
-					// The signed-in user info.
-					var user = result.user;
-
-					console.log('credential')
-					console.log(credential)
-
-					console.log('token')
-					console.log(token)
-
-					console.log('user')
-					console.log(user)
-
-					if (user) {
-						//						if (hasCompleteDetails(user.uid)) {
-						//							window.location.href = "main.html"
-						//						} else {
-						//							currentUser["email"] = user.email
-						//							currentUser["uuid"] = user.uid
-						//							toggleDetailsForm(true)
-						//						}
-						hasCompleteDetails(user.uid).then(() => {
-							console.log("signupviagoogle")
-							window.location.href = "main.html"
-						}, () => {
-							console.log("signupviagoogle toggle")
-							currentUser["email"] = user.email
-							currentUser["uuid"] = user.uid
-							toggleDetailsForm(true)
-							hideSpinner()
-						})
+						var user = result.user;
+						if (user) {
+							hasCompleteDetails(user.uid).then(() =>
+								window.location.href = "main.html"
+							}, () => {
+								currentUser["email"] = user.email
+								currentUser["uuid"] = user.uid
+								toggleDetailsForm(true)
+								hideSpinner()
+							})
 					}
-
-
-					// ...
 				}).catch((error) => {
-					// Handle Errors here.
-					var errorCode = error.code;
-					var errorMessage = error.message;
-					// The email of the user's account used.
-					var email = error.email;
-					// The firebase.auth.AuthCredential type that was used.
-					var credential = error.credential;
-					// ...
-
-					console.log("Google sign up error: " + errorMessage)
-				});
+			console.log("Google sign up error: " + errorMessage)
+			notifier.alert("Something went wrong, please try again.")
+		});
 		}
 
 		function showSpinner() {
@@ -349,7 +300,6 @@
 		$(document).ready(function() {
 
 			$("#google_sso").click(() => {
-				console.log("signUpViaGoogle clicked")
 				signUpViaGoogle()
 			})
 
@@ -360,19 +310,9 @@
 				firebase.auth()
 					.signInWithEmailAndPassword(email, password)
 					.then((user) => {
-						//						if (hasCompleteDetails(user.uid)) {
-						//							window.location.href = "main.html"
-						//						} else {
-						//							currentUser["email"] = user.email
-						//							currentUser["uuid"] = user.uid
-						//							toggleDetailsForm(true)
-						//						}
 						hasCompleteDetails(user.uid).then(() => {
-							console.log("signinwithemailpassword success")
 							window.location.href = "main.html"
 						}, () => {
-							console.log("signinwithemailpassword toggle")
-
 							currentUser["email"] = user.email
 							currentUser["uuid"] = user.uid
 							toggleDetailsForm(true)
@@ -380,8 +320,6 @@
 						})
 					})
 					.catch((error) => {
-						console.log("signinwithemailpassword error")
-						console.log(error)
 						notifier.alert(error.message)
 						hideSpinner()
 					})
@@ -395,15 +333,12 @@
 				firebase.auth()
 					.createUserWithEmailAndPassword(email, password)
 					.then((user) => {
-						console.log("createUserWithEmailAndPassword success")
 						currentUser["email"] = user.email
 						currentUser["uuid"] = user.uid
 						toggleDetailsForm(true)
 						hideSpinner()
 					})
 					.catch((error) => {
-						console.log("createUserWithEmailAndPassword error")
-						console.log(error)
 						notifier.alert(error.message)
 						hideSpinner()
 					})
@@ -423,12 +358,10 @@
 					}, {
 						merge: true
 					}).then(() => {
-						console.log("added user with details ")
 						window.location.href = "main.html"
 						hideSpinner()
 					}).catch((error) => {
 						notifier.alert(error.message)
-						console.log("error " + error)
 						hideSpinner()
 					})
 			})

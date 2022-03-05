@@ -522,6 +522,11 @@
 		div.label {
 			font-size: 0.8em;
 		}
+		
+		div#sign_in:hover {
+			cursor: pointer;
+			text-decoration-line: underline;
+		}
 
 	</style>
 
@@ -632,32 +637,9 @@
 				};
 				app = firebase.initializeApp(firebaseConfig);
 
-				uiConfig = {
-					signInSuccessUrl: false,
-					signInOptions: [
-						// Leave the lines as is for the providers you want to offer your users.
-						firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-						firebase.auth.EmailAuthProvider.PROVIDER_ID,
-					],
-					callbacks: {
-						signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-							// Process result. This will not trigger on merge conflicts.
-							// On success redirect to signInSuccessUrl.
-							console.log("log in success")
-							return true;
-						},
-
-						signInFailure: function(errorl) {
-							// Process result. This will not trigger on merge conflicts.
-							// On success redirect to signInSuccessUrl.
-							console.log("log in failed")
-						}
-					}
-				}
 				resolve()
 			})
 		}
-
 
 		function authenticate() {
 			return new Promise((resolve) => {
@@ -751,8 +733,6 @@
 		};
 
 		function populateCalendar() {
-			console.log("populateCalendar")
-
 			if (!myDropzone) {
 				myDropzone = new Dropzone("div#dropzone", {
 					url: "/",
@@ -764,7 +744,6 @@
 					autoProcessQueue: false
 				});
 
-
 				myDropzone.on("addedfile", function(file) {
 					if (this.files[1] != null) {
 						this.removeFile(this.files[0]);
@@ -775,10 +754,10 @@
 					var storageRef = firebase.storage().ref("/");
 					storageRef.child(file.fullPath).delete().then(
 						function() {
-							console.log(file.fullPath + " deleted succefuly")
+							notifier.success("File removed successfully.")
 						}).catch(function(error) {
-						console.log("Something is wrong")
-						console.log(error)
+						notifier.alert("Something went wrong, please try again.")
+						console.log("Error in removing file : " + error)
 					});
 				})
 			}
@@ -825,68 +804,43 @@
 		}
 
 		function storage_upload(uuid, filedata, cb) {
-
-			// Getting Handle of the progressbar element of current file // 
-			//			var progressBar = filehandle.previewElement.children[2]
-
 			// Firestore storage task 
 			var task
 
-			// Getting Storeage referance for file 
 			var storageRef = firebase.storage().ref().child(uuid);
 
 			// Because I am uploading file in base64 data_url // 
-			console.log(filedata)
 			task = storageRef.putString(filedata, 'data_url');
-
-			// Making progress bar of current file preview element visible  
-			//			progressBar.opacity = 1
 
 			task
 				.on(firebase.storage.TaskEvent.STATE_CHANGED,
-
-					// Trakcing progress of upload
-					function progress(snapshot) {
-						var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-						// Updating progressbar width - to make it look like filling
-						//						progressBar.children[0].style.width = progress + '%'
-
-					},
+					function progress(snapshot) {},
 
 					// Firebase storeage upload error handling 
 					function(error) {
-						// Hanlde your way
 						// A full list of error codes is available at
 						// https://firebase.google.com/docs/storage/web/handle-errors
+						notifier.alert("Something went wrong, please try again.")
+						console.log("Error in uploading photo : " + error)
+
+						// TODO: delete firestore entry
 					},
 
-					// Finishing process and returing data
-					// Returning file-meta and  url
-					// and hiding progress bar  
+					// Finishing process and returning data
 					function() {
 
-						// Upload completed successfully, now we can get the meta data of file
+						// Upload completed successfully
 						task.snapshot.ref.getMetadata().then(function(meta) {
-							// Getting download url of file
 							task.snapshot.ref.getDownloadURL().then(function(downloadUrl) {
-
-								// storing meta data and download url in object and returning 
-								// it to callign function ... 
 								var response = {
-										object_info: {
-											publicURL: downloadUrl,
-											metainfo: meta
-										},
-										//									type_of_object: type
+									object_info: {
+										publicURL: downloadUrl,
+										metainfo: meta
 									}
-									//								filehandle.fullPath = meta.fullPath
+								}
 								return cb(response)
 							})
 						})
-
-						// Hiding progress bar for current file 
-						//						progressBar.style.opacity = 0
 					}
 				)
 
@@ -977,7 +931,8 @@
 						}
 					})
 			} else {
-				console.log("no current user")
+				// no current user, redirect to index.html
+				window.location.href = "index.html"
 			}
 		}
 
@@ -990,7 +945,6 @@
 	<script>
 		const ctx = document.getElementById('plastic_usage_chart').getContext('2d');
 		let chart
-
 
 		function populatePlasticCategoryModal(id, plastic) {
 			$("div#add_plastic div.title").text("Add " + plastic.name.toLowerCase())
@@ -1035,7 +989,6 @@
 		let notifier = new AWN()
 
 		$(document).ready(function() {
-
 			$("body").on("click", ".plastic_category", function() {
 				firestore.collection("plastics").doc($(this).attr("id")).get().then((doc) => {
 					populatePlasticCategoryModal(doc.id, doc.data())
@@ -1092,7 +1045,8 @@
 							hideModals()
 						})
 				} else {
-					// sign in first
+					// no user detected, redirect to index.html
+					window.location.href = "index.html"
 				}
 
 			})
@@ -1102,7 +1056,7 @@
 				console.log("pressed submit riversnap_form")
 				if (currentUser && myDropzone.files.length == 1) {
 					showSpinner()
-						// continue
+
 					let date = $("input#riversnap_date").val()
 					let user_uuid = currentUser.uid
 					firestore.collection("riversnaps").add({
@@ -1125,7 +1079,12 @@
 						console.log("Error adding document: " + error)
 					})
 				} else {
-					// sign in first
+					if (!currentUser) {
+						// no user detected, redirect to index.html
+						window.location.href = "index.html"
+					} else if (myDropzone.files.length != 1) {
+						notifier.warning("Please upload a photo before submitting.")
+					}
 				}
 			})
 
