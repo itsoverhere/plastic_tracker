@@ -45,6 +45,7 @@
 		div.container.authentication {
 			display: grid;
 			grid-template-rows: 1fr max-content;
+			grid-row-gap: 4px;
 		}
 		
 		div.container.focused form {
@@ -52,13 +53,6 @@
 			grid-template-columns: max-content 1fr;
 			align-items: center;
 			grid-column-gap: 8px;
-		}
-		
-		div.containter.focused form#authentication_form {
-			grid-template-rows: 1fr 1fr 1fr 1fr;
-		}
-		
-		div.containter.focused form#details_form {
 			grid-template-rows: 1fr 1fr 1fr 1fr;
 		}
 		
@@ -317,22 +311,14 @@
 
 	<script>
 		$(document).ready(function() {
-			$("span#gooogle_sso").click(() => {
-					signUpViaGoogle()
-				})
-				//
-				//			$("div#sign_in").click(() => {
-				//				if (currentUser) {
-				//					auth.signOut().then(() => {
-				//						location.reload()
-				//					}).catch((error) => {
-				//						console.log("Error in signing out")
-				//					})
-				//				}
-				//			})
+
+			$("#google_sso").click(() => {
+				console.log("signUpViaGoogle clicked")
+				signUpViaGoogle()
+			})
 
 			$("div.button#signin").click(() => {
-				//				let email = $("input#email").val()
+				let email = $("input#email").val()
 				let password = $("input#password").val()
 				firebase.auth()
 					.signInWithEmailAndPassword(email, password)
