@@ -677,7 +677,9 @@
 						window.location.href = "index.html"
 					}
 				}, function(error) {
-					console.log(error);
+					console.log("OnAuth error: " + error);
+					// no current user
+					window.location.href = "index.html"
 				});
 			})
 		}
@@ -771,7 +773,6 @@
 						let d = new Date(doc.data().date)
 						dates.push(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate())
 					})
-					console.log(dates)
 
 					if (picker) {
 						picker.destroy()
@@ -783,20 +784,19 @@
 						highlightedDaysFormat: "YYYY-MM-DD",
 						setup: (picker) => {
 							picker.on('before:click', (target) => {
-								console.log(target)
 								if ($(target).hasClass('is-locked')) {
-									console.log("date is locked ")
+									// date is locked, the date has not yet occurred
 								} else if ($(target).hasClass('is-highlighted')) {
-									console.log("date is highlighted")
+									// date is highlighted, it was already chosen before
+									notifier.alert("You already submitted a riversnap for this day. Choose another date.")
 								} else if ($(target).hasClass('day-item')) {
-									console.log("date is available")
+									// date is available
 									if (picker.getDate()) {
 										initiateRiversnapModal(picker.getDate().dateInstance)
 										showModal($("div.modal#add_riversnap"))
 									}
 								}
 							});
-
 						},
 						maxDate: new Date()
 					});
@@ -955,7 +955,6 @@
 		}
 
 		function initiateRiversnapModal(date) {
-			console.log(date)
 			myDropzone.removeAllFiles(true)
 			$("input#riversnap_date").val(date)
 		}
@@ -1053,7 +1052,6 @@
 
 			$("form#riversnap_form").submit(function(e) {
 				e.preventDefault()
-				console.log("pressed submit riversnap_form")
 				if (currentUser && myDropzone.files.length == 1) {
 					showSpinner()
 
@@ -1064,11 +1062,7 @@
 						date,
 						timestamp: firebase.firestore.FieldValue.serverTimestamp()
 					}).then((doc) => {
-						console.log("successfully added riversnap to firestore")
-						console.log(doc.id)
-
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
-							console.log(response)
 							hideModals()
 							hideSpinner()
 							populateCalendar()
@@ -1076,7 +1070,8 @@
 						})
 
 					}).catch((error) => {
-						console.log("Error adding document: " + error)
+						console.log("Error adding riversnap document: " + error)
+						notifier.alert("Something went wrong, please try again.")
 					})
 				} else {
 					if (!currentUser) {
@@ -1095,6 +1090,7 @@
 						location.reload()
 					}).catch((error) => {
 						console.log("Error in signing out")
+						notifier.alert("Something went wrong, please try again.")
 					})
 				}
 			})
