@@ -159,6 +159,7 @@
 	<script>
 		let app, auth
 		let currentUser = {}
+		let notifier = new AWN()
 
 		function setupFirebase() {
 			return new Promise((resolve) => {
@@ -217,7 +218,8 @@
 							})
 						}
 					}, function(error) {
-						console.log(error);
+						console.log("onauthchanged: " + error);
+						notifier.error(error.message)
 					});
 				})
 		};
@@ -239,6 +241,7 @@
 						}
 					}).catch((error) => {
 						console.log("hasCompleteDetails error : " + error)
+						notifier.error(error.message)
 						reject()
 					})
 			})
@@ -344,6 +347,7 @@
 					.catch((error) => {
 						console.log("signinwithemailpassword error")
 						console.log(error)
+						notifier.error(error.message)
 					})
 			})
 
@@ -362,6 +366,7 @@
 					.catch((error) => {
 						console.log("createUserWithEmailAndPassword error")
 						console.log(error)
+						notifier.error(error.message)
 					})
 			})
 
@@ -380,6 +385,7 @@
 						console.log("added user with details ")
 						window.location.href = "main.html"
 					}).catch((error) => {
+						notifier.error(error.message)
 						console.log("error " + error)
 					})
 			})
