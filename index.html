@@ -267,21 +267,21 @@
 			firebase.auth()
 				.signInWithPopup(provider)
 				.then((result) => {
-						var user = result.user;
-						if (user) {
-							hasCompleteDetails(user.uid).then(() =>
-								window.location.href = "main.html"
-							}, () => {
-								currentUser["email"] = user.email
-								currentUser["uuid"] = user.uid
-								toggleDetailsForm(true)
-								hideSpinner()
-							})
+					var user = result.user;
+					if (user) {
+						hasCompleteDetails(user.uid).then(() => {
+							window.location.href = "main.html"
+						}, () => {
+							currentUser["email"] = user.email
+							currentUser["uuid"] = user.uid
+							toggleDetailsForm(true)
+							hideSpinner()
+						})
 					}
 				}).catch((error) => {
-			console.log("Google sign up error: " + errorMessage)
-			notifier.alert("Something went wrong, please try again.")
-		});
+					console.log("Google sign up error: " + errorMessage)
+					notifier.alert("Something went wrong, please try again.")
+				});
 		}
 
 		function showSpinner() {
