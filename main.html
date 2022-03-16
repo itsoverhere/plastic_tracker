@@ -144,7 +144,7 @@
 			}
 		}
 		
-		@media (min-width: 600px) and (max-width: 800px) {
+		@media (min-width: 550px) and (max-width: 800px) {
 			html,
 			body {
 				display: grid;
@@ -214,10 +214,8 @@
 			}
 */
 		}
-		/*
 		
-		
-		@media (max-width: 550px) {
+		@media (max-width: 480px) {
 			html,
 			body {
 				height: 100vh;
@@ -293,8 +291,16 @@
 				flex-direction: column;
 				flex-wrap: wrap;
 			}
+			div.modal#add_plastic.focused {
+				grid-template-rows: auto 1fr;
+				/*			grid-template-columns: 1fr 1fr;*/
+				grid-template-columns: 50vw 50vw;
+			}
+			div.modal#add_riversnap.focused {
+				grid-template-rows: auto 75wh;
+				grid-template-columns: 100vw;
+			}
 		}
-		*/
 		
 		div.plastic_category {
 			/*			max-width: 100%;*/
