@@ -437,7 +437,7 @@
 				grid-row: 2 / span 1;
 				grid-column: 1 / span 1;
 				display: grid;
-				grid-template-rows: 1fr auto;
+				grid-template-rows: 1fr auto auto;
 				grid-gap: 8px;
 			}
 		}
@@ -582,7 +582,7 @@
 			grid-row: 2 / span 1;
 			grid-column: 1 / span 1;
 			display: grid;
-			grid-template-rows: 1fr auto;
+			grid-template-rows: 1fr auto auto;
 			grid-gap: 8px;
 		}
 		
@@ -713,6 +713,11 @@
 					<input type="file" id="riversnap_input" accept="image/png, application/pdf" />
 				</div>
 				<input type="hidden" id="riversnap_date">
+				<select id="riversnap_location">
+					<option val="1">Area 1</option>
+					<option val="2">Area 2</option>
+					<option val="3">Area 3</option>
+				</select>
 				<input type="submit" id="riversnap_submit" value="Add riversnap">
 			</form>
 		</div>
