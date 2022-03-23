@@ -19,13 +19,58 @@
 
 
 	<style>
+		@media (min-width: 858px) {
+			html {
+				font-size: 12px;
+			}
+		}
+		
+		@media (min-width: 780px) {
+			html {
+				font-size: 11px;
+			}
+		}
+		
+		@media (min-width: 702px) {
+			html {
+				font-size: 10px;
+			}
+		}
+		
+		@media (min-width: 724px) {
+			html {
+				font-size: 9px;
+			}
+		}
+		
+		@media (max-width: 623px) {
+			html {
+				font-size: 8px;
+			}
+		}
+		
+		@media only screen and (min-width: 550px) {
+			html,
+			body {
+				display: grid;
+				grid-template-columns: 3fr 2fr 3fr;
+				grid-template-rows: 3fr 2fr 3fr;
+			}
+		}
+		
+		@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+			html,
+			body {
+				display: grid;
+				grid-template-columns: 1fr 8fr 1fr;
+				grid-template-rows: 1fr 8fr 1fr;
+			}
+		}
+		
 		html,
 		body {
 			width: 100vw;
 			height: 100vh;
-			display: grid;
-			grid-template-columns: 3fr 2fr 3fr;
-			grid-template-rows: 3fr 2fr 3fr;
 			margin: 0 0;
 			font-family: sans-serif;
 			color: #555;
