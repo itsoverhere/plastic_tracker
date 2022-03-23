@@ -218,6 +218,7 @@
 		@media (max-width: 550px) {
 			html,
 			body {
+				min-width: 480px;
 				height: 100vh;
 				width: 100vw;
 				margin: 0 0;
@@ -289,7 +290,7 @@
 				display: grid;
 				grid-template-rows: 20px 1fr;
 			}
-			div.plastic_categories.container>div:not(.title) {
+			div.plastic_categories.grid {
 				display: flex;
 				flex-direction: column;
 				flex-wrap: wrap;
@@ -302,6 +303,9 @@
 			div.modal#add_riversnap.focused {
 				grid-template-rows: auto 75wh;
 				grid-template-columns: 100vw;
+			}
+			div.plastic_category {
+				margin-bottom: 8px;
 			}
 		}
 		
