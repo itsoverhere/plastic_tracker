@@ -344,7 +344,7 @@
 			}
 			canvas#plastic_usage_chart {
 				grid-row: 2 / span 1;
-				max-height: 75vh;
+				max-height: 50vh;
 			}
 			div.riversnap_calendar.container {
 				grid-row: 2 / span 1;
@@ -366,6 +366,8 @@
 				display: flex;
 				flex-direction: column;
 				flex-wrap: wrap;
+				align-items: center;
+				justify-content: center;
 			}
 			div.modal#add_plastic.focused {
 				grid-template-rows: auto 1fr;
@@ -377,7 +379,8 @@
 				grid-template-columns: 100vw;
 			}
 			div.plastic_category {
-				margin-bottom: 8px;
+				margin-bottom: 16px;
+				width: 80vw;
 			}
 			/* modal */
 			div.modal#add_plastic.focused {
