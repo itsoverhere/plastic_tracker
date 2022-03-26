@@ -46,6 +46,11 @@
 			line-height: 1em;
 		}
 		
+		div#riversnap_calendar {
+			display: grid;
+			justify-content: center;
+		}
+		
 		// Small devices (landscape phones, 576px and up)
 		@media (min-width: 576px) {}
 		
@@ -83,7 +88,9 @@
 							<div class="px-4">My plastic consumption</div>
 						</div>
 						<div class="row p-3">
-							<div class="px-3 bg-light">Custom column padding Custom column padding Custom column padding Custom column padding Custom column padding Custom column padding Custom column padding </div>
+							<div class="px-3 bg-light">
+								<canvas id="plastic_usage_chart"></canvas>
+							</div>
 						</div>
 					</div>
 					<div class="calendar col-lg-5 col-xl-5 col-xxl-5 col-md-12 col-sm-12 col-xs-12 g-2">
@@ -95,7 +102,9 @@
 							</div>
 						</div>
 						<div class="row p-3">
-							<div class="px-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
+							<div class="px-3 bg-light">
+								<div id="riversnap_calendar"></div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -149,8 +158,75 @@
 		</div>
 	</div>
 	<!-- Optional JavaScript; choose one of the two! -->
+	<script>
+		const ctx = document.getElementById('plastic_usage_chart').getContext('2d');
+		let chart, picker
+		$(document).ready(() => {
 
+			const data = {
+				labels: ["w1", "w2"],
+				datasets: [{
+					"label": "a",
+					"data": [2, 3, 6, 2],
+					"backgroundColor": "red"
+				}, {
+					"label": "b",
+					"data": [5, 1, 2, 7],
+					"backgroundColor": "blue"
+				}]
+			}
+
+			if (!chart) {
+				const config = {
+					type: 'bar',
+					data: data,
+					options: {
+						responsive: true,
+						interaction: {
+							intersect: true,
+						},
+						scales: {
+							x: {
+								stacked: true,
+							},
+							y: {
+								stacked: true
+							}
+						},
+						maintainAspectRatio: false,
+						responsive: true
+					}
+				};
+
+				chart = new Chart(ctx, config);
+
+			}
+
+			picker = new Litepicker({
+				element: document.getElementById('riversnap_calendar'),
+				inlineMode: true,
+				highlightedDays: ["2022-03-21", "2022-03-18"],
+				highlightedDaysFormat: "YYYY-MM-DD",
+				setup: (picker) => {
+					picker.on('before:click', (target) => {
+						if ($(target).hasClass('is-locked')) {
+							// date is locked, the date has not yet occurred
+						} else if ($(target).hasClass('is-highlighted')) {
+							// date is highlighted, it was already chosen before
+							notifier.alert("You already submitted a riversnap for this day. Choose another date.")
+						} else if ($(target).hasClass('day-item')) {
+							// date is available
+
+						}
+					});
+				},
+				maxDate: new Date()
+			});
+		});
+
+	</script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 	<!-- Option 1: Bootstrap Bundle with Popper -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
