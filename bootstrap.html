@@ -179,6 +179,24 @@
 						</div>
 					</div>
 
+					<div class="col-md-4 col-sm-6 col-xs">
+						<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
+							<div class="row">
+								<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
+									<div class="row">
+										<img src="assets/outer.PNG">
+									</div>
+								</div>
+								<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
+									<div class="row">
+										<span class="title col-12">Outer wrapping</span>
+										<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
 
 				</div>
 			</div>
@@ -268,27 +286,6 @@
 		<script>
 			// FUNCTIONS
 
-			/*
-			
-			<div class="col-md-4 col-sm-6 col-xs">
-				<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
-					<div class="row">
-						<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
-							<div class="row">
-								<img src="assets/outer.PNG">
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
-							<div class="row">
-								<span class="title col-12">Outer wrapping</span>
-								<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			*/
-
 			initApp = function() {
 				//				showSpinner()
 				Promise.resolve()
@@ -323,6 +320,27 @@
 				})
 			}
 
+
+			/*
+			
+			<div class="col-md-4 col-sm-6 col-xs">
+				<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
+					<div class="row">
+						<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
+							<div class="row">
+								<img src="assets/outer.PNG">
+							</div>
+						</div>
+						<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
+							<div class="row">
+								<span class="title col-12">Outer wrapping</span>
+								<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			*/
 
 			function listPlastics() {
 				return new Promise((resolve) => {
@@ -368,7 +386,7 @@
 								// assembly
 								$(title_desc_row).append(title)
 								$(title_desc_row).append(description)
-								$(title_desc_row_col).append(title)
+								$(title_desc_row_col).append(title_desc_row)
 
 								$(img_row).append(logo)
 								$(img_row_col).append(img_row)
