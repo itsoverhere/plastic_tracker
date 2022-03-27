@@ -109,6 +109,15 @@
 			background-color: #047847;
 		}
 		
+		.row-flex {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		
+		.plastic_category_container {
+			height: 100%;
+		}
+		
 		// Small devices (landscape phones, 576px and up)
 		@media (min-width: 576px) {}
 		
@@ -169,7 +178,8 @@
 
 
 
-				<div class="plastic_categories row g-2">
+				<!--				<div class="plastic_categories row g-2 row-flex">-->
+				<div class="plastic_categories row g-2 row-flex">
 					<div class="col-12 px-3">
 						<div class="title row">
 							I want to add...
@@ -179,7 +189,8 @@
 						</div>
 					</div>
 
-					<div class="col-md-4 col-sm-6 col-xs">
+					<!--
+					<div class="plastic_category_container col-md-4 col-sm-6 col-xs">
 						<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
 							<div class="row">
 								<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
@@ -196,7 +207,7 @@
 							</div>
 						</div>
 					</div>
-
+-->
 
 				</div>
 			</div>
@@ -220,44 +231,7 @@
 
 			$(document).ready(() => {
 
-				const data = {
-					labels: ["w1", "w2"],
-					datasets: [{
-						"label": "a",
-						"data": [2, 3, 6, 2],
-						"backgroundColor": "red"
-					}, {
-						"label": "b",
-						"data": [5, 1, 2, 7],
-						"backgroundColor": "blue"
-					}]
-				}
-
-				if (!chart) {
-					const config = {
-						type: 'bar',
-						data: data,
-						options: {
-							responsive: true,
-							interaction: {
-								intersect: true,
-							},
-							scales: {
-								x: {
-									stacked: true,
-								},
-								y: {
-									stacked: true
-								}
-							},
-							maintainAspectRatio: false,
-							responsive: true
-						}
-					};
-
-					chart = new Chart(ctx, config);
-
-				}
+				//				const data = { // labels: ["w1", "w2"], // datasets: [{ // "label": "a", // "data": [2, 3, 6, 2], // "backgroundColor": "red" // }, { // "label": "b", // "data": [5, 1, 2, 7], // "backgroundColor": "blue" // }] // } // // if (!chart) { // const config = { // type: 'bar', // data: data, // options: { // responsive: true, // interaction: { // intersect: true, // }, // scales: { // x: { // stacked: true, // }, // y: { // stacked: true // } // }, // maintainAspectRatio: false, // responsive: true // } // }; // // chart = new Chart(ctx, config); // // }
 
 				picker = new Litepicker({
 					element: document.getElementById('riversnap_calendar'),
@@ -290,8 +264,13 @@
 				//				showSpinner()
 				Promise.resolve()
 					.then(setupFirebase)
-					.then(setUpServices)
+					.then(authenticate)
 					.then(listPlastics)
+					.then(() => {
+						populatePlasticChart()
+							//						populateCalendar()
+							//						hideSpinner()
+					})
 			};
 
 			function setupFirebase() {
@@ -315,32 +294,74 @@
 					auth = firebase.auth()
 					firestore = firebase.firestore()
 					storage = app.storage()
-
 					resolve()
+				})
+			}
+
+			function authenticate() {
+				return new Promise((resolve) => {
+					auth = firebase.auth()
+					firestore = firebase.firestore()
+					storage = app.storage()
+
+					auth.onAuthStateChanged(function(user) {
+						if (user) {
+							// User is signed in.
+							var displayName = user.displayName;
+							var email = user.email;
+							var emailVerified = user.emailVerified;
+							var photoURL = user.photoURL;
+							var uid = user.uid;
+							var phoneNumber = user.phoneNumber;
+							var providerData = user.providerData;
+							user.getIdToken().then(function(accessToken) {
+								document.getElementById('sign_in').textContent = 'Sign out';
+
+								currentUser = {
+									displayName: displayName,
+									email: email,
+									emailVerified: emailVerified,
+									phoneNumber: phoneNumber,
+									photoURL: photoURL,
+									uid: uid,
+									accessToken: accessToken,
+									providerData: providerData
+								}
+								resolve()
+							});
+
+						} else {
+							window.location.href = "index.html"
+						}
+					}, function(error) {
+						console.log("OnAuth error: " + error);
+						// no current user
+						window.location.href = "index.html"
+					});
 				})
 			}
 
 
 			/*
 			
-			<div class="col-md-4 col-sm-6 col-xs">
-				<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
-					<div class="row">
-						<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
-							<div class="row">
-								<img src="assets/outer.PNG">
+				<div class="col-md-4 col-sm-6 col-xs">
+					<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
+						<div class="row">
+							<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
+								<div class="row">
+									<img src="assets/outer.PNG">
+								</div>
 							</div>
-						</div>
-						<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
-							<div class="row">
-								<span class="title col-12">Outer wrapping</span>
-								<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
+							<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
+								<div class="row">
+									<span class="title col-12">Outer wrapping</span>
+									<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			*/
+				*/
 
 			function listPlastics() {
 				return new Promise((resolve) => {
@@ -406,6 +427,165 @@
 							console.log("Error: " + error)
 						})
 				})
+			}
+
+			function populateCalendar() {
+				if (!myDropzone) {
+					myDropzone = new Dropzone("div#dropzone", {
+						url: "/",
+						addRemoveLinks: true,
+						method: 'put',
+						chunking: true,
+						forceChunking: true,
+						autoQueue: false,
+						autoProcessQueue: false
+					});
+
+					myDropzone.on("addedfile", function(file) {
+						if (this.files[1] != null) {
+							this.removeFile(this.files[0]);
+						}
+					});
+
+					myDropzone.on("removedfile", function(file) {
+						var storageRef = firebase.storage().ref("/");
+						storageRef.child(file.fullPath).delete().then(
+							function() {
+								notifier.success("File removed successfully.")
+							}).catch(function(error) {
+							notifier.alert("Something went wrong, please try again.")
+							console.log("Error in removing file : " + error)
+						});
+					})
+				}
+
+				firestore.collection("riversnaps")
+					.where("user_uuid", "==", currentUser.uid)
+					.get()
+					.then((query) => {
+						let dates = []
+						query.forEach((doc) => {
+							let d = new Date(doc.data().date)
+							dates.push(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate())
+						})
+
+						if (picker) {
+							picker.destroy()
+						}
+						picker = new Litepicker({
+							element: document.getElementById('riversnap_calendar'),
+							inlineMode: true,
+							highlightedDays: dates,
+							highlightedDaysFormat: "YYYY-MM-DD",
+							setup: (picker) => {
+								picker.on('before:click', (target) => {
+									if ($(target).hasClass('is-locked')) {
+										// date is locked, the date has not yet occurred
+									} else if ($(target).hasClass('is-highlighted')) {
+										// date is highlighted, it was already chosen before
+										notifier.alert("You already submitted a riversnap for this day. Choose another date.")
+									} else if ($(target).hasClass('day-item')) {
+										// date is available
+										if (picker.getDate()) {
+											initiateRiversnapModal(picker.getDate().dateInstance)
+											showModal($("div.modal#add_riversnap"))
+										}
+									}
+								});
+							},
+							maxDate: new Date()
+						});
+					})
+			}
+
+			function populatePlasticChart() {
+				if (currentUser) {
+					firestore.collection("users").doc(currentUser.uid)
+						.get().then((doc) => {
+
+							let plastic_data = doc.data().plastics
+
+							let labels = Object.keys(plastic_data)
+							let data_qty = {}
+							let data_weight = {}
+							Object.keys(plastics).forEach((key) => {
+								data_qty[key] = new Array(labels.length).fill(0)
+								data_weight[key] = new Array(labels.length).fill(0)
+							})
+
+							Object.entries(plastics).forEach((plastic) => {
+								for (let i = 0; i < labels.length; i++) {
+									if (plastic[0] in plastic_data[labels[i]]) {
+										data_qty[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["quantity"]
+										data_weight[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["weight"]
+									} else {
+										data_qty[plastic[0]][i] = 0
+										data_weight[plastic[0]][i] = 0
+									}
+								}
+
+							})
+
+							let dataset_qty = [],
+								dataset_weight = []
+							Object.entries(plastics).forEach((plastic) => {
+								dataset_qty.push({
+									"label": plastic[1].name,
+									"data": data_qty[plastic[0]],
+									"backgroundColor": "#" + plastic[1].color
+								})
+								dataset_weight.push({
+									"label": plastic[1].name,
+									"data": data_qty[plastic[0]],
+									"backgroundColor": "#" + plastic[1].color
+								})
+							})
+
+							labels = labels.map((el) => {
+								return "Week " + el
+							})
+
+							const data = {
+								labels: labels,
+								datasets: dataset_qty
+							}
+
+							if (!chart) {
+								const config = {
+									type: 'bar',
+									data: data,
+									options: {
+										responsive: true,
+										interaction: {
+											intersect: true,
+										},
+										scales: {
+											x: {
+												stacked: true,
+											},
+											y: {
+												stacked: true
+											}
+										},
+										maintainAspectRatio: false,
+										responsive: true
+									}
+								};
+
+								chart = new Chart(ctx, config);
+							} else {
+								chart.data.labels.pop();
+								chart.data.datasets.forEach((dataset) => {
+									dataset.data.pop();
+								});
+								chart.data = data
+								chart.update();
+							}
+						})
+				} else {
+					// no current user, redirect to index.html
+					window.location.href = "index.html"
+				}
 			}
 
 			window.addEventListener('load', function() {
