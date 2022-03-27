@@ -192,7 +192,14 @@
 		<!-- Optional JavaScript; choose one of the two! -->
 		<script>
 			const ctx = document.getElementById('plastic_usage_chart').getContext('2d');
-			let chart, picker
+			let chart
+			let app, firestore, storage, auth
+			let plastics = {}
+			let currentUser
+			let uiConfig
+			let myDropzone, picker
+			let currentRiversnap
+
 			$(document).ready(() => {
 
 				const data = {
@@ -281,13 +288,6 @@
 				</div>
 			</div>
 			*/
-
-			let app, firestore, storage, auth
-			let plastics = {}
-			let currentUser
-			let uiConfig
-			let myDropzone, picker
-			let currentRiversnap
 
 			initApp = function() {
 				showSpinner()
