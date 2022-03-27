@@ -10,6 +10,19 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js">
+
+
+	</script>
+
+	<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth-compat.js"></script>
+
+	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -51,6 +64,51 @@
 			justify-content: center;
 		}
 		
+		span.title,
+		span.description {
+			text-align: center;
+		}
+		
+		span.title {
+			color: #555;
+		}
+		
+		span.description {
+			color: #888;
+		}
+		
+		div.plastic_category {
+			border-radius: 8px;
+			box-shadow: 0px 5px 5px rgba(100, 100, 100, 0.15);
+			transition-property: all;
+			transition-duration: 0.5s;
+			transition-timing-function: ease;
+			row-gap: 8px;
+		}
+		
+		div.plastic_category:hover {
+			transition-property: all;
+			transition-duration: 0.5s;
+			transition-timing-function: ease;
+			box-shadow: 0px 1px 3px rgba(30, 30, 30, 0.15);
+			cursor: pointer;
+		}
+		
+		div.image_container {
+			display: grid;
+			justify-content: center;
+			align-items: center;
+		}
+		
+		div.header {
+			background-color: #AAC883;
+			color: white;
+		}
+		
+		div.footer {
+			background-color: #047847;
+		}
+		
 		// Small devices (landscape phones, 576px and up)
 		@media (min-width: 576px) {}
 		
@@ -72,23 +130,23 @@
 
 <body>
 	<div class="container-fluid m-0 p-0 g-2 overflow-hidden">
-		<div class="row">
+		<div class="header row">
 			<div class="col">
-				<div class="p-3 bg-light">Header</div>
+				<div class="p-3">#ecosquadgoals</div>
 			</div>
 		</div>
 		<div class="row justify-content-center">
-			<div class="col-xxl-5 col-xl-6 col-lg-7 col-md-9 cold-sm-10 col-xs-10 gy-3">
+			<div class="col-xxl-6 col-xl-8 col-lg-8 col-md-9 cold-sm-10 col-xs-10 gy-3">
 				<div class="greeting row">
 					<div class="px-3">Hello, citizen scientist!</div>
 				</div>
-				<div class="dashboard row gy-2">
+				<div class="dashboard row g-2">
 					<div class="chart col-lg-7 col-xl-7 col-xxl-7 col-md-12 col-sm-12 col-xs-12 g-2">
 						<div class="title row gy-2">
 							<div class="px-4">My plastic consumption</div>
 						</div>
 						<div class="row p-3">
-							<div class="px-3 bg-light">
+							<div class="px-3">
 								<canvas id="plastic_usage_chart"></canvas>
 							</div>
 						</div>
@@ -102,7 +160,7 @@
 							</div>
 						</div>
 						<div class="row p-3">
-							<div class="px-3 bg-light">
+							<div class="px-3">
 								<div id="riversnap_calendar"></div>
 							</div>
 						</div>
@@ -121,115 +179,216 @@
 						</div>
 					</div>
 
-					<div class="col-md-4 col-sm-6 col-xs">
-						<div class="p-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
-					</div>
-					<div class="col-md-4 col-sm-6 col-xs">
-						<div class="p-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
-					</div>
-					<div class="col-md-4 col-sm-6 col-xs">
-						<div class="p-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
-					</div>
-					<div class="col-md-4 col-sm-6 col-xs">
-						<div class="p-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
-					</div>
-					<div class="col-md-4 col-sm-6 col-xs">
-						<div class="p-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
-					</div>
-					<div class="col-md-4 col-sm-6 col-xs">
-						<div class="p-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
-					</div>
-					<div class="col-md-4 col-sm-6 col-xs">
-						<div class="p-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
-					</div>
-					<div class="col-md-4 col-sm-6 col-xs">
-						<div class="p-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
-					</div>
-					<div class="col-md-4 col-sm-6 col-xs">
-						<div class="p-3 bg-light">Custom column padding Custom column padding Custom column padding </div>
-					</div>
+
 				</div>
 			</div>
 		</div>
-		<div class="row mt-2">
+
+		<div class="footer row mt-2">
 			<div class="col">
-				<div class="p-3 bg-light">Footer</div>
+				<div class="p-3">Footer</div>
 			</div>
 		</div>
-	</div>
-	<!-- Optional JavaScript; choose one of the two! -->
-	<script>
-		const ctx = document.getElementById('plastic_usage_chart').getContext('2d');
-		let chart, picker
-		$(document).ready(() => {
+		<!-- Optional JavaScript; choose one of the two! -->
+		<script>
+			const ctx = document.getElementById('plastic_usage_chart').getContext('2d');
+			let chart, picker
+			$(document).ready(() => {
 
-			const data = {
-				labels: ["w1", "w2"],
-				datasets: [{
-					"label": "a",
-					"data": [2, 3, 6, 2],
-					"backgroundColor": "red"
-				}, {
-					"label": "b",
-					"data": [5, 1, 2, 7],
-					"backgroundColor": "blue"
-				}]
-			}
+				const data = {
+					labels: ["w1", "w2"],
+					datasets: [{
+						"label": "a",
+						"data": [2, 3, 6, 2],
+						"backgroundColor": "red"
+					}, {
+						"label": "b",
+						"data": [5, 1, 2, 7],
+						"backgroundColor": "blue"
+					}]
+				}
 
-			if (!chart) {
-				const config = {
-					type: 'bar',
-					data: data,
-					options: {
-						responsive: true,
-						interaction: {
-							intersect: true,
-						},
-						scales: {
-							x: {
-								stacked: true,
+				if (!chart) {
+					const config = {
+						type: 'bar',
+						data: data,
+						options: {
+							responsive: true,
+							interaction: {
+								intersect: true,
 							},
-							y: {
-								stacked: true
+							scales: {
+								x: {
+									stacked: true,
+								},
+								y: {
+									stacked: true
+								}
+							},
+							maintainAspectRatio: false,
+							responsive: true
+						}
+					};
+
+					chart = new Chart(ctx, config);
+
+				}
+
+				picker = new Litepicker({
+					element: document.getElementById('riversnap_calendar'),
+					inlineMode: true,
+					highlightedDays: ["2022-03-21", "2022-03-18"],
+					highlightedDaysFormat: "YYYY-MM-DD",
+					setup: (picker) => {
+						picker.on('before:click', (target) => {
+							if ($(target).hasClass('is-locked')) {
+								// date is locked, the date has not yet occurred
+							} else if ($(target).hasClass('is-highlighted')) {
+								// date is highlighted, it was already chosen before
+								notifier.alert("You already submitted a riversnap for this day. Choose another date.")
+							} else if ($(target).hasClass('day-item')) {
+								// date is available
+
 							}
-						},
-						maintainAspectRatio: false,
-						responsive: true
-					}
-				};
+						});
+					},
+					maxDate: new Date()
+				});
+			});
 
-				chart = new Chart(ctx, config);
+		</script>
 
+		<script>
+			// FUNCTIONS
+
+			/*
+			
+			<div class="col-md-4 col-sm-6 col-xs">
+				<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
+					<div class="row">
+						<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
+							<div class="row">
+								<img src="assets/outer.PNG">
+							</div>
+						</div>
+						<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
+							<div class="row">
+								<span class="title col-12">Outer wrapping</span>
+								<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			*/
+
+			let app, firestore, storage, auth
+			let plastics = {}
+			let currentUser
+			let uiConfig
+			let myDropzone, picker
+			let currentRiversnap
+
+			initApp = function() {
+				showSpinner()
+				Promise.resolve()
+					.then(setupFirebase)
+					.then(listPlastics)
+			};
+
+			function setupFirebase() {
+				return new Promise((resolve) => {
+					const firebaseConfig = {
+						apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
+						authDomain: "plastic-tracker-2cbb7.firebaseapp.com",
+						projectId: "plastic-tracker-2cbb7",
+						storageBucket: "plastic-tracker-2cbb7.appspot.com",
+						appId: "1:645843325306:web:5f4b90dc9388fe16f4c6c3",
+						measurementId: "G-2FF14XFMB6"
+					};
+					app = firebase.initializeApp(firebaseConfig);
+
+					resolve()
+				})
 			}
 
-			picker = new Litepicker({
-				element: document.getElementById('riversnap_calendar'),
-				inlineMode: true,
-				highlightedDays: ["2022-03-21", "2022-03-18"],
-				highlightedDaysFormat: "YYYY-MM-DD",
-				setup: (picker) => {
-					picker.on('before:click', (target) => {
-						if ($(target).hasClass('is-locked')) {
-							// date is locked, the date has not yet occurred
-						} else if ($(target).hasClass('is-highlighted')) {
-							// date is highlighted, it was already chosen before
-							notifier.alert("You already submitted a riversnap for this day. Choose another date.")
-						} else if ($(target).hasClass('day-item')) {
-							// date is available
+			function listPlastics() {
+				return new Promise((resolve) => {
+					firestore.collection("plastics")
+						.get()
+						.then((querySnapshot) => {
+							querySnapshot.forEach((doc) => {
+								plastic = doc.data()
 
-						}
-					});
-				},
-				maxDate: new Date()
+								// elements for content
+								let plastic_category = document.createElement("div")
+								let title = document.createElement("span")
+								let description = document.createElement("span")
+								let logo = document.createElement("img")
+								$(plastic_category).addClass("plastic_category p-3")
+								$(title).addClass("title col-12")
+								$(description).addClass("description col-12")
+								$(logo).addClass("logo")
+
+								// elements for bootstrap classes
+								let title_desc_row = document.createElement("div")
+								$(title_desc_row).addClass("row")
+								let title_desc_row_col = document.createElement("div")
+								$(title_desc_row_col).addClass("col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7")
+
+								let img_row = document.createElement("div")
+								$(span_desc_row).addClass("row")
+								let img_row_col = document.createElement("div")
+								$(span_desc_row_col).addClass("image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5")
+
+								let img_title_desc_row = document.createElement("div")
+								$(img_title_desc_row).addClass("row")
+
+								let container = document.createElement("div")
+								$(container).addClass("col-md-4 col-sm-6 col-xs")
+
+								// content
+								$(title).text(plastic.name)
+								$(logo).attr("src", plastic.icon_path.small)
+								$(description).text(plastic.description)
+								$(plastic_category).attr("id", doc.id)
+
+								// assembly
+								$(title_desc_row).append(title)
+								$(title_desc_row).append(description)
+								$(title_desc_row_col).append(title)
+
+								$(img_row).append(logo)
+								$(img_row_col).append(img_row)
+
+								$(img_title_desc_row).append(img_row_col)
+								$(img_title_desc_row).append(title_desc_row_col)
+
+								$(plastic_category).append(img_title_desc_row)
+								$(plastic_category).css("background-color", "#" + plastic.color)
+								$(container).append(plastic_category)
+								$("div.plastic_categories").append(container)
+
+								plastics[doc.id] = plastic
+							})
+							resolve()
+						}).catch((error) => {
+							console.log("Error: " + error)
+						})
+				})
+			}
+
+			window.addEventListener('load', function() {
+				initApp()
 			});
-		});
 
-	</script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		</script>
+
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-	<!-- Option 1: Bootstrap Bundle with Popper -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+		<!-- Option 1: Bootstrap Bundle with Popper -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
 
