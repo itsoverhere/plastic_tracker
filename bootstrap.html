@@ -293,6 +293,7 @@
 				//				showSpinner()
 				Promise.resolve()
 					.then(setupFirebase)
+					.then(setUpServices)
 					.then(listPlastics)
 			};
 
@@ -311,6 +312,17 @@
 					resolve()
 				})
 			}
+
+			function setUpServices() {
+				return new Promise((resolve) => {
+					auth = firebase.auth()
+					firestore = firebase.firestore()
+					storage = app.storage()
+
+					resolve()
+				})
+			}
+
 
 			function listPlastics() {
 				return new Promise((resolve) => {
