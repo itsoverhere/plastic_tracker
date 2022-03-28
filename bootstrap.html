@@ -237,7 +237,7 @@
 
 				//				const data = { // labels: ["w1", "w2"], // datasets: [{ // "label": "a", // "data": [2, 3, 6, 2], // "backgroundColor": "red" // }, { // "label": "b", // "data": [5, 1, 2, 7], // "backgroundColor": "blue" // }] // } // // if (!chart) { // const config = { // type: 'bar', // data: data, // options: { // responsive: true, // interaction: { // intersect: true, // }, // scales: { // x: { // stacked: true, // }, // y: { // stacked: true // } // }, // maintainAspectRatio: false, // responsive: true // } // }; // // chart = new Chart(ctx, config); // // }
 
-//				picker = new Litepicker({ // element: document.getElementById('riversnap_calendar'), // inlineMode: true, // highlightedDays: ["2022-03-21", "2022-03-18"], // highlightedDaysFormat: "YYYY-MM-DD", // setup: (picker) => { // picker.on('before:click', (target) => { // if ($(target).hasClass('is-locked')) { // // date is locked, the date has not yet occurred // } else if ($(target).hasClass('is-highlighted')) { // // date is highlighted, it was already chosen before // notifier.alert("You already submitted a riversnap for this day. Choose another date.") // } else if ($(target).hasClass('day-item')) { // // date is available // // } // }); // }, // maxDate: new Date() // });
+				//				picker = new Litepicker({ // element: document.getElementById('riversnap_calendar'), // inlineMode: true, // highlightedDays: ["2022-03-21", "2022-03-18"], // highlightedDaysFormat: "YYYY-MM-DD", // setup: (picker) => { // picker.on('before:click', (target) => { // if ($(target).hasClass('is-locked')) { // // date is locked, the date has not yet occurred // } else if ($(target).hasClass('is-highlighted')) { // // date is highlighted, it was already chosen before // notifier.alert("You already submitted a riversnap for this day. Choose another date.") // } else if ($(target).hasClass('day-item')) { // // date is available // // } // }); // }, // maxDate: new Date() // });
 			});
 
 		</script>
@@ -540,7 +540,6 @@
 									type: 'bar',
 									data: data,
 									options: {
-										responsive: true,
 										interaction: {
 											intersect: true,
 										},
@@ -553,7 +552,7 @@
 											}
 										},
 										maintainAspectRatio: false,
-										responsive: true
+										responsive: false
 									}
 								};
 
