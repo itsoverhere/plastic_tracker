@@ -266,7 +266,7 @@
 													Quantity
 												</div>
 												<div class="col-5">
-													<input class="form-control" type="number" id="quantity" class="plastic_contribution_modal">
+													<input class="form-control plastic_contribution_modal" type="number" id="quantity" class="plastic_contribution_modal">
 												</div>
 											</div>
 										</div>
@@ -276,7 +276,7 @@
 													Weight in grams
 												</div>
 												<div class="col-5">
-													<input class="form-control" type="number" id="weight" class="plastic_contribution_modal">
+													<input class="form-control plastic_contribution_modal" type="number" id="weight">
 												</div>
 											</div>
 										</div>
@@ -287,7 +287,7 @@
 													Week
 												</div>
 												<div class="col-5">
-													<input class="form-control" type="number" id="week" class="plastic_contribution_modal">
+													<input class="form-control plastic_contribution_modal" type="number" id="week">
 												</div>
 											</div>
 
@@ -392,6 +392,12 @@
 					let plastic_uuid = $("input#plastic_category.plastic_contribution_modal").val()
 					let user_uuid = currentUser.uid
 					let timestamp = new Date()
+
+					console.log('quantity: ' + quantity)
+					console.log('weight: ' + weight)
+					console.log('week: ' + week)
+					console.log('plastic_uuid: ' + plastic_uuid)
+					console.log('user_uuid: ' + currentUser.uid)
 
 					// write security rules 
 					let path =
