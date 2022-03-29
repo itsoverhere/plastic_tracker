@@ -381,8 +381,10 @@
 			//				}
 			//			})
 
-			$("button#add_plastic_contribution").click(function(e) {
+			$("button#add_contribution").click(function(e) {
 				//				showSpinner()
+
+				console.log("button add contribution")
 				if (currentUser) {
 					let quantity = $("input#quantity.plastic_contribution_modal").val()
 					let weight = $("input#weight.plastic_contribution_modal").val()
@@ -432,14 +434,14 @@
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
 							hideModals()
-							hideSpinner()
-							populateCalendar()
-							notifier.success("Successfully added your new riversnap!")
+								//							hideSpinner()
+								//							populateCalendar()
+								//							notifier.success("Successfully added your new riversnap!")
 						})
 
 					}).catch((error) => {
 						console.log("Error adding riversnap document: " + error)
-						notifier.alert("Something went wrong, please try again.")
+							//						notifier.alert("Something went wrong, please try again.")
 					})
 				} else {
 					if (!currentUser) {
@@ -474,7 +476,7 @@
 			$("#plastic_contribution_label").text("Add " + plastic.name.toLowerCase())
 			$("div.plastic_contribution_modal.plastic_category").css("background-color", "#" + plastic.color)
 			$("div.plastic_contribution_modal.logo img").attr("src", plastic.icon_path.small)
-			$("div.plastic_contribution_modal.description").text(plastic.description)
+			$("span.plastic_contribution_modal.description").text(plastic.description)
 			$("input#plastic_category").val(id)
 		}
 
