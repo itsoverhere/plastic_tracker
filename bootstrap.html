@@ -369,9 +369,14 @@
 				})
 			});
 
-			$("div.modal").on("click", function(e) {
-				e.stopPropagation()
-			});
+
+			$("#plastic_contribution_modal").on('change', 'input[type=number]', (e) => {
+				let i = $(e.target).val()
+				if (i < 0 || isNaN(i)) {
+					$(e.target).val(0)
+					notifier.warning("Please enter a valid number")
+				}
+			})
 
 			//			$("form#plastic_contribution_form").on('change', 'input[type=number]', (e) => {
 			//				let i = $(e.target).val()
@@ -417,6 +422,7 @@
 							clearModalInputs($("form#plastic_contribution_form"))
 							populatePlasticChart()
 						}).catch((error) => {
+							console.log(error)
 							notifier.alert("Something went wrong, please try again.")
 							hideModals()
 						})
@@ -758,7 +764,7 @@
 									// date is available
 									if (picker.getDate()) {
 										initiateRiversnapModal(picker.getDate().dateInstance)
-										showModal($("div.modal#add_riversnap"))
+										showModal($("#riversnap_modal"))
 									}
 								}
 							});
