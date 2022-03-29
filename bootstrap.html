@@ -222,6 +222,74 @@
 				<div class="p-3">Footer</div>
 			</div>
 		</div>
+
+		<div class="modal fade" id="plastic_contribution_modal" tabindex="-1" aria-labelledby="plastic_contribution_label" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="plastic_contribution_label">Add outer wrapping</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-6 col-sm-12 col-xs-12">
+									<div class="plastic_contribution_modal plastic_category row p-3" style="background-color: #ACDED7;">
+										<div class="plastic_contribution_modal logo col-12">
+											<img src="assets/bottle.PNG">
+										</div>
+										<span class="plastic_contribution_modal description col-12">
+										Lorem ipsum
+									</span>
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-12 col-xs-12 ms-auto ">
+									<div class="row">
+										<div class="col-12">
+											<div class="p-2 row">
+												<div class="plastic_contribution_modal label col-7">
+													Quantity
+												</div>
+												<div class="col-5">
+													<input class="form-control" type="number" id="quantity" class="plastic_contribution_modal ">
+												</div>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="p-2 row">
+												<div class="plastic_contribution_modal label col-7">
+													Weight in grams
+												</div>
+												<div class="col-5">
+													<input class="form-control" type="number" id="weight" class="plastic_contribution_modal">
+												</div>
+											</div>
+										</div>
+										<div class="col-12">
+
+											<div class="p-2 row">
+												<div class="plastic_contribution_modal label col-7">
+													Week
+												</div>
+												<div class="col-5">
+													<input class="form-control" type="number" id="week" class="plastic_contribution_modal">
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="modal-footer mt-3">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" id="add_contribution" class="btn btn-primary">Add plastic contribution</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- Optional JavaScript; choose one of the two! -->
 		<script>
 			const ctx = document.getElementById('plastic_usage_chart').getContext('2d');
