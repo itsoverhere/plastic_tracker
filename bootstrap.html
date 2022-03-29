@@ -118,6 +118,43 @@
 			height: 100%;
 		}
 		
+		div.label {
+			display: grid;
+			align-items: center;
+		}
+		
+		div.logo {
+			display: grid;
+			justify-content: center;
+		}
+		
+		button#add_contribution,
+		button#add_riversnap {
+			background-color: #AAC883;
+			border: none;
+		}
+		
+		div#dropzone {
+			text-align: center;
+			position: relative;
+		}
+		
+		div#dropzone [type="file"] {
+			cursor: pointer;
+			position: absolute;
+			opacity: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+		
+		select#location {
+			width: 100%;
+		}
+		
 		// Small devices (landscape phones, 576px and up)
 		@media (min-width: 576px) {}
 		
@@ -197,7 +234,7 @@
 
 		<div class="footer row mt-2">
 			<div class="col">
-				<div class="p-3">Footer</div>
+				<div class="p-3"></div>
 			</div>
 		</div>
 
@@ -270,7 +307,7 @@
 		</div>
 
 		<div class="modal fade" id="riversnap_modal" tabindex="-1" aria-labelledby="riversnap_modal_label" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="riversnap_modal_label">Add outer wrapping</h5>
@@ -321,11 +358,30 @@
 		let currentRiversnap
 
 		$(document).ready(() => {
+			$("body div.plastic_categories").on("click", ".plastic_category", function() {
+				firestore.collection("plastics").doc($(this).attr("id")).get().then((doc) => {
+//					populatePlasticCategoryModal(doc.id, doc.data())
+					console.log('id')
+					console.log(id)
+					console.log('plastic')
+					console.log(plastic)
+						//					showModal($("div.modal#add_plastic"))
+					$("#plastic_contribution_modal").modal('show')
+				})
+			});
 
-			//				const data = { // labels: ["w1", "w2"], // datasets: [{ // "label": "a", // "data": [2, 3, 6, 2], // "backgroundColor": "red" // }, { // "label": "b", // "data": [5, 1, 2, 7], // "backgroundColor": "blue" // }] // } // // if (!chart) { // const config = { // type: 'bar', // data: data, // options: { // responsive: true, // interaction: { // intersect: true, // }, // scales: { // x: { // stacked: true, // }, // y: { // stacked: true // } // }, // maintainAspectRatio: false, // responsive: true // } // }; // // chart = new Chart(ctx, config); // // }
-
-			//				picker = new Litepicker({ // element: document.getElementById('riversnap_calendar'), // inlineMode: true, // highlightedDays: ["2022-03-21", "2022-03-18"], // highlightedDaysFormat: "YYYY-MM-DD", // setup: (picker) => { // picker.on('before:click', (target) => { // if ($(target).hasClass('is-locked')) { // // date is locked, the date has not yet occurred // } else if ($(target).hasClass('is-highlighted')) { // // date is highlighted, it was already chosen before // notifier.alert("You already submitted a riversnap for this day. Choose another date.") // } else if ($(target).hasClass('day-item')) { // // date is available // // } // }); // }, // maxDate: new Date() // });
 		});
+
+	</script>
+
+	<script>
+		function populatePlasticCategoryModal(id, plastic) {
+			$("div#add_plastic div.title").text("Add " + plastic.name.toLowerCase())
+			$("div#add_plastic div.plastic_category:not('.info')").css("background-color", "#" + plastic.color)
+			$("div#add_plastic img.logo").attr("src", plastic.icon_path.small)
+			$("div#add_plastic div.description").text(plastic.description)
+			$("input#plastic_category").val(id)
+		}
 
 	</script>
 
@@ -412,28 +468,6 @@
 				});
 			})
 		}
-
-
-		/*
-			
-			<div class="col-md-4 col-sm-6 col-xs">
-				<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
-					<div class="row">
-						<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
-							<div class="row">
-								<img src="assets/outer.PNG">
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
-							<div class="row">
-								<span class="title col-12">Outer wrapping</span>
-								<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			*/
 
 		function listPlastics() {
 			return new Promise((resolve) => {
