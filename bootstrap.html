@@ -411,7 +411,7 @@
 							notifier.success("Successfully added your plastic contribution!")
 							hideModals()
 							hideSpinner()
-							clearModalInputs($("form#plastic_contribution_form"))
+							clearModalInputs()
 							populatePlasticChart()
 						}).catch((error) => {
 							console.log(error)
@@ -437,7 +437,7 @@
 					firestore.collection("riversnaps").add({
 						user_uuid,
 						date,
-						location
+						location,
 						timestamp: firebase.firestore.FieldValue.serverTimestamp()
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
@@ -503,7 +503,7 @@
 			$("#riversnap_modal").modal("hide")
 		}
 
-		function clearModalInputs(target) {
+		function clearModalInputs() {
 			$("input#quantity.plastic_contribution_modal").val('')
 			$("input#week.plastic_contribution_modal").val('')
 			$("input#weight.plastic_contribution_modal").val('')
