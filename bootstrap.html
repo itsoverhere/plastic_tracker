@@ -360,11 +360,11 @@
 		$(document).ready(() => {
 			$("body div.plastic_categories").on("click", ".plastic_category", function() {
 				firestore.collection("plastics").doc($(this).attr("id")).get().then((doc) => {
-//					populatePlasticCategoryModal(doc.id, doc.data())
+					//					populatePlasticCategoryModal(doc.id, doc.data())
 					console.log('id')
-					console.log(id)
+					console.log(doc.id)
 					console.log('plastic')
-					console.log(plastic)
+					console.log(doc.data())
 						//					showModal($("div.modal#add_plastic"))
 					$("#plastic_contribution_modal").modal('show')
 				})
@@ -375,12 +375,29 @@
 	</script>
 
 	<script>
+		// functions
+
 		function populatePlasticCategoryModal(id, plastic) {
 			$("div#add_plastic div.title").text("Add " + plastic.name.toLowerCase())
 			$("div#add_plastic div.plastic_category:not('.info')").css("background-color", "#" + plastic.color)
 			$("div#add_plastic img.logo").attr("src", plastic.icon_path.small)
 			$("div#add_plastic div.description").text(plastic.description)
 			$("input#plastic_category").val(id)
+		}
+
+		function initiateRiversnapModal(date) {
+			myDropzone.removeAllFiles(true)
+			$("input#riversnap_date").val(date)
+		}
+
+		function showModal(target) {
+			hideModals()
+			target.modal("show")
+		}
+
+		function hideModals() {
+			$("#plastic_contribution_modal").modal("hide")
+			$("#riversnap_modal").modal("hide")
 		}
 
 	</script>
