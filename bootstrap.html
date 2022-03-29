@@ -180,8 +180,6 @@
 					</div>
 				</div>
 
-
-
 				<!--				<div class="plastic_categories row g-2 row-flex">-->
 				<div class="plastic_categories row g-2 row-flex">
 					<div class="col-12 px-3">
@@ -192,26 +190,6 @@
 							Click on the type of the plastic you want to add
 						</div>
 					</div>
-
-					<!--
-					<div class="plastic_category_container col-md-4 col-sm-6 col-xs">
-						<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
-							<div class="row">
-								<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
-									<div class="row">
-										<img src="assets/outer.PNG">
-									</div>
-								</div>
-								<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
-									<div class="row">
-										<span class="title col-12">Outer wrapping</span>
-										<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
--->
 
 				</div>
 			</div>
@@ -224,7 +202,7 @@
 		</div>
 
 		<div class="modal fade" id="plastic_contribution_modal" tabindex="-1" aria-labelledby="plastic_contribution_label" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="plastic_contribution_label">Add outer wrapping</h5>
@@ -290,367 +268,408 @@
 				</div>
 			</div>
 		</div>
-		<!-- Optional JavaScript; choose one of the two! -->
-		<script>
-			const ctx = document.getElementById('plastic_usage_chart').getContext('2d');
-			let chart
-			let app, firestore, storage, auth
-			let plastics = {}
-			let currentUser
-			let uiConfig
-			let myDropzone, picker
-			let currentRiversnap
 
-			$(document).ready(() => {
-
-				//				const data = { // labels: ["w1", "w2"], // datasets: [{ // "label": "a", // "data": [2, 3, 6, 2], // "backgroundColor": "red" // }, { // "label": "b", // "data": [5, 1, 2, 7], // "backgroundColor": "blue" // }] // } // // if (!chart) { // const config = { // type: 'bar', // data: data, // options: { // responsive: true, // interaction: { // intersect: true, // }, // scales: { // x: { // stacked: true, // }, // y: { // stacked: true // } // }, // maintainAspectRatio: false, // responsive: true // } // }; // // chart = new Chart(ctx, config); // // }
-
-				//				picker = new Litepicker({ // element: document.getElementById('riversnap_calendar'), // inlineMode: true, // highlightedDays: ["2022-03-21", "2022-03-18"], // highlightedDaysFormat: "YYYY-MM-DD", // setup: (picker) => { // picker.on('before:click', (target) => { // if ($(target).hasClass('is-locked')) { // // date is locked, the date has not yet occurred // } else if ($(target).hasClass('is-highlighted')) { // // date is highlighted, it was already chosen before // notifier.alert("You already submitted a riversnap for this day. Choose another date.") // } else if ($(target).hasClass('day-item')) { // // date is available // // } // }); // }, // maxDate: new Date() // });
-			});
-
-		</script>
-
-		<script>
-			// FUNCTIONS
-
-			initApp = function() {
-				//				showSpinner()
-				Promise.resolve()
-					.then(setupFirebase)
-					.then(authenticate)
-					.then(listPlastics)
-					.then(() => {
-						populatePlasticChart()
-						populateCalendar()
-							//						hideSpinner()
-					})
-			};
-
-			function setupFirebase() {
-				return new Promise((resolve) => {
-					const firebaseConfig = {
-						apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
-						authDomain: "plastic-tracker-2cbb7.firebaseapp.com",
-						projectId: "plastic-tracker-2cbb7",
-						storageBucket: "plastic-tracker-2cbb7.appspot.com",
-						appId: "1:645843325306:web:5f4b90dc9388fe16f4c6c3",
-						measurementId: "G-2FF14XFMB6"
-					};
-					app = firebase.initializeApp(firebaseConfig);
-
-					resolve()
-				})
-			}
-
-			function setUpServices() {
-				return new Promise((resolve) => {
-					auth = firebase.auth()
-					firestore = firebase.firestore()
-					storage = app.storage()
-					resolve()
-				})
-			}
-
-			function authenticate() {
-				return new Promise((resolve) => {
-					auth = firebase.auth()
-					firestore = firebase.firestore()
-					storage = app.storage()
-
-					auth.onAuthStateChanged(function(user) {
-						if (user) {
-							// User is signed in.
-							var displayName = user.displayName;
-							var email = user.email;
-							var emailVerified = user.emailVerified;
-							var photoURL = user.photoURL;
-							var uid = user.uid;
-							var phoneNumber = user.phoneNumber;
-							var providerData = user.providerData;
-							user.getIdToken().then(function(accessToken) {
-								document.getElementById('sign_in').textContent = 'Sign out';
-
-								currentUser = {
-									displayName: displayName,
-									email: email,
-									emailVerified: emailVerified,
-									phoneNumber: phoneNumber,
-									photoURL: photoURL,
-									uid: uid,
-									accessToken: accessToken,
-									providerData: providerData
-								}
-								resolve()
-							});
-
-						} else {
-							window.location.href = "index.html"
-						}
-					}, function(error) {
-						console.log("OnAuth error: " + error);
-						// no current user
-						window.location.href = "index.html"
-					});
-				})
-			}
-
-
-			/*
-			
-				<div class="col-md-4 col-sm-6 col-xs">
-					<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
-						<div class="row">
-							<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
-								<div class="row">
-									<img src="assets/outer.PNG">
+		<div class="modal fade" id="riversnap_modal" tabindex="-1" aria-labelledby="riversnap_modal_label" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="riversnap_modal_label">Add outer wrapping</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-12">
+									<div id="dropzone" class="p-5 border">
+										Drop your riversnap here
+										<input id="riversnap_input" type="file" accept="image/jpeg" />
+									</div>
+									<div class="col-12 mt-2">
+										<select id="location">
+											<option val="1">Manggahan Floodway</option>
+											<option val="2">Bagong Ilog</option>
+											<option val="3">Pinagbuhatan</option>
+											<option val="4">Sta Rosa</option>
+											<option val="5">San Jose</option>
+											<option val="6">Sumilang</option>
+											<option val="7">Brgy Palatiw</option>
+										</select>
+									</div>
 								</div>
 							</div>
-							<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
-								<div class="row">
-									<span class="title col-12">Outer wrapping</span>
-									<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
-								</div>
+
+							<div class="modal-footer mt-3">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="button" id="add_riversnap" class="btn btn-primary">Add riversnap</button>
 							</div>
 						</div>
 					</div>
 				</div>
-				*/
+			</div>
+		</div>
+	</div>
 
-			function listPlastics() {
-				return new Promise((resolve) => {
-					firestore.collection("plastics")
-						.get()
-						.then((querySnapshot) => {
-							querySnapshot.forEach((doc) => {
-								plastic = doc.data()
+	<!-- Optional JavaScript; choose one of the two! -->
+	<script>
+		const ctx = document.getElementById('plastic_usage_chart').getContext('2d');
+		let chart
+		let app, firestore, storage, auth
+		let plastics = {}
+		let currentUser
+		let uiConfig
+		let myDropzone, picker
+		let currentRiversnap
 
-								// elements for content
-								let plastic_category = document.createElement("div")
-								let title = document.createElement("span")
-								let description = document.createElement("span")
-								let logo = document.createElement("img")
-								$(plastic_category).addClass("plastic_category p-3")
-								$(title).addClass("title col-12")
-								$(description).addClass("description col-12")
-								$(logo).addClass("logo")
+		$(document).ready(() => {
 
-								// elements for bootstrap classes
-								let title_desc_row = document.createElement("div")
-								$(title_desc_row).addClass("row")
-								let title_desc_row_col = document.createElement("div")
-								$(title_desc_row_col).addClass("col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7")
+			//				const data = { // labels: ["w1", "w2"], // datasets: [{ // "label": "a", // "data": [2, 3, 6, 2], // "backgroundColor": "red" // }, { // "label": "b", // "data": [5, 1, 2, 7], // "backgroundColor": "blue" // }] // } // // if (!chart) { // const config = { // type: 'bar', // data: data, // options: { // responsive: true, // interaction: { // intersect: true, // }, // scales: { // x: { // stacked: true, // }, // y: { // stacked: true // } // }, // maintainAspectRatio: false, // responsive: true // } // }; // // chart = new Chart(ctx, config); // // }
 
-								let img_row = document.createElement("div")
-								$(img_row).addClass("row")
-								let img_row_col = document.createElement("div")
-								$(img_row_col).addClass("image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5")
+			//				picker = new Litepicker({ // element: document.getElementById('riversnap_calendar'), // inlineMode: true, // highlightedDays: ["2022-03-21", "2022-03-18"], // highlightedDaysFormat: "YYYY-MM-DD", // setup: (picker) => { // picker.on('before:click', (target) => { // if ($(target).hasClass('is-locked')) { // // date is locked, the date has not yet occurred // } else if ($(target).hasClass('is-highlighted')) { // // date is highlighted, it was already chosen before // notifier.alert("You already submitted a riversnap for this day. Choose another date.") // } else if ($(target).hasClass('day-item')) { // // date is available // // } // }); // }, // maxDate: new Date() // });
+		});
 
-								let img_title_desc_row = document.createElement("div")
-								$(img_title_desc_row).addClass("row")
+	</script>
 
-								let container = document.createElement("div")
-								$(container).addClass("col-md-4 col-sm-6 col-xs")
+	<script>
+		// FUNCTIONS
 
-								// content
-								$(title).text(plastic.name)
-								$(logo).attr("src", plastic.icon_path.small)
-								$(description).text(plastic.description)
-								$(plastic_category).attr("id", doc.id)
+		initApp = function() {
+			//				showSpinner()
+			Promise.resolve()
+				.then(setupFirebase)
+				.then(authenticate)
+				.then(listPlastics)
+				.then(() => {
+					populatePlasticChart()
+					populateCalendar()
+						//						hideSpinner()
+				})
+		};
 
-								// assembly
-								$(title_desc_row).append(title)
-								$(title_desc_row).append(description)
-								$(title_desc_row_col).append(title_desc_row)
+		function setupFirebase() {
+			return new Promise((resolve) => {
+				const firebaseConfig = {
+					apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
+					authDomain: "plastic-tracker-2cbb7.firebaseapp.com",
+					projectId: "plastic-tracker-2cbb7",
+					storageBucket: "plastic-tracker-2cbb7.appspot.com",
+					appId: "1:645843325306:web:5f4b90dc9388fe16f4c6c3",
+					measurementId: "G-2FF14XFMB6"
+				};
+				app = firebase.initializeApp(firebaseConfig);
 
-								$(img_row).append(logo)
-								$(img_row_col).append(img_row)
+				resolve()
+			})
+		}
 
-								$(img_title_desc_row).append(img_row_col)
-								$(img_title_desc_row).append(title_desc_row_col)
+		function setUpServices() {
+			return new Promise((resolve) => {
+				auth = firebase.auth()
+				firestore = firebase.firestore()
+				storage = app.storage()
+				resolve()
+			})
+		}
 
-								$(plastic_category).append(img_title_desc_row)
-								$(plastic_category).css("background-color", "#" + plastic.color)
-								$(container).append(plastic_category)
-								$("div.plastic_categories").append(container)
+		function authenticate() {
+			return new Promise((resolve) => {
+				auth = firebase.auth()
+				firestore = firebase.firestore()
+				storage = app.storage()
 
-								plastics[doc.id] = plastic
-							})
+				auth.onAuthStateChanged(function(user) {
+					if (user) {
+						// User is signed in.
+						var displayName = user.displayName;
+						var email = user.email;
+						var emailVerified = user.emailVerified;
+						var photoURL = user.photoURL;
+						var uid = user.uid;
+						var phoneNumber = user.phoneNumber;
+						var providerData = user.providerData;
+						user.getIdToken().then(function(accessToken) {
+							document.getElementById('sign_in').textContent = 'Sign out';
+
+							currentUser = {
+								displayName: displayName,
+								email: email,
+								emailVerified: emailVerified,
+								phoneNumber: phoneNumber,
+								photoURL: photoURL,
+								uid: uid,
+								accessToken: accessToken,
+								providerData: providerData
+							}
 							resolve()
-						}).catch((error) => {
-							console.log("Error: " + error)
+						});
+
+					} else {
+						window.location.href = "index.html"
+					}
+				}, function(error) {
+					console.log("OnAuth error: " + error);
+					// no current user
+					window.location.href = "index.html"
+				});
+			})
+		}
+
+
+		/*
+			
+			<div class="col-md-4 col-sm-6 col-xs">
+				<div class="p-3 plastic_category" style="background-color: rgb(172, 222, 215);">
+					<div class="row">
+						<div class="image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5">
+							<div class="row">
+								<img src="assets/outer.PNG">
+							</div>
+						</div>
+						<div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7">
+							<div class="row">
+								<span class="title col-12">Outer wrapping</span>
+								<span class="description col-12">ang mga halimbawa nito ay mga plastik na sisidlan (pouch), cling wrap o plastic wrap at mga sando bag</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			*/
+
+		function listPlastics() {
+			return new Promise((resolve) => {
+				firestore.collection("plastics")
+					.get()
+					.then((querySnapshot) => {
+						querySnapshot.forEach((doc) => {
+							plastic = doc.data()
+
+							// elements for content
+							let plastic_category = document.createElement("div")
+							let title = document.createElement("span")
+							let description = document.createElement("span")
+							let logo = document.createElement("img")
+							$(plastic_category).addClass("plastic_category p-3")
+							$(title).addClass("title col-12")
+							$(description).addClass("description col-12")
+							$(logo).addClass("logo")
+
+							// elements for bootstrap classes
+							let title_desc_row = document.createElement("div")
+							$(title_desc_row).addClass("row")
+							let title_desc_row_col = document.createElement("div")
+							$(title_desc_row_col).addClass("col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-7 col-xs-7")
+
+							let img_row = document.createElement("div")
+							$(img_row).addClass("row")
+							let img_row_col = document.createElement("div")
+							$(img_row_col).addClass("image_container col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-sm-5 col-xs-5")
+
+							let img_title_desc_row = document.createElement("div")
+							$(img_title_desc_row).addClass("row")
+
+							let container = document.createElement("div")
+							$(container).addClass("col-md-4 col-sm-6 col-xs")
+
+							// content
+							$(title).text(plastic.name)
+							$(logo).attr("src", plastic.icon_path.small)
+							$(description).text(plastic.description)
+							$(plastic_category).attr("id", doc.id)
+
+							// assembly
+							$(title_desc_row).append(title)
+							$(title_desc_row).append(description)
+							$(title_desc_row_col).append(title_desc_row)
+
+							$(img_row).append(logo)
+							$(img_row_col).append(img_row)
+
+							$(img_title_desc_row).append(img_row_col)
+							$(img_title_desc_row).append(title_desc_row_col)
+
+							$(plastic_category).append(img_title_desc_row)
+							$(plastic_category).css("background-color", "#" + plastic.color)
+							$(container).append(plastic_category)
+							$("div.plastic_categories").append(container)
+
+							plastics[doc.id] = plastic
 						})
+						resolve()
+					}).catch((error) => {
+						console.log("Error: " + error)
+					})
+			})
+		}
+
+		function populateCalendar() {
+			if (!myDropzone) {
+				myDropzone = new Dropzone("div#dropzone", {
+					url: "/",
+					addRemoveLinks: true,
+					method: 'put',
+					chunking: true,
+					forceChunking: true,
+					autoQueue: false,
+					autoProcessQueue: false
+				});
+
+				myDropzone.on("addedfile", function(file) {
+					if (this.files[1] != null) {
+						this.removeFile(this.files[0]);
+					}
+				});
+
+				myDropzone.on("removedfile", function(file) {
+					var storageRef = firebase.storage().ref("/");
+					storageRef.child(file.fullPath).delete().then(
+						function() {
+							notifier.success("File removed successfully.")
+						}).catch(function(error) {
+						notifier.alert("Something went wrong, please try again.")
+						console.log("Error in removing file : " + error)
+					});
 				})
 			}
 
-			function populateCalendar() {
-				if (!myDropzone) {
-					myDropzone = new Dropzone("div#dropzone", {
-						url: "/",
-						addRemoveLinks: true,
-						method: 'put',
-						chunking: true,
-						forceChunking: true,
-						autoQueue: false,
-						autoProcessQueue: false
-					});
-
-					myDropzone.on("addedfile", function(file) {
-						if (this.files[1] != null) {
-							this.removeFile(this.files[0]);
-						}
-					});
-
-					myDropzone.on("removedfile", function(file) {
-						var storageRef = firebase.storage().ref("/");
-						storageRef.child(file.fullPath).delete().then(
-							function() {
-								notifier.success("File removed successfully.")
-							}).catch(function(error) {
-							notifier.alert("Something went wrong, please try again.")
-							console.log("Error in removing file : " + error)
-						});
+			firestore.collection("riversnaps")
+				.where("user_uuid", "==", currentUser.uid)
+				.get()
+				.then((query) => {
+					let dates = []
+					query.forEach((doc) => {
+						let d = new Date(doc.data().date)
+						dates.push(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate())
 					})
-				}
 
-				firestore.collection("riversnaps")
-					.where("user_uuid", "==", currentUser.uid)
-					.get()
-					.then((query) => {
-						let dates = []
-						query.forEach((doc) => {
-							let d = new Date(doc.data().date)
-							dates.push(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate())
-						})
-
-						if (picker) {
-							picker.destroy()
-						}
-						picker = new Litepicker({
-							element: document.getElementById('riversnap_calendar'),
-							inlineMode: true,
-							highlightedDays: dates,
-							highlightedDaysFormat: "YYYY-MM-DD",
-							setup: (picker) => {
-								picker.on('before:click', (target) => {
-									if ($(target).hasClass('is-locked')) {
-										// date is locked, the date has not yet occurred
-									} else if ($(target).hasClass('is-highlighted')) {
-										// date is highlighted, it was already chosen before
-										notifier.alert("You already submitted a riversnap for this day. Choose another date.")
-									} else if ($(target).hasClass('day-item')) {
-										// date is available
-										if (picker.getDate()) {
-											initiateRiversnapModal(picker.getDate().dateInstance)
-											showModal($("div.modal#add_riversnap"))
-										}
-									}
-								});
-							},
-							maxDate: new Date()
-						});
-					})
-			}
-
-			function populatePlasticChart() {
-				if (currentUser) {
-					firestore.collection("users").doc(currentUser.uid)
-						.get().then((doc) => {
-
-							let plastic_data = doc.data().plastics
-
-							let labels = Object.keys(plastic_data)
-							let data_qty = {}
-							let data_weight = {}
-							Object.keys(plastics).forEach((key) => {
-								data_qty[key] = new Array(labels.length).fill(0)
-								data_weight[key] = new Array(labels.length).fill(0)
-							})
-
-							Object.entries(plastics).forEach((plastic) => {
-								for (let i = 0; i < labels.length; i++) {
-									if (plastic[0] in plastic_data[labels[i]]) {
-										data_qty[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["quantity"]
-										data_weight[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["weight"]
-									} else {
-										data_qty[plastic[0]][i] = 0
-										data_weight[plastic[0]][i] = 0
+					if (picker) {
+						picker.destroy()
+					}
+					picker = new Litepicker({
+						element: document.getElementById('riversnap_calendar'),
+						inlineMode: true,
+						highlightedDays: dates,
+						highlightedDaysFormat: "YYYY-MM-DD",
+						setup: (picker) => {
+							picker.on('before:click', (target) => {
+								if ($(target).hasClass('is-locked')) {
+									// date is locked, the date has not yet occurred
+								} else if ($(target).hasClass('is-highlighted')) {
+									// date is highlighted, it was already chosen before
+									notifier.alert("You already submitted a riversnap for this day. Choose another date.")
+								} else if ($(target).hasClass('day-item')) {
+									// date is available
+									if (picker.getDate()) {
+										initiateRiversnapModal(picker.getDate().dateInstance)
+										showModal($("div.modal#add_riversnap"))
 									}
 								}
+							});
+						},
+						maxDate: new Date()
+					});
+				})
+		}
 
-							})
+		function populatePlasticChart() {
+			if (currentUser) {
+				firestore.collection("users").doc(currentUser.uid)
+					.get().then((doc) => {
 
-							let dataset_qty = [],
-								dataset_weight = []
-							Object.entries(plastics).forEach((plastic) => {
-								dataset_qty.push({
-									"label": plastic[1].name,
-									"data": data_qty[plastic[0]],
-									"backgroundColor": "#" + plastic[1].color
-								})
-								dataset_weight.push({
-									"label": plastic[1].name,
-									"data": data_qty[plastic[0]],
-									"backgroundColor": "#" + plastic[1].color
-								})
-							})
+						let plastic_data = doc.data().plastics
 
-							labels = labels.map((el) => {
-								return "Week " + el
-							})
-
-							const data = {
-								labels: labels,
-								datasets: dataset_qty
-							}
-
-							if (!chart) {
-								const config = {
-									type: 'bar',
-									data: data,
-									options: {
-										interaction: {
-											intersect: true,
-										},
-										scales: {
-											x: {
-												stacked: true,
-											},
-											y: {
-												stacked: true
-											}
-										},
-										maintainAspectRatio: false,
-										responsive: false
-									}
-								};
-
-								chart = new Chart(ctx, config);
-							} else {
-								chart.data.labels.pop();
-								chart.data.datasets.forEach((dataset) => {
-									dataset.data.pop();
-								});
-								chart.data = data
-								chart.update();
-							}
+						let labels = Object.keys(plastic_data)
+						let data_qty = {}
+						let data_weight = {}
+						Object.keys(plastics).forEach((key) => {
+							data_qty[key] = new Array(labels.length).fill(0)
+							data_weight[key] = new Array(labels.length).fill(0)
 						})
-				} else {
-					// no current user, redirect to index.html
-					window.location.href = "index.html"
-				}
+
+						Object.entries(plastics).forEach((plastic) => {
+							for (let i = 0; i < labels.length; i++) {
+								if (plastic[0] in plastic_data[labels[i]]) {
+									data_qty[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["quantity"]
+									data_weight[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["weight"]
+								} else {
+									data_qty[plastic[0]][i] = 0
+									data_weight[plastic[0]][i] = 0
+								}
+							}
+
+						})
+
+						let dataset_qty = [],
+							dataset_weight = []
+						Object.entries(plastics).forEach((plastic) => {
+							dataset_qty.push({
+								"label": plastic[1].name,
+								"data": data_qty[plastic[0]],
+								"backgroundColor": "#" + plastic[1].color
+							})
+							dataset_weight.push({
+								"label": plastic[1].name,
+								"data": data_qty[plastic[0]],
+								"backgroundColor": "#" + plastic[1].color
+							})
+						})
+
+						labels = labels.map((el) => {
+							return "Week " + el
+						})
+
+						const data = {
+							labels: labels,
+							datasets: dataset_qty
+						}
+
+						if (!chart) {
+							const config = {
+								type: 'bar',
+								data: data,
+								options: {
+									interaction: {
+										intersect: true,
+									},
+									scales: {
+										x: {
+											stacked: true,
+										},
+										y: {
+											stacked: true
+										}
+									},
+									maintainAspectRatio: false,
+									responsive: false
+								}
+							};
+
+							chart = new Chart(ctx, config);
+						} else {
+							chart.data.labels.pop();
+							chart.data.datasets.forEach((dataset) => {
+								dataset.data.pop();
+							});
+							chart.data = data
+							chart.update();
+						}
+					})
+			} else {
+				// no current user, redirect to index.html
+				window.location.href = "index.html"
 			}
+		}
 
-			window.addEventListener('load', function() {
-				initApp()
-			});
+		window.addEventListener('load', function() {
+			initApp()
+		});
 
-		</script>
+	</script>
 
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-		<!-- Option 1: Bootstrap Bundle with Popper -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
 
