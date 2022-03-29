@@ -266,7 +266,7 @@
 													Quantity
 												</div>
 												<div class="col-5">
-													<input class="form-control" type="number" id="quantity" class="plastic_contribution_modal ">
+													<input class="form-control" type="number" id="quantity" class="plastic_contribution_modal">
 												</div>
 											</div>
 										</div>
@@ -292,13 +292,13 @@
 											</div>
 
 										</div>
+										<input id="plastic_category" type="hidden" class="plastic_contribution_modal">
 									</div>
 								</div>
 							</div>
 						</div>
 
 						<div class="modal-footer mt-3">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 							<button type="button" id="add_contribution" class="btn btn-primary">Add plastic contribution</button>
 						</div>
 					</div>
@@ -332,11 +332,12 @@
 											<option val="7">Brgy Palatiw</option>
 										</select>
 									</div>
+
+									<input id="riversnap_date" type="hidden" class="riversnap_modal">
 								</div>
 							</div>
 
 							<div class="modal-footer mt-3">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 								<button type="button" id="add_riversnap" class="btn btn-primary">Add riversnap</button>
 							</div>
 						</div>
@@ -357,18 +358,110 @@
 		let myDropzone, picker
 		let currentRiversnap
 
+		let notifier = new AWN()
+
 		$(document).ready(() => {
 			$("body div.plastic_categories").on("click", ".plastic_category", function() {
 				firestore.collection("plastics").doc($(this).attr("id")).get().then((doc) => {
-					//					populatePlasticCategoryModal(doc.id, doc.data())
-					console.log('id')
-					console.log(doc.id)
-					console.log('plastic')
-					console.log(doc.data())
+					populatePlasticCategoryModal(doc.id, doc.data())
 						//					showModal($("div.modal#add_plastic"))
 					$("#plastic_contribution_modal").modal('show')
 				})
 			});
+
+			$("div.modal").on("click", function(e) {
+				e.stopPropagation()
+			});
+
+			//			$("form#plastic_contribution_form").on('change', 'input[type=number]', (e) => {
+			//				let i = $(e.target).val()
+			//				if (i < 0 || isNaN(i)) {
+			//					$(e.target).val(0)
+			//					notifier.warning("Please enter a valid number")
+			//				}
+			//			})
+
+			$("button#add_plastic_contribution").click(function(e) {
+				//				showSpinner()
+				if (currentUser) {
+					let quantity = $("input#quantity.plastic_contribution_modal").val()
+					let weight = $("input#weight.plastic_contribution_modal").val()
+					let week = $("input#week.plastic_contribution_modal").val()
+					let plastic_uuid = $("input#plastic_category.plastic_contribution_modal").val()
+					let user_uuid = currentUser.uid
+					let timestamp = new Date()
+
+					// write security rules 
+					let path =
+
+						firestore.collection("users")
+						.doc(user_uuid)
+						.update({
+							[`plastics.${week}.${plastic_uuid}`]: {
+								timestamp, quantity, weight
+							}
+						}, {
+							merge: true
+						}).then((doc) => {
+							notifier.success("Successfully added your plastic contribution!")
+							hideModals()
+							hideSpinner()
+							clearModalInputs($("form#plastic_contribution_form"))
+							populatePlasticChart()
+						}).catch((error) => {
+							notifier.alert("Something went wrong, please try again.")
+							hideModals()
+						})
+				} else {
+					// no user detected, redirect to index.html
+					window.location.href = "index.html"
+				}
+
+			})
+
+			$("button#add_riversnap").click(function(e) {
+				if (currentUser && myDropzone.files.length == 1) {
+					//					showSpinner()
+
+					let date = $("input#riversnap_date").val()
+					let user_uuid = currentUser.uid
+					firestore.collection("riversnaps").add({
+						user_uuid,
+						date,
+						timestamp: firebase.firestore.FieldValue.serverTimestamp()
+					}).then((doc) => {
+						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
+							hideModals()
+							hideSpinner()
+							populateCalendar()
+							notifier.success("Successfully added your new riversnap!")
+						})
+
+					}).catch((error) => {
+						console.log("Error adding riversnap document: " + error)
+						notifier.alert("Something went wrong, please try again.")
+					})
+				} else {
+					if (!currentUser) {
+						// no user detected, redirect to index.html
+						window.location.href = "index.html"
+					} else if (myDropzone.files.length != 1) {
+						notifier.warning("Please upload a photo before submitting.")
+					}
+				}
+			})
+
+
+			$("div#sign_in").click(() => {
+				if (currentUser) {
+					auth.signOut().then(() => {
+						location.reload()
+					}).catch((error) => {
+						console.log("Error in signing out")
+						notifier.alert("Something went wrong, please try again.")
+					})
+				}
+			})
 
 		});
 
@@ -378,10 +471,10 @@
 		// functions
 
 		function populatePlasticCategoryModal(id, plastic) {
-			$("div#add_plastic div.title").text("Add " + plastic.name.toLowerCase())
-			$("div#add_plastic div.plastic_category:not('.info')").css("background-color", "#" + plastic.color)
-			$("div#add_plastic img.logo").attr("src", plastic.icon_path.small)
-			$("div#add_plastic div.description").text(plastic.description)
+			$("#plastic_contribution_label").text("Add " + plastic.name.toLowerCase())
+			$("div.plastic_contribution_modal.plastic_category").css("background-color", "#" + plastic.color)
+			$("div.plastic_contribution_modal.logo img").attr("src", plastic.icon_path.small)
+			$("div.plastic_contribution_modal.description").text(plastic.description)
 			$("input#plastic_category").val(id)
 		}
 
