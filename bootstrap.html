@@ -378,14 +378,6 @@
 				}
 			})
 
-			//			$("form#plastic_contribution_form").on('change', 'input[type=number]', (e) => {
-			//				let i = $(e.target).val()
-			//				if (i < 0 || isNaN(i)) {
-			//					$(e.target).val(0)
-			//					notifier.warning("Please enter a valid number")
-			//				}
-			//			})
-
 			$("button#add_contribution").click(function(e) {
 				//				showSpinner()
 
@@ -439,11 +431,13 @@
 				if (currentUser && myDropzone.files.length == 1) {
 					//					showSpinner()
 
+					let location = $("select#location").val()
 					let date = $("input#riversnap_date").val()
 					let user_uuid = currentUser.uid
 					firestore.collection("riversnaps").add({
 						user_uuid,
 						date,
+						location
 						timestamp: firebase.firestore.FieldValue.serverTimestamp()
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
