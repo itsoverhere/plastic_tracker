@@ -422,6 +422,8 @@
 			})
 
 			$("button#add_riversnap").click(function(e) {
+
+				console.log("button add riversnap")
 				if (currentUser && myDropzone.files.length == 1) {
 					//					showSpinner()
 
@@ -495,6 +497,59 @@
 			$("#riversnap_modal").modal("hide")
 		}
 
+		function clearModalInputs(target) {
+			$("input#quantity.plastic_contribution_modal").val('')
+			$("input#week.plastic_contribution_modal").val('')
+			$("input#weight.plastic_contribution_modal").val('')
+			$("input#plastic_category.plastic_contribution_modal").val('')
+
+			$("input#riversnap_input").val('')
+			$("input#riversnap_date").val('')
+		}
+
+		function storage_upload(uuid, filedata, cb) {
+			// Firestore storage task 
+			var task
+
+			var storageRef = firebase.storage().ref().child(uuid);
+
+			// Because I am uploading file in base64 data_url // 
+			task = storageRef.putString(filedata, 'data_url');
+
+			task
+				.on(firebase.storage.TaskEvent.STATE_CHANGED,
+					function progress(snapshot) {},
+
+					// Firebase storeage upload error handling 
+					function(error) {
+						// A full list of error codes is available at
+						// https://firebase.google.com/docs/storage/web/handle-errors
+						notifier.alert("Something went wrong, please try again.")
+						console.log("Error in uploading photo : " + error)
+
+						// TODO: delete firestore entry
+					},
+
+					// Finishing process and returning data
+					function() {
+
+						// Upload completed successfully
+						task.snapshot.ref.getMetadata().then(function(meta) {
+							task.snapshot.ref.getDownloadURL().then(function(downloadUrl) {
+								var response = {
+									object_info: {
+										publicURL: downloadUrl,
+										metainfo: meta
+									}
+								}
+								return cb(response)
+							})
+						})
+					}
+				)
+
+		}
+
 	</script>
 
 	<script>
@@ -525,15 +580,6 @@
 				};
 				app = firebase.initializeApp(firebaseConfig);
 
-				resolve()
-			})
-		}
-
-		function setUpServices() {
-			return new Promise((resolve) => {
-				auth = firebase.auth()
-				firestore = firebase.firestore()
-				storage = app.storage()
 				resolve()
 			})
 		}
