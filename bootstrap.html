@@ -167,6 +167,7 @@
 			width: 100vw;
 			align-items: center;
 			justify-content: center;
+			z-index: 1000;
 		}
 		
 		div.spinner_container img {
@@ -182,6 +183,10 @@
 			vertical-align: middle;
 			max-width: 95%;
 			max-height: 95%;
+		}
+		
+		.litepicker .container__days div.day-item.is-highlighted {
+			background-color: #ACDED7;
 		}
 
 	</style>
@@ -253,7 +258,6 @@
 			</div>
 		</div>
 
-
 		<div class="spinner_container">
 			<img src="assets/spinner.gif">
 		</div>
@@ -262,7 +266,7 @@
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="plastic_contribution_label">Add outer wrapping</h5>
+						<h5 class="modal-title" id="plastic_contribution_label">Add plastic contribution</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -330,7 +334,7 @@
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="riversnap_modal_label">Add outer wrapping</h5>
+						<h5 class="modal-title" id="riversnap_modal_label">Add riversnap</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
