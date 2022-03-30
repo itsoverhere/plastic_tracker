@@ -473,8 +473,10 @@
 
 			$("input#riversnap_input").change((e) => {
 				var file = this.files[0]
-				getBase64(file)
-					// add to Dropzone
+					//				getBase64(file)
+
+				// add to Dropzone
+				myDropzone.addFile(file)
 			})
 
 			$("div#sign_in").click(() => {
