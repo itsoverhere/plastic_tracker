@@ -23,8 +23,12 @@
 
 
 	<style>
-		div.details {
+		div.form {
 			display: none;
+		}
+		
+		div.form.focused {
+			display: block;
 		}
 
 	</style>
@@ -34,9 +38,9 @@
 <body>
 
 	<!--	<div id="firebaseui-auth-container" class="focused"></div>-->
-	<div class="h-100 container m-0 p-0 overflow-hidden align-items-center">
+	<div class="container-fluid m-0 p-0 overflow-hidden">
 
-		<div class="h-100 authentication row justify-content-center ms-auto align-items-center">
+		<div class="form focused authentication row justify-content-center ms-auto align-items-center">
 
 			<div class="col-xxl-3 col-xl-4 col-lg-4 col-md-5 col-sm-6 col-xs-8">
 				<div class="title row">
@@ -83,7 +87,7 @@
 
 		</div>
 
-		<div class="h-100 details row justify-content-center ms-auto align-items-center">
+		<div class="h-100 form details row justify-content-center ms-auto align-items-center">
 
 			<div class="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-xs-8">
 				<div class="title row">
@@ -175,7 +179,7 @@
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user) {
 							hasCompleteDetails(user.uid).then(() => {
-								window.location.href = "bootstrap.html"
+								window.location.href = "main.html"
 							}, () => {
 								currentUser["email"] = user.email
 								currentUser["uuid"] = user.uid
@@ -208,11 +212,11 @@
 
 		function toggleDetailsForm(show) {
 			if (show) {
-				$("div.container.authentication").removeClass("focused")
-				$("div.container.details").addClass("focused")
+				$("div.authentication").removeClass("focused")
+				$("div.details").addClass("focused")
 			} else {
-				$("div.container.authentication").addClass("focused")
-				$("div.container.details").removeClass("focused")
+				$("div.authentication").addClass("focused")
+				$("div.details").removeClass("focused")
 			}
 		}
 
@@ -244,7 +248,7 @@
 					var user = result.user;
 					if (user) {
 						hasCompleteDetails(user.uid).then(() => {
-							window.location.href = "bootstrap.html"
+							window.location.href = "main.html"
 						}, () => {
 							currentUser["email"] = user.email
 							currentUser["uuid"] = user.uid
@@ -283,7 +287,7 @@
 					.signInWithEmailAndPassword(email, password)
 					.then((user) => {
 						hasCompleteDetails(user.uid).then(() => {
-							window.location.href = "bootstrap.html"
+							window.location.href = "main.html"
 						}, () => {
 							currentUser["email"] = user.email
 							currentUser["uuid"] = user.uid
@@ -330,7 +334,7 @@
 					}, {
 						merge: true
 					}).then(() => {
-						window.location.href = "bootstrap.html"
+						window.location.href = "main.html"
 						hideSpinner()
 					}).catch((error) => {
 						notifier.alert(error.message)
