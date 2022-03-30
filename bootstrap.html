@@ -206,8 +206,7 @@
 			<div class="col">
 				<div class="p-3">#ecosquadgoals</div>
 			</div>
-
-			<div class="col">
+			<div class="col-auto">
 				<div class="p-3" id="sign_in">Sign in</div>
 			</div>
 		</div>
@@ -243,7 +242,6 @@
 					</div>
 				</div>
 
-				<!--				<div class="plastic_categories row g-2 row-flex">-->
 				<div class="plastic_categories row g-2 row-flex">
 					<div class="col-12 px-3">
 						<div class="title row">
@@ -454,8 +452,6 @@
 			})
 
 			$("button#add_riversnap").click(function(e) {
-
-				console.log("button add riversnap")
 				if (currentUser && myDropzone.files.length == 1) {
 					showSpinner()
 
@@ -470,7 +466,7 @@
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
 							hideModals()
-							er()
+							hideSpinner()
 							populateCalendar()
 							notifier.success("Successfully added your new riversnap!")
 						})
@@ -780,28 +776,21 @@
 						this.removeFile(this.files[0]);
 						console.log("this.files[1]!=null")
 					}
+
 					// show image
-
 					$('#dropzone img').remove();
-
 					if ((/^image\/(gif|png|jpeg)$/i).test(file.type)) {
 						var reader = new FileReader(file);
-
 						reader.readAsDataURL(file);
-
 						reader.onload = function(e) {
 							var data = e.target.result,
 								$img = $('<img />').attr('src', data).fadeIn();
-
 							$('#dropzone div').html($img);
 						};
 					} else {
 						var ext = file.name.split('.').pop();
-
 						$('#dropzone div').html(ext);
 					}
-
-					// end show image
 				});
 
 				myDropzone.on("removedfile", function(file) {
@@ -938,7 +927,7 @@
 											stacked: true
 										}
 									},
-									maintainAspectRatio: true,
+									maintainAspectRatio: false,
 									responsive: true
 								}
 							};
