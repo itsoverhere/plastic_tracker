@@ -155,19 +155,27 @@
 			width: 100%;
 		}
 		
-		// Small devices (landscape phones, 576px and up)
-		@media (min-width: 576px) {}
-		
-		// Medium devices (tablets, 768px and up)
-		@media (min-width: 768px) {
-			main {}
+		div.spinner_container {
+			display: hidden;
 		}
 		
-		// Large devices (desktops, 992px and up)
-		@media (min-width: 992px) {}
+		div.spinner_container.focused {
+			display: grid;
+			position: absolute;
+			background-color: rgba(0, 0, 0, 0.3);
+			height: 100vh;
+			width: 100vw;
+			align-items: center;
+			justify-content: center;
+		}
 		
-		// Extra large devices (large desktops, 1200px and up)
-		@media (min-width: 1200px) {}
+		div.spinner_container img {
+			display: none;
+		}
+		
+		div.spinner_container img.focused {
+			display: block;
+		}
 
 	</style>
 
@@ -236,6 +244,11 @@
 			<div class="col">
 				<div class="p-3"></div>
 			</div>
+		</div>
+
+
+		<div class="spinner_container">
+			<img src="assets/spinner.gif">
 		</div>
 
 		<div class="modal fade" id="plastic_contribution_modal" tabindex="-1" aria-labelledby="plastic_contribution_label" aria-hidden="true">
@@ -323,15 +336,6 @@
 									</div>
 									<div class="col-12 mt-2">
 										<select id="location">
-											<!--
-<option value="1">Manggahan Floodway</option>
-<option value="2">Bagong Ilog</option>
-<option value="3">Pinagbuhatan</option>
-<option value="4">Sta Rosa</option>
-<option value="5">San Jose</option>
-<option value="6">Sumilang</option>
-<option value="7">Brgy Palatiw</option>
--->
 										</select>
 									</div>
 
@@ -469,7 +473,10 @@
 				console.log("new file: " + file)
 
 				// add to Dropzone
-//				if (myDropzone.files[0] != null) { // console.log("this.files[0]!=null") // myDropzone.removeFile(myDropzone.files[0]); // }
+				if (myDropzone.files[0] != null) {
+					console.log("this.files[0]!=null")
+					myDropzone.removeFile(myDropzone.files[0]);
+				}
 				myDropzone.addFile(file)
 			})
 
@@ -513,6 +520,16 @@
 		function hideModals() {
 			$("#plastic_contribution_modal").modal("hide")
 			$("#riversnap_modal").modal("hide")
+		}
+
+		function showSpinner() {
+			$("div.spinner_container").addClass("focused")
+			$("div.spinner_container img").addClass("focused")
+		}
+
+		function hideSpinner() {
+			$("div.spinner_container").removeClass("focused")
+			$("div.spinner_container img").removeClass("focused")
 		}
 
 		function clearModalInputs() {
@@ -731,6 +748,28 @@
 						this.removeFile(this.files[0]);
 						console.log("this.files[1]!=null")
 					}
+					// show image
+
+					$('#dropzone img').remove();
+
+					if ((/^image\/(gif|png|jpeg)$/i).test(file.type)) {
+						var reader = new FileReader(file);
+
+						reader.readAsDataURL(file);
+
+						reader.onload = function(e) {
+							var data = e.target.result,
+								$img = $('<img />').attr('src', data).fadeIn();
+
+							$('#dropzone div').html($img);
+						};
+					} else {
+						var ext = file.name.split('.').pop();
+
+						$('#dropzone div').html(ext);
+					}
+
+					// end show image
 				});
 
 				myDropzone.on("removedfile", function(file) {
