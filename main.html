@@ -413,9 +413,10 @@
 						}, {
 							merge: true
 						}).then((doc) => {
-							notifier.success("Successfully added your plastic contribution!")
 							hideModals()
 							hideSpinner()
+							notifier.success("Successfully added your plastic contribution!")
+
 							clearModalInputs()
 							populatePlasticChart()
 						}).catch((error) => {
