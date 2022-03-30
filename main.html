@@ -178,7 +178,7 @@
 
 	</style>
 
-	<title>Hello, world!</title>
+	<title>#ecosquadgoals</title>
 </head>
 
 <body>
@@ -383,7 +383,7 @@
 			})
 
 			$("button#add_contribution").click(function(e) {
-				hideModals()
+				//				hideModals()
 				showSpinner()
 
 				console.log("button add contribution")
@@ -414,7 +414,7 @@
 							merge: true
 						}).then((doc) => {
 							notifier.success("Successfully added your plastic contribution!")
-								//							hideModals()
+							hideModals()
 							hideSpinner()
 							clearModalInputs()
 							populatePlasticChart()
@@ -432,7 +432,7 @@
 
 			$("button#add_riversnap").click(function(e) {
 				if (currentUser && myDropzone.files.length == 1) {
-					hideModals()
+					//					hideModals()
 					showSpinner()
 
 					let location = $("select#location").val()
@@ -445,7 +445,7 @@
 						timestamp: firebase.firestore.FieldValue.serverTimestamp()
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
-							//							hideModals()
+							hideModals()
 							hideSpinner()
 							populateCalendar()
 							notifier.success("Successfully added your new riversnap!")
