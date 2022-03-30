@@ -30,6 +30,12 @@
 		div.form.focused {
 			display: block;
 		}
+		
+		div.spinner_modal {
+			display: grid;
+			justify-content: center;
+			align-items: center;
+		}
 
 	</style>
 
@@ -250,6 +256,16 @@
 
 	<script>
 		$(document).ready(function() {
+
+			$("#spinner_modal").modal({
+				backdrop: 'static',
+				keyboard: false
+			})
+
+			$("#spinner_modal").click(function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+			})
 
 			$("#google_sso").click(() => {
 				signUpViaGoogle()
