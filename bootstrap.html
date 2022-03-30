@@ -472,6 +472,7 @@
 			}
 
 			$("input#riversnap_input").change((e) => {
+				e.stopPropagation()
 				var file = document.getElementById("riversnap_input").files[0]
 					//				getBase64(file)
 
@@ -482,6 +483,7 @@
 				}
 				myDropzone.addFile(file)
 			})
+
 
 			$("div#sign_in").click(() => {
 				if (currentUser) {
