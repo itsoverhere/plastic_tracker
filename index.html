@@ -48,21 +48,25 @@
 					<div class="label col-4">
 						Email
 					</div>
-					<input type="email" class="col-8 form-control" />
+					<div class="col-8">
+						<input type="email" class="form-control" />
+					</div>
 				</div>
 
 				<div class="p-2 row">
 					<div class="label col-4">
 						Password
 					</div>
-					<input type="password" class="col-8 form-control" />
+					<div class="col-8">
+						<input type="password" class="form-control" />
+					</div>
 				</div>
 
-				<div class="p-4 row">
-					<button class="col btn btn-primary" type="button" id="sign_up">
+				<div class="row g-2">
+					<button class="col btn btn-primary p-2" type="button" id="sign_up">
 						Sign up
 					</button>
-					<button class="col btn btn-primary" type="button" id="sign_in">
+					<button class="col btn btn-primary p-2" type="button" id="sign_in">
 						Sign in
 					</button>
 				</div>
@@ -153,194 +157,194 @@
 
 	<script>
 		/*
-																																																															let app, auth
-																																																															let currentUser = {}
-																																																															let notifier = new AWN()
+																																																																					let app, auth
+																																																																					let currentUser = {}
+																																																																					let notifier = new AWN()
 
-																																																															window.addEventListener('load', function() {
-																																																																initApp()
-																																																															});
+																																																																					window.addEventListener('load', function() {
+																																																																						initApp()
+																																																																					});
 
-																																																															initApp = function() {
-																																																																showSpinner()
-																																																																Promise.resolve()
-																																																																	.then(setupFirebase)
-																																																																	.then(() => {
-																																																																		firebase.auth().onAuthStateChanged(function(user) {
-																																																																			if (user) {
-																																																																				hasCompleteDetails(user.uid).then(() => {
-																																																																					window.location.href = "bootstrap.html"
-																																																																				}, () => {
-																																																																					currentUser["email"] = user.email
-																																																																					currentUser["uuid"] = user.uid
-																																																																					toggleDetailsForm(true)
-																																																																					hideSpinner()
-																																																																				})
-																																																																			}
-																																																																		}, function(error) {
-																																																																			notifier.alert(error.message)
-																																																																		});
-																																																																		hideSpinner()
-																																																																	})
-																																																															};
+																																																																					initApp = function() {
+																																																																						showSpinner()
+																																																																						Promise.resolve()
+																																																																							.then(setupFirebase)
+																																																																							.then(() => {
+																																																																								firebase.auth().onAuthStateChanged(function(user) {
+																																																																									if (user) {
+																																																																										hasCompleteDetails(user.uid).then(() => {
+																																																																											window.location.href = "bootstrap.html"
+																																																																										}, () => {
+																																																																											currentUser["email"] = user.email
+																																																																											currentUser["uuid"] = user.uid
+																																																																											toggleDetailsForm(true)
+																																																																											hideSpinner()
+																																																																										})
+																																																																									}
+																																																																								}, function(error) {
+																																																																									notifier.alert(error.message)
+																																																																								});
+																																																																								hideSpinner()
+																																																																							})
+																																																																					};
 
-																																																															function setupFirebase() {
-																																																																return new Promise((resolve) => {
-																																																																	const firebaseConfig = {
-																																																																		apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
-																																																																		authDomain: "plastic-tracker-2cbb7.firebaseapp.com",
-																																																																		projectId: "plastic-tracker-2cbb7",
-																																																																		storageBucket: "plastic-tracker-2cbb7.appspot.com",
-																																																																		appId: "1:645843325306:web:5f4b90dc9388fe16f4c6c3",
-																																																																		measurementId: "G-2FF14XFMB6"
-																																																																	};
-																																																																	app = firebase.initializeApp(firebaseConfig);
+																																																																					function setupFirebase() {
+																																																																						return new Promise((resolve) => {
+																																																																							const firebaseConfig = {
+																																																																								apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
+																																																																								authDomain: "plastic-tracker-2cbb7.firebaseapp.com",
+																																																																								projectId: "plastic-tracker-2cbb7",
+																																																																								storageBucket: "plastic-tracker-2cbb7.appspot.com",
+																																																																								appId: "1:645843325306:web:5f4b90dc9388fe16f4c6c3",
+																																																																								measurementId: "G-2FF14XFMB6"
+																																																																							};
+																																																																							app = firebase.initializeApp(firebaseConfig);
 
-																																																																	resolve()
-																																																																})
-																																																															}
+																																																																							resolve()
+																																																																						})
+																																																																					}
 
-																																																															function toggleDetailsForm(show) {
-																																																																if (show) {
-																																																																	$("div.container.authentication").removeClass("focused")
-																																																																	$("div.container.details").addClass("focused")
-																																																																} else {
-																																																																	$("div.container.authentication").addClass("focused")
-																																																																	$("div.container.details").removeClass("focused")
-																																																																}
-																																																															}
+																																																																					function toggleDetailsForm(show) {
+																																																																						if (show) {
+																																																																							$("div.container.authentication").removeClass("focused")
+																																																																							$("div.container.details").addClass("focused")
+																																																																						} else {
+																																																																							$("div.container.authentication").addClass("focused")
+																																																																							$("div.container.details").removeClass("focused")
+																																																																						}
+																																																																					}
 
-																																																															function hasCompleteDetails(id) {
-																																																																return new Promise((resolve, reject) => {
-																																																																	firebase.firestore()
-																																																																		.collection("users")
-																																																																		.doc(id)
-																																																																		.get()
-																																																																		.then((doc) => {
-																																																																			if (doc.data() && doc.data().affiliation && doc.data().pid) {
-																																																																				resolve()
-																																																																			} else {
-																																																																				reject()
-																																																																			}
-																																																																		}).catch((error) => {
-																																																																			notifier.alert(error.message)
-																																																																			reject()
-																																																																		})
-																																																																})
-																																																															}
+																																																																					function hasCompleteDetails(id) {
+																																																																						return new Promise((resolve, reject) => {
+																																																																							firebase.firestore()
+																																																																								.collection("users")
+																																																																								.doc(id)
+																																																																								.get()
+																																																																								.then((doc) => {
+																																																																									if (doc.data() && doc.data().affiliation && doc.data().pid) {
+																																																																										resolve()
+																																																																									} else {
+																																																																										reject()
+																																																																									}
+																																																																								}).catch((error) => {
+																																																																									notifier.alert(error.message)
+																																																																									reject()
+																																																																								})
+																																																																						})
+																																																																					}
 
-																																																															function signUpViaGoogle() {
-																																																																showSpinner()
-																																																																var provider = new firebase.auth.GoogleAuthProvider();
-																																																																firebase.auth()
-																																																																	.signInWithPopup(provider)
-																																																																	.then((result) => {
-																																																																		var user = result.user;
-																																																																		if (user) {
-																																																																			hasCompleteDetails(user.uid).then(() => {
-																																																																				window.location.href = "bootstrap.html"
-																																																																			}, () => {
-																																																																				currentUser["email"] = user.email
-																																																																				currentUser["uuid"] = user.uid
-																																																																				toggleDetailsForm(true)
-																																																																				hideSpinner()
-																																																																			})
-																																																																		}
-																																																																	}).catch((error) => {
-																																																																		console.log("Google sign up error: " + errorMessage)
-																																																																		notifier.alert("Something went wrong, please try again.")
-																																																																	});
-																																																															}
+																																																																					function signUpViaGoogle() {
+																																																																						showSpinner()
+																																																																						var provider = new firebase.auth.GoogleAuthProvider();
+																																																																						firebase.auth()
+																																																																							.signInWithPopup(provider)
+																																																																							.then((result) => {
+																																																																								var user = result.user;
+																																																																								if (user) {
+																																																																									hasCompleteDetails(user.uid).then(() => {
+																																																																										window.location.href = "bootstrap.html"
+																																																																									}, () => {
+																																																																										currentUser["email"] = user.email
+																																																																										currentUser["uuid"] = user.uid
+																																																																										toggleDetailsForm(true)
+																																																																										hideSpinner()
+																																																																									})
+																																																																								}
+																																																																							}).catch((error) => {
+																																																																								console.log("Google sign up error: " + errorMessage)
+																																																																								notifier.alert("Something went wrong, please try again.")
+																																																																							});
+																																																																					}
 
-																																																															function showSpinner() {
-																																																																$("div.spinner_container").addClass("focused")
-																																																																$("div.spinner_container img").addClass("focused")
-																																																															}
+																																																																					function showSpinner() {
+																																																																						$("div.spinner_container").addClass("focused")
+																																																																						$("div.spinner_container img").addClass("focused")
+																																																																					}
 
-																																																															function hideSpinner() {
-																																																																$("div.spinner_container").removeClass("focused")
-																																																																$("div.spinner_container img").removeClass("focused")
-																																																															}
-																																																													*/
+																																																																					function hideSpinner() {
+																																																																						$("div.spinner_container").removeClass("focused")
+																																																																						$("div.spinner_container img").removeClass("focused")
+																																																																					}
+																																																																			*/
 
 	</script>
 
 	<script>
 		/*
-																																																															$(document).ready(function() {
+																																																																					$(document).ready(function() {
 
-																																																																$("#google_sso").click(() => {
-																																																																	signUpViaGoogle()
-																																																																})
+																																																																						$("#google_sso").click(() => {
+																																																																							signUpViaGoogle()
+																																																																						})
 
-																																																																$("div.button#signin").click(() => {
-																																																																	showSpinner()
-																																																																	let email = $("input#email").val()
-																																																																	let password = $("input#password").val()
-																																																																	firebase.auth()
-																																																																		.signInWithEmailAndPassword(email, password)
-																																																																		.then((user) => {
-																																																																			hasCompleteDetails(user.uid).then(() => {
-																																																																				window.location.href = "bootstrap.html"
-																																																																			}, () => {
-																																																																				currentUser["email"] = user.email
-																																																																				currentUser["uuid"] = user.uid
-																																																																				toggleDetailsForm(true)
-																																																																				hideSpinner()
-																																																																			})
-																																																																		})
-																																																																		.catch((error) => {
-																																																																			notifier.alert(error.message)
-																																																																			hideSpinner()
-																																																																		})
-																																																																})
+																																																																						$("div.button#signin").click(() => {
+																																																																							showSpinner()
+																																																																							let email = $("input#email").val()
+																																																																							let password = $("input#password").val()
+																																																																							firebase.auth()
+																																																																								.signInWithEmailAndPassword(email, password)
+																																																																								.then((user) => {
+																																																																									hasCompleteDetails(user.uid).then(() => {
+																																																																										window.location.href = "bootstrap.html"
+																																																																									}, () => {
+																																																																										currentUser["email"] = user.email
+																																																																										currentUser["uuid"] = user.uid
+																																																																										toggleDetailsForm(true)
+																																																																										hideSpinner()
+																																																																									})
+																																																																								})
+																																																																								.catch((error) => {
+																																																																									notifier.alert(error.message)
+																																																																									hideSpinner()
+																																																																								})
+																																																																						})
 
 
-																																																																$("div.button#signup").click(() => {
-																																																																	showSpinner()
-																																																																	let email = $("input#email").val()
-																																																																	let password = $("input#password").val()
-																																																																	firebase.auth()
-																																																																		.createUserWithEmailAndPassword(email, password)
-																																																																		.then((user) => {
-																																																																			currentUser["email"] = user.email
-																																																																			currentUser["uuid"] = user.uid
-																																																																			toggleDetailsForm(true)
-																																																																			hideSpinner()
-																																																																		})
-																																																																		.catch((error) => {
-																																																																			notifier.alert(error.message)
-																																																																			hideSpinner()
-																																																																		})
-																																																																})
+																																																																						$("div.button#signup").click(() => {
+																																																																							showSpinner()
+																																																																							let email = $("input#email").val()
+																																																																							let password = $("input#password").val()
+																																																																							firebase.auth()
+																																																																								.createUserWithEmailAndPassword(email, password)
+																																																																								.then((user) => {
+																																																																									currentUser["email"] = user.email
+																																																																									currentUser["uuid"] = user.uid
+																																																																									toggleDetailsForm(true)
+																																																																									hideSpinner()
+																																																																								})
+																																																																								.catch((error) => {
+																																																																									notifier.alert(error.message)
+																																																																									hideSpinner()
+																																																																								})
+																																																																						})
 
-																																																																$("div.button#complete").click(() => {
-																																																																	hideSpinner()
+																																																																						$("div.button#complete").click(() => {
+																																																																							hideSpinner()
 
-																																																																	let affiliation = $("input#affiliation").val()
-																																																																	let pid = $("input#pid").val()
-																																																																	let email = currentUser["email"]
+																																																																							let affiliation = $("input#affiliation").val()
+																																																																							let pid = $("input#pid").val()
+																																																																							let email = currentUser["email"]
 
-																																																																	firebase.firestore().collection("users")
-																																																																		.doc(currentUser["uuid"])
-																																																																		.set({
-																																																																			email, affiliation, pid,
-																																																																		}, {
-																																																																			merge: true
-																																																																		}).then(() => {
-																																																																			window.location.href = "bootstrap.html"
-																																																																			hideSpinner()
-																																																																		}).catch((error) => {
-																																																																			notifier.alert(error.message)
-																																																																			hideSpinner()
-																																																																		})
-																																																																})
+																																																																							firebase.firestore().collection("users")
+																																																																								.doc(currentUser["uuid"])
+																																																																								.set({
+																																																																									email, affiliation, pid,
+																																																																								}, {
+																																																																									merge: true
+																																																																								}).then(() => {
+																																																																									window.location.href = "bootstrap.html"
+																																																																									hideSpinner()
+																																																																								}).catch((error) => {
+																																																																									notifier.alert(error.message)
+																																																																									hideSpinner()
+																																																																								})
+																																																																						})
 
-																																																																$("form").submit((e) => {
-																																																																	e.preventDefault()
-																																																																})
-																																																															})
-																																																													*/
+																																																																						$("form").submit((e) => {
+																																																																							e.preventDefault()
+																																																																						})
+																																																																					})
+																																																																			*/
 
 	</script>
 
