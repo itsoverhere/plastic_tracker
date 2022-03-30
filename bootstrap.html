@@ -476,6 +476,10 @@
 					//				getBase64(file)
 
 				// add to Dropzone
+				if (myDropzone.files[0] != null) {
+					myDropzone.removeFile(myDropzone.files[0]);
+					console.log("this.files[1]!=null")
+				}
 				myDropzone.addFile(file)
 			})
 
