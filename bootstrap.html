@@ -369,7 +369,6 @@
 				})
 			});
 
-
 			$("#plastic_contribution_modal").on('change', 'input[type=number]', (e) => {
 				let i = $(e.target).val()
 				if (i < 0 || isNaN(i)) {
@@ -461,6 +460,22 @@
 				}
 			})
 
+			function getBase64(file) {
+				var reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = function() {
+					console.log(reader.result);
+				};
+				reader.onerror = function(error) {
+					console.log('Error: ', error);
+				};
+			}
+
+			$("input#riversnap_input").change((e) => {
+				var file = this.files[0]
+				getBase64(file)
+					// add to Dropzone
+			})
 
 			$("div#sign_in").click(() => {
 				if (currentUser) {
@@ -511,6 +526,17 @@
 
 			$("input#riversnap_input").val('')
 			$("input#riversnap_date").val('')
+		}
+
+		function getBase64(file) {
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function() {
+				console.log(reader.result);
+			};
+			reader.onerror = function(error) {
+				console.log('Error: ', error);
+			};
 		}
 
 		function storage_upload(uuid, filedata, cb) {
@@ -708,7 +734,8 @@
 					chunking: true,
 					forceChunking: true,
 					autoQueue: false,
-					autoProcessQueue: false
+					autoProcessQueue: false,
+					hiddenInputContainer: '#riversnap_input'
 				});
 
 				myDropzone.on("addedfile", function(file) {
