@@ -323,13 +323,15 @@
 									</div>
 									<div class="col-12 mt-2">
 										<select id="location">
-											<option value="1">Manggahan Floodway</option>
-											<option value="2">Bagong Ilog</option>
-											<option value="3">Pinagbuhatan</option>
-											<option value="4">Sta Rosa</option>
-											<option value="5">San Jose</option>
-											<option value="6">Sumilang</option>
-											<option value="7">Brgy Palatiw</option>
+<!--
+<option value="1">Manggahan Floodway</option>
+<option value="2">Bagong Ilog</option>
+<option value="3">Pinagbuhatan</option>
+<option value="4">Sta Rosa</option>
+<option value="5">San Jose</option>
+<option value="6">Sumilang</option>
+<option value="7">Brgy Palatiw</option>
+-->
 										</select>
 									</div>
 
@@ -593,6 +595,7 @@
 				.then(() => {
 					populatePlasticChart()
 					populateCalendar()
+					populateRiversnapLocations()
 						//						hideSpinner()
 				})
 		};
@@ -800,7 +803,10 @@
 				firestore.collection("riversnap_locations").get().then((query) => {
 					query.forEach((doc) => {
 						let location = doc.data().name
-						$("select#location")
+						let option = document.createElement("option")
+						$(option).text(location)
+						$(option).attr("value", location)
+						$("select#location").append(option)
 					})
 				})
 			}
