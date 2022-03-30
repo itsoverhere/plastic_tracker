@@ -244,7 +244,7 @@
 			</div>
 		</div>
 
-		<div class="modal fade" id="spinner_modal" tabindex="-1" aria-labelledby="riversnap_modal_label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal fade" id="spinner_modal" tabindex="-1" aria-labelledby="riversnap_modal_label" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered spinner_modal">
 				<img src="assets/spinner.gif">
 			</div>
@@ -383,7 +383,7 @@
 			})
 
 			$("button#add_contribution").click(function(e) {
-				//				hideModals()
+				hideModals()
 				showSpinner()
 
 				console.log("button add contribution")
@@ -394,12 +394,6 @@
 					let plastic_uuid = $("input#plastic_category.plastic_contribution_modal").val()
 					let user_uuid = currentUser.uid
 					let timestamp = new Date()
-
-					console.log('quantity: ' + quantity)
-					console.log('weight: ' + weight)
-					console.log('week: ' + week)
-					console.log('plastic_uuid: ' + plastic_uuid)
-					console.log('user_uuid: ' + currentUser.uid)
 
 					// write security rules 
 					let path =
@@ -413,7 +407,7 @@
 						}, {
 							merge: true
 						}).then((doc) => {
-							hideModals()
+							//							hideModals()
 							hideSpinner()
 							notifier.success("Successfully added your plastic contribution!")
 
@@ -433,7 +427,7 @@
 
 			$("button#add_riversnap").click(function(e) {
 				if (currentUser && myDropzone.files.length == 1) {
-					//					hideModals()
+					hideModals()
 					showSpinner()
 
 					let location = $("select#location").val()
@@ -446,7 +440,7 @@
 						timestamp: firebase.firestore.FieldValue.serverTimestamp()
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
-							hideModals()
+							//							hideModals()
 							hideSpinner()
 							populateCalendar()
 							notifier.success("Successfully added your new riversnap!")
