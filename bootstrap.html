@@ -323,7 +323,7 @@
 									</div>
 									<div class="col-12 mt-2">
 										<select id="location">
-<!--
+											<!--
 <option value="1">Manggahan Floodway</option>
 <option value="2">Bagong Ilog</option>
 <option value="3">Pinagbuhatan</option>
@@ -466,11 +466,12 @@
 				e.stopPropagation()
 				console.log("riversnap_input change")
 				var file = document.getElementById("riversnap_input").files[0]
+				console.log("new file: " + file)
 
 				// add to Dropzone
 				if (myDropzone.files[0] != null) {
-					myDropzone.removeFile(myDropzone.files[0]);
 					console.log("this.files[0]!=null")
+					myDropzone.removeFile(myDropzone.files[0]);
 				}
 				myDropzone.addFile(file)
 			})
