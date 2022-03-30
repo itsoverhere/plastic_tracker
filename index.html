@@ -23,11 +23,11 @@
 
 
 	<style>
-		div.form {
+		div.pt-form {
 			display: none;
 		}
 		
-		div.form.focused {
+		div.pt-form.pt-focused {
 			display: block;
 		}
 		
@@ -46,7 +46,7 @@
 	<!--	<div id="firebaseui-auth-container" class="focused"></div>-->
 	<div class="container-fluid m-0 p-0 overflow-hidden">
 
-		<div class="form focused authentication row justify-content-center ms-auto align-items-center">
+		<div class="pt-form pt-focused authentication row justify-content-center ms-auto align-items-center">
 
 			<div class="col-xxl-3 col-xl-4 col-lg-4 col-md-5 col-sm-6 col-xs-8">
 				<div class="title row">
@@ -93,7 +93,7 @@
 
 		</div>
 
-		<div class="h-100 form details row justify-content-center ms-auto align-items-center">
+		<div class="h-100 pt-form details row justify-content-center ms-auto align-items-center">
 
 			<div class="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-xs-8">
 				<div class="title row">
@@ -206,11 +206,11 @@
 
 		function toggleDetailsForm(show) {
 			if (show) {
-				$("div.authentication").removeClass("focused")
-				$("div.details").addClass("focused")
+				$("div.authentication").removeClass("pt-focused")
+				$("div.details").addClass("pt-focused")
 			} else {
-				$("div.authentication").addClass("focused")
-				$("div.details").removeClass("focused")
+				$("div.authentication").addClass("pt-focused")
+				$("div.details").removeClass("pt-focused")
 			}
 		}
 
