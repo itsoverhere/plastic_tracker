@@ -5,6 +5,10 @@
 	<meta charset="utf-8">
 	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
+
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
 	<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth-compat.js"></script>
 	<script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -19,147 +23,7 @@
 
 
 	<style>
-		@media only screen and (min-width: 550px) {
-			html,
-			body {
-				display: grid;
-				grid-template-columns: 3fr 2fr 3fr;
-				grid-template-rows: 3fr 2fr 3fr;
-			}
-		}
-		
-		@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
-			html,
-			body {
-				display: grid;
-				grid-template-columns: 1fr 8fr 1fr;
-				grid-template-rows: 1fr 8fr 1fr;
-			}
-			input[type=text] {
-				height: 100%;
-			}
-		}
-		
-		html,
-		body {
-			width: 100vw;
-			height: 100vh;
-			margin: 0 0;
-			font-family: sans-serif;
-			color: #555;
-			overflow-x: hidden;
-		}
-		
-		div.container {
-			display: none;
-		}
-		
-		div.container.focused {
-			display: grid;
-			grid-column: 2 / span 1;
-			grid-row: 2 / span 1;
-		}
-		
-		div.container.authentication.focused {
-			display: grid;
-			grid-template-rows: 1fr max-content;
-			grid-row-gap: 4px;
-		}
-		
-		div.container.focused form {
-			display: grid;
-			grid-template-columns: max-content 1fr;
-			align-items: center;
-			grid-column-gap: 8px;
-			grid-template-rows: 1fr 1fr 1fr 1fr;
-		}
-		
-		div.button#complete {
-			height: 100%;
-			grid-row: 4 / span 1;
-			grid-column: 2 / span 1;
-		}
-		
-		div.button_container {
-			height: 100%;
-			grid-row: 4 / span 1;
-			grid-column: 1 / span 2;
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			grid-gap: 8px;
-		}
-		
-		div.button {
-			color: white;
-			flex-grow: 1;
-			display: grid;
-			align-content: center;
-			justify-content: center;
-			border-radius: 6px;
-			transition-property: all;
-			transition-duration: 0.5s;
-			box-shadow: 0px 5px 5px rgba(100, 100, 100, 0.15);
-			transition-timing-function: ease;
-		}
-		
-		div.button#signin,
-		div.button#complete {
-			background-color: darkseagreen;
-		}
-		
-		div.button#signup {
-			background-color: white;
-			border: 2px solid darkseagreen;
-			box-sizing: border-box;
-			color: darkseagreen;
-		}
-		
-		div.button:hover {
-			cursor: pointer;
-			box-shadow: 0px 1px 3px rgba(30, 30, 30, 0.15);
-			transition-property: all;
-			transition-duration: 0.5s;
-			transition-timing-function: ease;
-		}
-		
-		span.title {
-			color: #698869;
-			grid-column: 1 / span 2;
-			grid-row: 1 / span 1;
-		}
-		
-		span#google_sso {
-			grid-row: 5 / span 1;
-			grid-column: 1 / span 2;
-		}
-		
-		span#google_sso:hover {
-			cursor: pointer;
-			text-decoration: underline;
-		}
-		
-		div.spinner_container,
-		{
-			display: none;
-		}
-		
-		div.spinner_container img {
-			display: none;
-		}
-		
-		div.spinner_container img.focused {
-			display: block;
-		}
-		
-		div.spinner_container.focused {
-			display: grid;
-			position: absolute;
-			background-color: rgba(0, 0, 0, 0.3);
-			height: 100vh;
-			width: 100vw;
-			align-items: center;
-			justify-content: center;
-		}
+
 
 	</style>
 
@@ -168,228 +32,283 @@
 <body>
 
 	<!--	<div id="firebaseui-auth-container" class="focused"></div>-->
+	<div class="container-fluid m-0 p-0 g-2 overflow-hidden">
 
-	<div class="authentication container focused">
-		<form id="authentication_form">
-			<span class="title">#ecosquadgoals</span>
-			<span class="label">Email</span>
-			<input type="email" id="email">
-			<span class="label">Password</span>
-			<input type="password" id="password">
-			<div class="button_container">
-
-				<div class="button" id="signup">Sign up</div>
-				<div class="button" id="signin">Sign in</div>
+		<div class="row justify-content-center">
+			<div class="col col-md-3 col-xs-1">
 			</div>
-		</form>
-		<span id="google_sso">Or, sign in using Google</span>
+			<div class="col col-md-6 col-xs-10">
+				<div class="title row">
+					#ecosquadgoals
+				</div>
+
+				<div class="p-2 row">
+					<div class="label col-4">
+						Email
+					</div>
+					<input type="email" class="col-8 form-control" />
+				</div>
+
+				<div class="p-2 row">
+					<div class="label col-4">
+						Password
+					</div>
+					<input type="password" class="col-8 form-control" />
+				</div>
+
+				<div class="p-4 row">
+					<button class="col">
+						Sign up
+					</button>
+					<button class="col">
+						Sign in
+					</button>
+				</div>
+
+				<div class="row">
+					Or, sign in using Google
+				</div>
+
+				<div class="col col-md-3 col-xs-1">
+				</div>
+
+			</div>
+
+
+			<div class="modal fade" id="spinner_modal" tabindex="-1" aria-labelledby="riversnap_modal_label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+				<div class="modal-dialog modal-dialog-centered spinner_modal">
+					<img src="assets/spinner.gif">
+				</div>
+			</div>
+
+		</div>
 	</div>
+	<!--
+<div class="authentication container focused">
+	<form id="authentication_form">
+		<span class="title">#ecosquadgoals</span>
+		<span class="label">Email</span>
+		<input type="email" id="email">
+		<span class="label">Password</span>
+		<input type="password" id="password">
+		<div class="button_container">
 
-	<div class="details container">
-		<form id="details_form">
-			<span class="title">Please complete your registration</span>
-			<span class="label">Affiliation</span>
-			<input type="text" id="affiliation">
-			<span class="label">Participant ID</span>
-			<input type="text" id="pid">
-			<div class="button" id="complete">Complete</div>
-		</form>
-	</div>
+			<div class="button" id="signup">Sign up</div>
+			<div class="button" id="signin">Sign in</div>
+		</div>
+	</form>
+	<span id="google_sso">Or, sign in using Google</span>
+</div>
 
-
-	<div class="spinner_container">
-		<img src="assets/spinner.gif">
-	</div>
-
+<div class="details container">
+	<form id="details_form">
+		<span class="title">Please complete your registration</span>
+		<span class="label">Affiliation</span>
+		<input type="text" id="affiliation">
+		<span class="label">Participant ID</span>
+		<input type="text" id="pid">
+		<div class="button" id="complete">Complete</div>
+	</form>
+</div>
+-->
 
 	<script>
-		let app, auth
-		let currentUser = {}
-		let notifier = new AWN()
+		/*
+																																					let app, auth
+																																					let currentUser = {}
+																																					let notifier = new AWN()
 
-		window.addEventListener('load', function() {
-			initApp()
-		});
+																																					window.addEventListener('load', function() {
+																																						initApp()
+																																					});
 
-		initApp = function() {
-			showSpinner()
-			Promise.resolve()
-				.then(setupFirebase)
-				.then(() => {
-					firebase.auth().onAuthStateChanged(function(user) {
-						if (user) {
-							hasCompleteDetails(user.uid).then(() => {
-								window.location.href = "main.html"
-							}, () => {
-								currentUser["email"] = user.email
-								currentUser["uuid"] = user.uid
-								toggleDetailsForm(true)
-								hideSpinner()
-							})
-						}
-					}, function(error) {
-						notifier.alert(error.message)
-					});
-					hideSpinner()
-				})
-		};
+																																					initApp = function() {
+																																						showSpinner()
+																																						Promise.resolve()
+																																							.then(setupFirebase)
+																																							.then(() => {
+																																								firebase.auth().onAuthStateChanged(function(user) {
+																																									if (user) {
+																																										hasCompleteDetails(user.uid).then(() => {
+																																											window.location.href = "bootstrap.html"
+																																										}, () => {
+																																											currentUser["email"] = user.email
+																																											currentUser["uuid"] = user.uid
+																																											toggleDetailsForm(true)
+																																											hideSpinner()
+																																										})
+																																									}
+																																								}, function(error) {
+																																									notifier.alert(error.message)
+																																								});
+																																								hideSpinner()
+																																							})
+																																					};
 
-		function setupFirebase() {
-			return new Promise((resolve) => {
-				const firebaseConfig = {
-					apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
-					authDomain: "plastic-tracker-2cbb7.firebaseapp.com",
-					projectId: "plastic-tracker-2cbb7",
-					storageBucket: "plastic-tracker-2cbb7.appspot.com",
-					appId: "1:645843325306:web:5f4b90dc9388fe16f4c6c3",
-					measurementId: "G-2FF14XFMB6"
-				};
-				app = firebase.initializeApp(firebaseConfig);
+																																					function setupFirebase() {
+																																						return new Promise((resolve) => {
+																																							const firebaseConfig = {
+																																								apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
+																																								authDomain: "plastic-tracker-2cbb7.firebaseapp.com",
+																																								projectId: "plastic-tracker-2cbb7",
+																																								storageBucket: "plastic-tracker-2cbb7.appspot.com",
+																																								appId: "1:645843325306:web:5f4b90dc9388fe16f4c6c3",
+																																								measurementId: "G-2FF14XFMB6"
+																																							};
+																																							app = firebase.initializeApp(firebaseConfig);
 
-				resolve()
-			})
-		}
+																																							resolve()
+																																						})
+																																					}
 
-		function toggleDetailsForm(show) {
-			if (show) {
-				$("div.container.authentication").removeClass("focused")
-				$("div.container.details").addClass("focused")
-			} else {
-				$("div.container.authentication").addClass("focused")
-				$("div.container.details").removeClass("focused")
-			}
-		}
+																																					function toggleDetailsForm(show) {
+																																						if (show) {
+																																							$("div.container.authentication").removeClass("focused")
+																																							$("div.container.details").addClass("focused")
+																																						} else {
+																																							$("div.container.authentication").addClass("focused")
+																																							$("div.container.details").removeClass("focused")
+																																						}
+																																					}
 
-		function hasCompleteDetails(id) {
-			return new Promise((resolve, reject) => {
-				firebase.firestore()
-					.collection("users")
-					.doc(id)
-					.get()
-					.then((doc) => {
-						if (doc.data() && doc.data().affiliation && doc.data().pid) {
-							resolve()
-						} else {
-							reject()
-						}
-					}).catch((error) => {
-						notifier.alert(error.message)
-						reject()
-					})
-			})
-		}
+																																					function hasCompleteDetails(id) {
+																																						return new Promise((resolve, reject) => {
+																																							firebase.firestore()
+																																								.collection("users")
+																																								.doc(id)
+																																								.get()
+																																								.then((doc) => {
+																																									if (doc.data() && doc.data().affiliation && doc.data().pid) {
+																																										resolve()
+																																									} else {
+																																										reject()
+																																									}
+																																								}).catch((error) => {
+																																									notifier.alert(error.message)
+																																									reject()
+																																								})
+																																						})
+																																					}
 
-		function signUpViaGoogle() {
-			showSpinner()
-			var provider = new firebase.auth.GoogleAuthProvider();
-			firebase.auth()
-				.signInWithPopup(provider)
-				.then((result) => {
-					var user = result.user;
-					if (user) {
-						hasCompleteDetails(user.uid).then(() => {
-							window.location.href = "main.html"
-						}, () => {
-							currentUser["email"] = user.email
-							currentUser["uuid"] = user.uid
-							toggleDetailsForm(true)
-							hideSpinner()
-						})
-					}
-				}).catch((error) => {
-					console.log("Google sign up error: " + errorMessage)
-					notifier.alert("Something went wrong, please try again.")
-				});
-		}
+																																					function signUpViaGoogle() {
+																																						showSpinner()
+																																						var provider = new firebase.auth.GoogleAuthProvider();
+																																						firebase.auth()
+																																							.signInWithPopup(provider)
+																																							.then((result) => {
+																																								var user = result.user;
+																																								if (user) {
+																																									hasCompleteDetails(user.uid).then(() => {
+																																										window.location.href = "bootstrap.html"
+																																									}, () => {
+																																										currentUser["email"] = user.email
+																																										currentUser["uuid"] = user.uid
+																																										toggleDetailsForm(true)
+																																										hideSpinner()
+																																									})
+																																								}
+																																							}).catch((error) => {
+																																								console.log("Google sign up error: " + errorMessage)
+																																								notifier.alert("Something went wrong, please try again.")
+																																							});
+																																					}
 
-		function showSpinner() {
-			$("div.spinner_container").addClass("focused")
-			$("div.spinner_container img").addClass("focused")
-		}
+																																					function showSpinner() {
+																																						$("div.spinner_container").addClass("focused")
+																																						$("div.spinner_container img").addClass("focused")
+																																					}
 
-		function hideSpinner() {
-			$("div.spinner_container").removeClass("focused")
-			$("div.spinner_container img").removeClass("focused")
-		}
+																																					function hideSpinner() {
+																																						$("div.spinner_container").removeClass("focused")
+																																						$("div.spinner_container img").removeClass("focused")
+																																					}
+																																			*/
 
 	</script>
 
 	<script>
-		$(document).ready(function() {
+		/*
+																																					$(document).ready(function() {
 
-			$("#google_sso").click(() => {
-				signUpViaGoogle()
-			})
+																																						$("#google_sso").click(() => {
+																																							signUpViaGoogle()
+																																						})
 
-			$("div.button#signin").click(() => {
-				showSpinner()
-				let email = $("input#email").val()
-				let password = $("input#password").val()
-				firebase.auth()
-					.signInWithEmailAndPassword(email, password)
-					.then((user) => {
-						hasCompleteDetails(user.uid).then(() => {
-							window.location.href = "main.html"
-						}, () => {
-							currentUser["email"] = user.email
-							currentUser["uuid"] = user.uid
-							toggleDetailsForm(true)
-							hideSpinner()
-						})
-					})
-					.catch((error) => {
-						notifier.alert(error.message)
-						hideSpinner()
-					})
-			})
+																																						$("div.button#signin").click(() => {
+																																							showSpinner()
+																																							let email = $("input#email").val()
+																																							let password = $("input#password").val()
+																																							firebase.auth()
+																																								.signInWithEmailAndPassword(email, password)
+																																								.then((user) => {
+																																									hasCompleteDetails(user.uid).then(() => {
+																																										window.location.href = "bootstrap.html"
+																																									}, () => {
+																																										currentUser["email"] = user.email
+																																										currentUser["uuid"] = user.uid
+																																										toggleDetailsForm(true)
+																																										hideSpinner()
+																																									})
+																																								})
+																																								.catch((error) => {
+																																									notifier.alert(error.message)
+																																									hideSpinner()
+																																								})
+																																						})
 
 
-			$("div.button#signup").click(() => {
-				showSpinner()
-				let email = $("input#email").val()
-				let password = $("input#password").val()
-				firebase.auth()
-					.createUserWithEmailAndPassword(email, password)
-					.then((user) => {
-						currentUser["email"] = user.email
-						currentUser["uuid"] = user.uid
-						toggleDetailsForm(true)
-						hideSpinner()
-					})
-					.catch((error) => {
-						notifier.alert(error.message)
-						hideSpinner()
-					})
-			})
+																																						$("div.button#signup").click(() => {
+																																							showSpinner()
+																																							let email = $("input#email").val()
+																																							let password = $("input#password").val()
+																																							firebase.auth()
+																																								.createUserWithEmailAndPassword(email, password)
+																																								.then((user) => {
+																																									currentUser["email"] = user.email
+																																									currentUser["uuid"] = user.uid
+																																									toggleDetailsForm(true)
+																																									hideSpinner()
+																																								})
+																																								.catch((error) => {
+																																									notifier.alert(error.message)
+																																									hideSpinner()
+																																								})
+																																						})
 
-			$("div.button#complete").click(() => {
-				hideSpinner()
+																																						$("div.button#complete").click(() => {
+																																							hideSpinner()
 
-				let affiliation = $("input#affiliation").val()
-				let pid = $("input#pid").val()
-				let email = currentUser["email"]
+																																							let affiliation = $("input#affiliation").val()
+																																							let pid = $("input#pid").val()
+																																							let email = currentUser["email"]
 
-				firebase.firestore().collection("users")
-					.doc(currentUser["uuid"])
-					.set({
-						email, affiliation, pid,
-					}, {
-						merge: true
-					}).then(() => {
-						window.location.href = "main.html"
-						hideSpinner()
-					}).catch((error) => {
-						notifier.alert(error.message)
-						hideSpinner()
-					})
-			})
+																																							firebase.firestore().collection("users")
+																																								.doc(currentUser["uuid"])
+																																								.set({
+																																									email, affiliation, pid,
+																																								}, {
+																																									merge: true
+																																								}).then(() => {
+																																									window.location.href = "bootstrap.html"
+																																									hideSpinner()
+																																								}).catch((error) => {
+																																									notifier.alert(error.message)
+																																									hideSpinner()
+																																								})
+																																						})
 
-			$("form").submit((e) => {
-				e.preventDefault()
-			})
-		})
+																																						$("form").submit((e) => {
+																																							e.preventDefault()
+																																						})
+																																					})
+																																			*/
 
 	</script>
+
+
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 </body>
 
 </html>
