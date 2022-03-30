@@ -407,7 +407,7 @@
 			})
 
 			$("button#add_contribution").click(function(e) {
-				//				showSpinner()
+				showSpinner()
 
 				console.log("button add contribution")
 				if (currentUser) {
@@ -438,7 +438,7 @@
 						}).then((doc) => {
 							notifier.success("Successfully added your plastic contribution!")
 							hideModals()
-								//							hideSpinner()
+							hideSpinner()
 							clearModalInputs()
 							populatePlasticChart()
 						}).catch((error) => {
@@ -457,7 +457,7 @@
 
 				console.log("button add riversnap")
 				if (currentUser && myDropzone.files.length == 1) {
-					//					showSpinner()
+					showSpinner()
 
 					let location = $("select#location").val()
 					let date = $("input#riversnap_date").val()
@@ -470,7 +470,7 @@
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
 							hideModals()
-								//							hideSpinner()
+							er()
 							populateCalendar()
 							notifier.success("Successfully added your new riversnap!")
 						})
@@ -557,13 +557,11 @@
 		}
 
 		function showSpinner() {
-			$("div.spinner_container").addClass("focused")
-			$("div.spinner_container img").addClass("focused")
+			$("#spinner_modal").modal('show')
 		}
 
 		function hideSpinner() {
-			$("div.spinner_container").removeClass("focused")
-			$("div.spinner_container img").removeClass("focused")
+			$("#spinner_modal").modal('hide')
 		}
 
 		function clearModalInputs() {
@@ -625,7 +623,7 @@
 		// FUNCTIONS
 
 		initApp = function() {
-			//				showSpinner()
+			showSpinner()
 			Promise.resolve()
 				.then(setupFirebase)
 				.then(authenticate)
@@ -634,7 +632,7 @@
 					populatePlasticChart()
 					populateCalendar()
 					populateRiversnapLocations()
-						//						hideSpinner()
+					hideSpinner()
 				})
 		};
 
@@ -940,8 +938,8 @@
 											stacked: true
 										}
 									},
-									maintainAspectRatio: false,
-									responsive: false
+									maintainAspectRatio: true,
+									responsive: true
 								}
 							};
 
