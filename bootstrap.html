@@ -469,10 +469,7 @@
 				console.log("new file: " + file)
 
 				// add to Dropzone
-				if (myDropzone.files[0] != null) {
-					console.log("this.files[0]!=null")
-					myDropzone.removeFile(myDropzone.files[0]);
-				}
+//				if (myDropzone.files[0] != null) { // console.log("this.files[0]!=null") // myDropzone.removeFile(myDropzone.files[0]); // }
 				myDropzone.addFile(file)
 			})
 
@@ -526,17 +523,6 @@
 
 			$("input#riversnap_input").val('')
 			$("input#riversnap_date").val('')
-		}
-
-		function getBase64(file) {
-			var reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = function() {
-				console.log(reader.result);
-			};
-			reader.onerror = function(error) {
-				console.log('Error: ', error);
-			};
 		}
 
 		function storage_upload(uuid, filedata, cb) {
