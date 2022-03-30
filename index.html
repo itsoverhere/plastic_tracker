@@ -153,15 +153,23 @@
 		});
 
 		initApp = function() {
+
+			console.log("initapp")
 			showSpinner()
 			Promise.resolve()
 				.then(setupFirebase)
 				.then(() => {
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user) {
+
+							console.log("firebase auth")
 							hasCompleteDetails(user.uid).then(() => {
+
+								console.log("hascompletedetails")
 								window.location.href = "main.html"
 							}, () => {
+
+								console.log("not present")
 								currentUser["email"] = user.email
 								currentUser["uuid"] = user.uid
 								toggleDetailsForm(true)
@@ -172,11 +180,14 @@
 						notifier.alert(error.message)
 					});
 					// resolved promise
+
+					console.log("done initapp")
 					hideSpinner()
 				})
 		};
 
 		function setupFirebase() {
+			console.log("setupfirebase")
 			return new Promise((resolve) => {
 				const firebaseConfig = {
 					apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
@@ -188,6 +199,7 @@
 				};
 				app = firebase.initializeApp(firebaseConfig);
 
+				console.log("resolve setupfirebase")
 				resolve()
 			})
 		}
