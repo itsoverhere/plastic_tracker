@@ -409,7 +409,7 @@
 						}).then((doc) => {
 							notifier.success("Successfully added your plastic contribution!")
 							hideModals()
-							hideSpinner()
+								//							hideSpinner()
 							clearModalInputs()
 							populatePlasticChart()
 						}).catch((error) => {
@@ -442,13 +442,13 @@
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
 							hideModals()
 								//							hideSpinner()
-								//							populateCalendar()
-								//							notifier.success("Successfully added your new riversnap!")
+							populateCalendar()
+							notifier.success("Successfully added your new riversnap!")
 						})
 
 					}).catch((error) => {
 						console.log("Error adding riversnap document: " + error)
-							//						notifier.alert("Something went wrong, please try again.")
+						notifier.alert("Something went wrong, please try again.")
 					})
 				} else {
 					if (!currentUser) {
@@ -744,6 +744,7 @@
 				});
 
 				myDropzone.on("removedfile", function(file) {
+					console.log("removed file")
 					var storageRef = firebase.storage().ref("/");
 					storageRef.child(file.fullPath).delete().then(
 						function() {
@@ -792,6 +793,17 @@
 						maxDate: new Date()
 					});
 				})
+		}
+
+		function populateRiversnapLocations() {
+			if (currentUser) {
+				firestore.collection("riversnap_locations").get().then((query) => {
+					query.forEach((doc) => {
+						let location = doc.data().name
+						$("select#location")
+					})
+				})
+			}
 		}
 
 		function populatePlasticChart() {
