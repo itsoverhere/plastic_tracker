@@ -84,7 +84,7 @@
 					</div>
 				</div>
 
-				<div class="py-2 row">
+				<div id="google_sso" class="py-2 row">
 					Or, sign in using Google
 				</div>
 
@@ -283,7 +283,7 @@
 				signUpViaGoogle()
 			})
 
-			$("div.button#signin").click(() => {
+			$("button#signin").click(() => {
 				showSpinner()
 				let email = $("input#email").val()
 				let password = $("input#password").val()
@@ -306,7 +306,7 @@
 			})
 
 
-			$("div.button#signup").click(() => {
+			$("button#signup").click(() => {
 				showSpinner()
 				let email = $("input#email").val()
 				let password = $("input#password").val()
@@ -324,7 +324,7 @@
 					})
 			})
 
-			$("div.button#submit").click(() => {
+			$("button#submit").click(() => {
 				showSpinner()
 
 				let affiliation = $("input#affiliation").val()
