@@ -161,6 +161,10 @@
 			align-items: center;
 		}
 		
+		div#spinner_modal {
+			z-index: 1051;
+		}
+		
 		#dropzone img {
 			border-radius: 10px;
 			vertical-align: middle;
@@ -238,10 +242,6 @@
 			<div class="col">
 				<div class="p-3"></div>
 			</div>
-		</div>
-
-		<div class="spinner_container">
-			<img src="assets/spinner.gif">
 		</div>
 
 		<div class="modal fade" id="spinner_modal" tabindex="-1" aria-labelledby="riversnap_modal_label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -383,6 +383,7 @@
 			})
 
 			$("button#add_contribution").click(function(e) {
+				hideModals()
 				showSpinner()
 
 				console.log("button add contribution")
@@ -413,7 +414,7 @@
 							merge: true
 						}).then((doc) => {
 							notifier.success("Successfully added your plastic contribution!")
-							hideModals()
+								//							hideModals()
 							hideSpinner()
 							clearModalInputs()
 							populatePlasticChart()
@@ -431,6 +432,7 @@
 
 			$("button#add_riversnap").click(function(e) {
 				if (currentUser && myDropzone.files.length == 1) {
+					hideModals()
 					showSpinner()
 
 					let location = $("select#location").val()
@@ -443,7 +445,7 @@
 						timestamp: firebase.firestore.FieldValue.serverTimestamp()
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
-							hideModals()
+							//							hideModals()
 							hideSpinner()
 							populateCalendar()
 							notifier.success("Successfully added your new riversnap!")
