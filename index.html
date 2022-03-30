@@ -67,12 +67,12 @@
 
 				<div class="row gy-2">
 					<div class="col p-2">
-						<button class="btn btn-primary form-control" type="button" id="sign_up">
+						<button class="btn btn-primary form-control" type="button" id="signup">
 							Sign up
 						</button>
 					</div>
 					<div class="col p-2">
-						<button class="btn btn-primary form-control" type="button" id="sign_in">
+						<button class="btn btn-primary form-control" type="button" id="signin">
 							Sign in
 						</button>
 					</div>
@@ -127,40 +127,15 @@
 		</div>
 
 
-		<div class="modal fade" id="spinner_modal" tabindex="-1" aria-labelledby="riversnap_modal_label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-			<div class="modal-dialog modal-dialog-centered spinner_modal">
-				<img src="assets/spinner.gif">
-			</div>
+	</div>
+
+
+	<div class="modal fade" id="spinner_modal" tabindex="-1" aria-labelledby="riversnap_modal_label" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-dialog-centered spinner_modal">
+			<img src="assets/spinner.gif">
 		</div>
 	</div>
-	<!--
-<div class="authentication container focused">
-	<form id="authentication_form">
-		<span class="title">#ecosquadgoals</span>
-		<span class="label">Email</span>
-		<input type="email" id="email">
-		<span class="label">Password</span>
-		<input type="password" id="password">
-		<div class="button_container">
 
-			<div class="button" id="signup">Sign up</div>
-			<div class="button" id="signin">Sign in</div>
-		</div>
-	</form>
-	<span id="google_sso">Or, sign in using Google</span>
-</div>
-
-<div class="details container">
-	<form id="details_form">
-		<span class="title">Please complete your registration</span>
-		<span class="label">Affiliation</span>
-		<input type="text" id="affiliation">
-		<span class="label">Participant ID</span>
-		<input type="text" id="pid">
-		<div class="button" id="complete">Complete</div>
-	</form>
-</div>
--->
 
 	<script>
 		let app, auth
@@ -190,6 +165,7 @@
 					}, function(error) {
 						notifier.alert(error.message)
 					});
+					// resolved promise
 					hideSpinner()
 				})
 		};
@@ -320,8 +296,8 @@
 					})
 			})
 
-			$("div.button#complete").click(() => {
-				hideSpinner()
+			$("div.button#submit").click(() => {
+				showSpinner()
 
 				let affiliation = $("input#affiliation").val()
 				let pid = $("input#pid").val()
