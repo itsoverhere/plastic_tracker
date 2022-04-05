@@ -281,8 +281,11 @@
 
 					// resolved promise
 					console.log("done initapp")
-					hideSpinner()
-					$("#spinner_modal").modal('hide')
+					setTimeout(() => {
+						hideSpinner()
+						$("#spinner_modal").modal('hide')
+					}, 1000)
+
 
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user) {
