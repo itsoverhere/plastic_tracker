@@ -207,7 +207,7 @@
 						notifier.alert(error.message)
 					});
 					// resolved promise
-
+					resolve()
 					console.log("done initapp")
 					hideSpinner()
 					$("#spinner_modal").modal('hide')
@@ -285,6 +285,7 @@
 		}
 
 		function showSpinner() {
+			console.log("show spinner")
 			$("#spinner_modal").modal('show')
 		}
 
