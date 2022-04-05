@@ -278,6 +278,12 @@
 			Promise.resolve()
 				.then(setupFirebase)
 				.then(() => {
+
+					// resolved promise
+					console.log("done initapp")
+					hideSpinner()
+					$("#spinner_modal").modal('hide')
+
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user) {
 
@@ -298,10 +304,6 @@
 					}, function(error) {
 						notifier.alert(error.message)
 					});
-					// resolved promise
-					console.log("done initapp")
-					hideSpinner()
-					$("#spinner_modal").modal('hide')
 				})
 		};
 
