@@ -372,7 +372,7 @@
 						})
 					}
 				}).catch((error) => {
-					console.log("Google sign up error: " + errorMessage)
+					console.log("Google sign up error: " + error.message)
 					notifier.alert("Something went wrong, please try again.")
 				});
 		}
