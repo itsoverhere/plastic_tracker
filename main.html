@@ -204,6 +204,7 @@
 						</div>
 						<div class="row p-3">
 							<div class="px-3">
+								<span id="no_plastic">No plastic usage recorded yet. Record it now by choosing one of the plastic categories below!</span>
 								<canvas id="plastic_usage_chart"></canvas>
 							</div>
 						</div>
@@ -841,80 +842,84 @@
 
 						let plastic_data = doc.data().plastics
 
-						let labels = Object.keys(plastic_data)
-						let data_qty = {}
-						let data_weight = {}
-						Object.keys(plastics).forEach((key) => {
-							data_qty[key] = new Array(labels.length).fill(0)
-							data_weight[key] = new Array(labels.length).fill(0)
-						})
+						if (plastic_data) {
+							let labels = Object.keys(plastic_data)
+							let data_qty = {}
+							let data_weight = {}
+							Object.keys(plastics).forEach((key) => {
+								data_qty[key] = new Array(labels.length).fill(0)
+								data_weight[key] = new Array(labels.length).fill(0)
+							})
 
-						Object.entries(plastics).forEach((plastic) => {
-							for (let i = 0; i < labels.length; i++) {
-								if (plastic[0] in plastic_data[labels[i]]) {
-									data_qty[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["quantity"]
-									data_weight[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["weight"]
-								} else {
-									data_qty[plastic[0]][i] = 0
-									data_weight[plastic[0]][i] = 0
+							Object.entries(plastics).forEach((plastic) => {
+								for (let i = 0; i < labels.length; i++) {
+									if (plastic[0] in plastic_data[labels[i]]) {
+										data_qty[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["quantity"]
+										data_weight[plastic[0]][i] = plastic_data[labels[i]][plastic[0]]["weight"]
+									} else {
+										data_qty[plastic[0]][i] = 0
+										data_weight[plastic[0]][i] = 0
+									}
 								}
+
+							})
+
+							let dataset_qty = [],
+								dataset_weight = []
+							Object.entries(plastics).forEach((plastic) => {
+								dataset_qty.push({
+									"label": plastic[1].name,
+									"data": data_qty[plastic[0]],
+									"backgroundColor": "#" + plastic[1].color
+								})
+								dataset_weight.push({
+									"label": plastic[1].name,
+									"data": data_qty[plastic[0]],
+									"backgroundColor": "#" + plastic[1].color
+								})
+							})
+
+							labels = labels.map((el) => {
+								return "Week " + el
+							})
+
+							const data = {
+								labels: labels,
+								datasets: dataset_qty
 							}
 
-						})
+							$("span#no_plastic").remove()
 
-						let dataset_qty = [],
-							dataset_weight = []
-						Object.entries(plastics).forEach((plastic) => {
-							dataset_qty.push({
-								"label": plastic[1].name,
-								"data": data_qty[plastic[0]],
-								"backgroundColor": "#" + plastic[1].color
-							})
-							dataset_weight.push({
-								"label": plastic[1].name,
-								"data": data_qty[plastic[0]],
-								"backgroundColor": "#" + plastic[1].color
-							})
-						})
-
-						labels = labels.map((el) => {
-							return "Week " + el
-						})
-
-						const data = {
-							labels: labels,
-							datasets: dataset_qty
-						}
-
-						if (!chart) {
-							const config = {
-								type: 'bar',
-								data: data,
-								options: {
-									interaction: {
-										intersect: true,
-									},
-									scales: {
-										x: {
-											stacked: true,
+							if (!chart) {
+								const config = {
+									type: 'bar',
+									data: data,
+									options: {
+										interaction: {
+											intersect: true,
 										},
-										y: {
-											stacked: true
-										}
-									},
-									maintainAspectRatio: true,
-									responsive: true
-								}
-							};
+										scales: {
+											x: {
+												stacked: true,
+											},
+											y: {
+												stacked: true
+											}
+										},
+										maintainAspectRatio: true,
+										responsive: true
+									}
+								};
 
-							chart = new Chart(ctx, config);
-						} else {
-							chart.data.labels.pop();
-							chart.data.datasets.forEach((dataset) => {
-								dataset.data.pop();
-							});
-							chart.data = data
-							chart.update();
+								chart = new Chart(ctx, config);
+							} else {
+								chart.data.labels.pop();
+								chart.data.datasets.forEach((dataset) => {
+									dataset.data.pop();
+								});
+								chart.data = data
+								chart.update();
+							}
 						}
 					})
 			} else {
