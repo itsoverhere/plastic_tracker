@@ -305,12 +305,15 @@
 												<div class="col-7">
 													<!--													<input class="form-control plastic_contribution_modal" type="number" id="week">-->
 													<select id="week" required class="form-control plastic_contribution_modal">
-														<option value="1">Week 1</option>
+														<option value="1" default>Week 1</option>
 														<option value="2">Week 2</option>
 													</select>
 												</div>
 											</div>
 
+										</div>
+										<div class="12">
+											<span class="description">If you already have an entry for this plastic type for the chosen week, this new entry will overwrite it.</span>
 										</div>
 										<input id="plastic_category" type="hidden" class="plastic_contribution_modal">
 									</div>
@@ -403,29 +406,31 @@
 					let user_uuid = currentUser.uid
 					let timestamp = new Date()
 
-					// write security rules 
-					let path =
+					if (validatePlasticContribution(quantity, weight, week)) {
+						// write security rules 
+						let path =
 
-						firestore.collection("users")
-						.doc(user_uuid)
-						.update({
-							[`plastics.${week}.${plastic_uuid}`]: {
-								timestamp, quantity, weight
-							}
-						}, {
-							merge: true
-						}).then((doc) => {
-							//							hideModals()
-							hideSpinner()
-							notifier.success("Successfully added your plastic contribution!")
+							firestore.collection("users")
+							.doc(user_uuid)
+							.update({
+								[`plastics.${week}.${plastic_uuid}`]: {
+									timestamp, quantity, weight
+								}
+							}, {
+								merge: true
+							}).then((doc) => {
+								//							hideModals()
+								hideSpinner()
+								notifier.success("Successfully added your plastic contribution!")
 
-							clearModalInputs()
-							populatePlasticChart()
-						}).catch((error) => {
-							console.log(error)
-							notifier.alert("Something went wrong, please try again.")
-							hideModals()
-						})
+								clearModalInputs()
+								populatePlasticChart()
+							}).catch((error) => {
+								console.log(error)
+								notifier.alert("Something went wrong, please try again.")
+								hideModals()
+							})
+					}
 				} else {
 					// no user detected, redirect to index.html
 					window.location.href = "index.html"
@@ -529,7 +534,24 @@
 			return Number.isInteger(parseFloat(x))
 		}
 
+		function isFloat(x) {
+			return !Number.isNaN(parseFloat(x))
+		}
 
+		function validatePlasticContribution(qty, weight, week) {
+			if (!isInt(qty)) {
+				notifier.alert("Please enter a valid quantity")
+				return false
+			} else if (!isFloat(weight)) {
+				notifier.alert("Please enter a valid weight.")
+				return false
+			} else if (!isInt(week)) {
+				notifier.alert("Please reload the form.")
+				return false
+			}
+
+			return true;
+		}
 
 		function showModal(target) {
 			hideModals()
