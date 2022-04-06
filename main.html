@@ -282,7 +282,7 @@
 													Quantity
 												</div>
 												<div class="col-5">
-													<input class="form-control plastic_contribution_modal" type="number" id="quantity" class="plastic_contribution_modal">
+													<input class="form-control plastic_contribution_modal" type="number" required id="quantity" class="plastic_contribution_modal">
 												</div>
 											</div>
 										</div>
@@ -292,7 +292,7 @@
 													Weight in grams
 												</div>
 												<div class="col-5">
-													<input class="form-control plastic_contribution_modal" type="number" id="weight">
+													<input class="form-control plastic_contribution_modal" type="number" required id="weight">
 												</div>
 											</div>
 										</div>
@@ -304,7 +304,7 @@
 												</div>
 												<div class="col-5">
 													<!--													<input class="form-control plastic_contribution_modal" type="number" id="week">-->
-													<select id="week" class="form-control plastic_contribution_modal">
+													<select id="week" required class="form-control plastic_contribution_modal">
 														<option value="1">Week 1</option>
 														<option value="2">Week 2</option>
 													</select>
@@ -524,6 +524,12 @@
 			myDropzone.removeAllFiles(true)
 			$("input#riversnap_date").val(date)
 		}
+
+		function isInt(x) {
+			return Number.isInteger(parseFloat(x))
+		}
+
+
 
 		function showModal(target) {
 			hideModals()
