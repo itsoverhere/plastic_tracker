@@ -381,12 +381,13 @@
 
 		let notifier = new AWN()
 
-		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-		var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-			return new bootstrap.Tooltip(tooltipTriggerEl)
-		})
-
 		$(document).ready(() => {
+
+			var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+			var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+				return new bootstrap.Tooltip(tooltipTriggerEl)
+			})
+
 			$("body div.plastic_categories").on("click", ".plastic_category", function() {
 				firestore.collection("plastics").doc($(this).attr("id")).get().then((doc) => {
 					populatePlasticCategoryModal(doc.id, doc.data())
