@@ -278,7 +278,7 @@
 									<div class="row">
 										<div class="col-12">
 											<div class="p-2 row">
-												<div class="plastic_contribution_modal label col-5">
+												<div class="plastic_contribution_modal label col-5" data-bs-toggle="tooltip" title="Number of plastic items">
 													Quantity
 												</div>
 												<div class="col-7">
@@ -288,7 +288,7 @@
 										</div>
 										<div class="col-12">
 											<div class="p-2 row">
-												<div class="plastic_contribution_modal label col-5">
+												<div class="plastic_contribution_modal label col-5" data-bs-toggle="tooltip" title="Weight of the plastic items in grams">
 													Weight in grams
 												</div>
 												<div class="col-7">
@@ -299,7 +299,7 @@
 										<div class="col-12">
 
 											<div class="p-2 row">
-												<div class="plastic_contribution_modal label col-5">
+												<div class="plastic_contribution_modal label col-5" data-bs-toggle="tooltip" title="Week when the plastic items were collected">
 													Week
 												</div>
 												<div class="col-7">
@@ -345,8 +345,13 @@
 										<input id="riversnap_input" type="file" accept="image/jpeg" />
 									</div>
 									<div class="col-12 mt-2">
-										<select id="location">
-										</select>
+										<div class="row">
+											<div class="w-auto p-2" toggle="tooltip" title="General area where the river trash was collected">Location</div>
+											<div class="col mt-2">
+												<select id="location" data-bs->
+												</select>
+											</div>
+										</div>
 									</div>
 
 									<input id="riversnap_date" type="hidden" class="riversnap_modal">
