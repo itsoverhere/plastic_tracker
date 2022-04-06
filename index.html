@@ -281,10 +281,7 @@
 
 					// resolved promise
 					console.log("done initapp")
-					setTimeout(() => {
-						hideSpinner()
-						$("#spinner_modal").modal('hide')
-					}, 1000)
+					hideSpinner()
 
 
 					firebase.auth().onAuthStateChanged(function(user) {
@@ -296,7 +293,7 @@
 								console.log("hascompletedetails")
 								window.location.href = "main.html"
 							}, () => {
-
+								``
 								console.log("not present")
 								currentUser["email"] = user.email
 								currentUser["uuid"] = user.uid
@@ -386,7 +383,9 @@
 		}
 
 		function hideSpinner() {
-			$("#spinner_modal").modal('hide')
+			setTimeout(() => {
+				$("#spinner_modal").modal('hide')
+			}, 1000)
 		}
 
 	</script>
