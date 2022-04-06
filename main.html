@@ -346,7 +346,7 @@
 									</div>
 									<div class="col-12 mt-2">
 										<div class="row">
-											<div class="w-auto p-2" toggle="tooltip" title="General area where the river trash was collected">Location</div>
+											<div class="w-auto p-2" data-bs-toggle="tooltip" title="General area where the river trash was collected">Location</div>
 											<div class="col mt-2">
 												<select id="location" data-bs->
 												</select>
@@ -380,6 +380,11 @@
 		let currentRiversnap
 
 		let notifier = new AWN()
+
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+		var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+			return new bootstrap.Tooltip(tooltipTriggerEl)
+		})
 
 		$(document).ready(() => {
 			$("body div.plastic_categories").on("click", ".plastic_category", function() {

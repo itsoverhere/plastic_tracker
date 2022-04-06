@@ -133,7 +133,7 @@
 				</div>
 
 				<div class="py-2 row">
-					<div class="label col-4">
+					<div class="label col-4" data-bs-toggle="tooltip" title="Please enter your name if no participant ID was given">
 						Participant ID
 					</div>
 					<div class="col-8">
@@ -142,7 +142,7 @@
 				</div>
 
 				<div class="py-2 row">
-					<div class="label col-4">
+					<div class="label col-4" data-bs-toggle="tooltip" title="Affiliation or youth group where you belong">
 						Affiliation
 					</div>
 					<div class="col-8">
@@ -178,6 +178,10 @@
 
 
 	<script>
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+		var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+			return new bootstrap.Tooltip(tooltipTriggerEl)
+		})
 		$(document).ready(function() {
 
 			$("#spinner_modal").modal({
@@ -242,25 +246,33 @@
 				let pid = $("input#pid").val()
 				let email = currentUser["email"]
 
-				firebase.firestore().collection("users")
-					.doc(currentUser["uuid"])
-					.set({
-						email, affiliation, pid,
-					}, {
-						merge: true
-					}).then(() => {
-						window.location.href = "main.html"
-						hideSpinner()
-					}).catch((error) => {
-						notifier.alert(error.message)
-						hideSpinner()
-					})
+				if (!isEmpty(affiliation) && isEmpty(pid)) {
+					firebase.firestore().collection("users")
+						.doc(currentUser["uuid"])
+						.set({
+							email, affiliation, pid,
+						}, {
+							merge: true
+						}).then(() => {
+							window.location.href = "main.html"
+							hideSpinner()
+						}).catch((error) => {
+							notifier.alert(error.message)
+							hideSpinner()
+						})
+				}
+
+
 			})
 
 			$("form").submit((e) => {
 				e.preventDefault()
 			})
 		})
+
+		function isEmpty(x) {
+			return x.trim() === ""
+		}
 
 	</script>
 
