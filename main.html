@@ -431,15 +431,15 @@
 								merge: true
 							}).then((doc) => {
 								//							hideModals()
-								hideSpinner()
 								notifier.success("Successfully added your plastic contribution!")
-
 								clearModalInputs()
 								populatePlasticChart()
+								hideSpinner()
 							}).catch((error) => {
 								console.log(error)
 								notifier.alert("Something went wrong, please try again.")
 								hideModals()
+								hideSpinner()
 							})
 					}
 				} else {
@@ -579,7 +579,9 @@
 		}
 
 		function hideSpinner() {
-			$("#spinner_modal").modal('hide')
+			setTimeout(() => {
+				$("#spinner_modal").modal('hide')
+			}, 1000)
 		}
 
 		function clearModalInputs() {
