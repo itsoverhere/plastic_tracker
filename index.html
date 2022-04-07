@@ -225,18 +225,25 @@
 				showSpinner()
 				let email = $("input#email").val()
 				let password = $("input#password").val()
-				firebase.auth()
-					.createUserWithEmailAndPassword(email, password)
-					.then((user) => {
-						currentUser["email"] = user.email
-						currentUser["uuid"] = user.uid
-						toggleDetailsForm(true)
-						hideSpinner()
-					})
-					.catch((error) => {
-						notifier.alert(error.message)
-						hideSpinner()
-					})
+
+				if (!isEmpty(email) && !isEmpty(password)) {
+					firebase.auth()
+						.createUserWithEmailAndPassword(email, password)
+						.then((user) => {
+							currentUser["email"] = user.email
+							currentUser["uuid"] = user.uid
+							toggleDetailsForm(true)
+							hideSpinner()
+						})
+						.catch((error) => {
+							notifier.alert(error.message)
+							hideSpinner()
+						})
+				} else {
+					notifier.alert("Please enter an email and a password.")
+					hideSpinner()
+				}
+
 			})
 
 			$("button#submit").click(() => {
