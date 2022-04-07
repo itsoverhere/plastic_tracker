@@ -246,7 +246,7 @@
 				let pid = $("input#pid").val()
 				let email = currentUser["email"]
 
-				if (!isEmpty(affiliation) && isEmpty(pid)) {
+				if (!isEmpty(affiliation) && !isEmpty(pid)) {
 					firebase.firestore().collection("users")
 						.doc(currentUser["uuid"])
 						.set({
@@ -260,6 +260,9 @@
 							notifier.alert(error.message)
 							hideSpinner()
 						})
+				} else {
+					notifier.alert("Pleasae fill in both participant ID and affiliation fields.")
+					hideSpinner()
 				}
 
 
