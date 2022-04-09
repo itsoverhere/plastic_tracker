@@ -410,7 +410,6 @@
 				hideModals()
 				showSpinner()
 
-				console.log("button add contribution")
 				if (currentUser) {
 					let quantity = $("input#quantity.plastic_contribution_modal").val()
 					let weight = $("input#weight.plastic_contribution_modal").val()
@@ -438,7 +437,7 @@
 								populatePlasticChart()
 								hideSpinner()
 							}).catch((error) => {
-								console.log(error)
+(error)
 								notifier.alert("Something went wrong, please try again.")
 								hideModals()
 								hideSpinner()
@@ -488,13 +487,10 @@
 
 			$("input#riversnap_input").change((e) => {
 				e.stopPropagation()
-				console.log("riversnap_input change")
 				var file = document.getElementById("riversnap_input").files[0]
-				console.log("new file: " + file)
 
 				// add to Dropzone
 				if (myDropzone.files[0] != null) {
-					console.log("this.files[0]!=null")
 					myDropzone.removeFile(myDropzone.files[0]);
 				}
 				myDropzone.addFile(file)
@@ -797,10 +793,8 @@
 				});
 
 				myDropzone.on("addedfile", function(file) {
-					console.log("added file")
 					if (this.files[1] != null) {
 						this.removeFile(this.files[0]);
-						console.log("this.files[1]!=null")
 					}
 
 					// show image
@@ -820,7 +814,6 @@
 				});
 
 				myDropzone.on("removedfile", function(file) {
-					console.log("removed file")
 					var storageRef = firebase.storage().ref("/");
 					storageRef.child(file.fullPath).delete().then(
 						function() {
@@ -846,8 +839,6 @@
 						picker.destroy()
 					}
 
-					console.log("dates")
-					console.log(dates)
 					picker = new Litepicker({
 						element: document.getElementById('riversnap_calendar'),
 						inlineMode: true,

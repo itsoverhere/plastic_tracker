@@ -184,16 +184,6 @@
 				return new bootstrap.Tooltip(tooltipTriggerEl)
 			})
 
-			$("#spinner_modal").modal({
-				backdrop: 'static',
-				keyboard: false
-			})
-
-			$("#spinner_modal").click(function(e) {
-				e.preventDefault()
-				e.stopPropagation()
-			})
-
 			$("#google_sso").click(() => {
 				signUpViaGoogle()
 			})
@@ -240,7 +230,7 @@
 							hideSpinner()
 						})
 				} else {
-					notifier.alert("Please enter an email and a password.")
+					notifier.warn("Please enter an email and a password.")
 					hideSpinner()
 				}
 
@@ -268,7 +258,7 @@
 							hideSpinner()
 						})
 				} else {
-					notifier.alert("Pleasae fill in both participant ID and affiliation fields.")
+					notifier.warn("Pleasae fill in both participant ID and affiliation fields.")
 					hideSpinner()
 				}
 
@@ -296,27 +286,22 @@
 		});
 
 		initApp = function() {
-			console.log("initapp")
 			showSpinner()
 			Promise.resolve()
 				.then(setupFirebase)
 				.then(() => {
 
 					// resolved promise
-					console.log("done initapp")
 					hideSpinner()
 
 
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user) {
 
-							console.log("firebase auth")
 							hasCompleteDetails(user.uid).then(() => {
 
-								console.log("hascompletedetails")
 								window.location.href = "main.html"
 							}, () => {
-								console.log("not present")
 								currentUser["email"] = user.email
 								currentUser["uuid"] = user.uid
 								toggleDetailsForm(true)
@@ -330,7 +315,6 @@
 		};
 
 		function setupFirebase() {
-			console.log("setupfirebase")
 			return new Promise((resolve) => {
 				const firebaseConfig = {
 					apiKey: "AIzaSyBx-vcALRbrfXRGpyMwZHGgTH_0mgQI_xk",
@@ -342,7 +326,6 @@
 				};
 				app = firebase.initializeApp(firebaseConfig);
 
-				console.log("resolve setupfirebase")
 				resolve()
 			})
 		}
@@ -400,7 +383,6 @@
 		}
 
 		function showSpinner() {
-			console.log("show spinner")
 			$("#spinner_modal").modal('show')
 		}
 
