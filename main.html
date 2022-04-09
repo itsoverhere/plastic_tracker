@@ -307,6 +307,8 @@
 													<select id="week" required class="form-control plastic_contribution_modal">
 														<option value="1" default>Week 1</option>
 														<option value="2">Week 2</option>
+														<option value="3">Week 3</option>
+														<option value="4">Week 4</option>
 													</select>
 												</div>
 											</div>
@@ -834,41 +836,42 @@
 				.where("user_uuid", "==", currentUser.uid)
 				.get()
 				.then((query) => {
-					let dates = []
-					query.forEach((doc) => {
-						let d = new Date(doc.data().date)
-						dates.push(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate())
-					})
+						let dates = []
+						query.forEach((doc) => {
+							let d = new Date(doc.data().date)
+							dates.push(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate())
+						})
 
-					if (picker) {
-						picker.destroy()
-					}
+						if (picker) {
+							picker.destroy()
+						}
 
-					console.log("dates")
-					console.log(dates)
-					picker = new Litepicker({
-						element: document.getElementById('riversnap_calendar'),
-						inlineMode: true,
-						highlightedDays: dates,
-						highlightedDaysFormat: "YYYY-MM-DD",
-						setup: (picker) => {
-							picker.on('before:click', (target) => {
-								if ($(target).hasClass('is-locked')) {
-									// date is locked, the date has not yet occurred
-								} else if ($(target).hasClass('is-highlighted')) {
-									// date is highlighted, it was already chosen before
-									notifier.alert("You already submitted a riversnap for this day. Choose another date.")
-								} else if ($(target).hasClass('day-item')) {
-									// date is available
-									if (picker.getDate()) {
-										initiateRiversnapModal(picker.getDate().dateInstance)
-										showModal($("#riversnap_modal"))
-									}
-								}
-							});
-						},
-						maxDate: new Date()
-					});
+						console.log("dates")
+						console.log(dates)
+						picker = new Litepicker({
+								element: document.getElementById('riversnap_calendar'),
+								inlineMode: true,
+								highlightedDays: dates,
+								highlightedDaysFormat: "YYYY-MM-DD",
+								setup: (picker) => {
+									picker.on('before:click', (target) => {
+											if ($(target).hasClass('is-locked')) {
+												// date is locked, the date has not yet occurred
+											}
+											//								else if ($(target).hasClass('is-highlighted')) {
+											//									// date is highlighted, it was already chosen before
+											//									notifier.alert("You already submitted a riversnap for this day. Choose another date.")
+										} else if ($(target).hasClass('day-item')) {
+											// date is available
+											if (picker.getDate()) {
+												initiateRiversnapModal(picker.getDate().dateInstance)
+												showModal($("#riversnap_modal"))
+											}
+										}
+									});
+							},
+							maxDate: new Date()
+						});
 				})
 		}
 
