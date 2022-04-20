@@ -606,7 +606,8 @@
 
 		function log(email, message, type, method) {
 			firestore.collection("logs").add({
-				email, message, type, method
+				email, message, type, method,
+				"timestamp": firebase.firestore.FieldValue.serverTimestamp()
 			})
 		}
 
