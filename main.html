@@ -381,6 +381,12 @@
 		let myDropzone, picker
 		let currentRiversnap
 
+		const actions = {
+			"add_plastic": "add plastic contribution",
+			"add_riversnap": "add riversnap document",
+			"upload_photo": "upload photo storage"
+		}
+
 		let notifier = new AWN()
 
 		$(document).ready(() => {
@@ -432,12 +438,13 @@
 								merge: true
 							}).then((doc) => {
 								//							hideModals()
+								log(currentUser.email, "added plastic contribution", "trace", actions.add_plastic)
 								notifier.success("Successfully added your plastic contribution!")
 								clearModalInputs()
 								populatePlasticChart()
 								hideSpinner()
 							}).catch((error) => {
-(error)
+								log(currentUser.email, error.message, "error", actions.add_plastic)
 								notifier.alert("Something went wrong, please try again.")
 								hideModals()
 								hideSpinner()
@@ -466,13 +473,17 @@
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
 							//							hideModals()
+
+							log(currentUser.email, "success adding riversnap", "trace", actions.add_riversnap)
 							hideSpinner()
 							populateCalendar()
 							notifier.success("Successfully added your new riversnap!")
 						})
 
 					}).catch((error) => {
-						console.log("Error adding riversnap document: " + error)
+						log(currentUser.email, error.message, "error", actions.add_riversnap)
+						console.log("Error adding riversnap document: " + error.message)
+						hideSpinner()
 						notifier.alert("Something went wrong, please try again.")
 					})
 				} else {
@@ -480,6 +491,7 @@
 						// no user detected, redirect to index.html
 						window.location.href = "index.html"
 					} else if (myDropzone.files.length != 1) {
+						log(currentUser.email, "no photo uploaded", "trace", actions.add_riversnap)
 						notifier.warning("Please upload a photo before submitting.")
 					}
 				}
@@ -592,6 +604,12 @@
 			$("input#riversnap_date").val('')
 		}
 
+		function log(email, message, type, method) {
+			firestore.collection("logs").add({
+				email, message, type, mwthod
+			})
+		}
+
 		function storage_upload(uuid, filedata, cb) {
 			// Firestore storage task 
 			var task
@@ -609,6 +627,7 @@
 					function(error) {
 						// A full list of error codes is available at
 						// https://firebase.google.com/docs/storage/web/handle-errors
+						log(currentUser.email, error.message, "error", actions.upload_photo)
 						notifier.alert("Something went wrong, please try again.")
 						console.log("Error in uploading photo : " + error)
 
