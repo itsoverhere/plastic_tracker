@@ -438,7 +438,7 @@
 								merge: true
 							}).then((doc) => {
 								//							hideModals()
-								log(currentUser.email, "added plastic contribution", "trace", actions.add_plastic)
+								log(currentUser.email, "added plastic " + plastic_uuid + ". qty: " + quantity + ", weight: " + weight, "trace", actions.add_plastic)
 								notifier.success("Successfully added your plastic contribution!")
 								clearModalInputs()
 								populatePlasticChart()
@@ -474,7 +474,7 @@
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
 							//							hideModals()
 
-							log(currentUser.email, "success adding riversnap", "trace", actions.add_riversnap)
+							log(currentUser.email, "success adding riversnap for " + date + " from " + location, "trace", actions.add_riversnap)
 							hideSpinner()
 							populateCalendar()
 							notifier.success("Successfully added your new riversnap!")
