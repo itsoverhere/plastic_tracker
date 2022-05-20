@@ -399,7 +399,6 @@
 			$("body div.plastic_categories").on("click", ".plastic_category", function() {
 				firestore.collection("plastics").doc($(this).attr("id")).get().then((doc) => {
 					populatePlasticCategoryModal(doc.id, doc.data())
-						//					showModal($("div.modal#add_plastic"))
 					$("#plastic_contribution_modal").modal('show')
 				})
 			});
@@ -425,7 +424,6 @@
 					let timestamp = new Date()
 
 					if (validatePlasticContribution(quantity, weight, week)) {
-						// write security rules 
 						let path =
 
 							firestore.collection("users")
@@ -438,7 +436,7 @@
 								merge: true
 							}).then((doc) => {
 								//							hideModals()
-								log(currentUser.email, "added plastic " + plastic_uuid + ". qty: " + quantity + ", weight: " + weight, "trace", actions.add_plastic)
+								log(currentUser.email, "added plastic " + plastic_uuid + ". qty: " + quantity + ", weight: " + weight + ", week: " + week, "trace", actions.add_plastic)
 								notifier.success("Successfully added your plastic contribution!")
 								clearModalInputs()
 								populatePlasticChart()
@@ -472,8 +470,6 @@
 						timestamp: firebase.firestore.FieldValue.serverTimestamp()
 					}).then((doc) => {
 						storage_upload(doc.id, myDropzone.files[0].dataURL, (response) => {
-							//							hideModals()
-
 							log(currentUser.email, "success adding riversnap for " + date + " from " + location, "trace", actions.add_riversnap)
 							hideSpinner()
 							populateCalendar()
